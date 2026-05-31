@@ -1,0 +1,25 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+test = "test"
+script = "script"
+solc_version = "0.8.24"
+optimizer = true
+optimizer_runs = 200
+remappings = [
+    "@openzeppelin/=lib/openzeppelin-contracts/",
+    "@openzeppelin-upgradeable/=lib/openzeppelin-contracts-upgradeable/",
+    "@chainlink/=lib/chainlink/",
+    "@account-abstraction/=lib/account-abstraction/",
+]
+fuzz = { runs = 256 }
+invariant = { runs = 64 }
+
+[profile.ci]
+fuzz = { runs = 1000 }
+
+[fmt]
+line_length = 120
+tab_width = 4
+bracket_spacing = true
