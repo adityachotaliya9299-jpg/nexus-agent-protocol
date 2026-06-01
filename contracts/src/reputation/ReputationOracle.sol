@@ -90,11 +90,8 @@ contract ReputationOracle is IReputationOracle {
     }
 
     modifier agentInitialized(uint256 agentId) {
-        if (!_reputations[agentId].registeredAt != 0 && _reputations[agentId].registeredAt == 0) {
-            revert AgentNotInitialized(agentId);
-        }
-        if (_reputations[agentId].registeredAt == 0) revert AgentNotInitialized(agentId);
-        _;
+    if (_reputations[agentId].registeredAt == 0) revert AgentNotInitialized(agentId);
+    _;
     }
 
     modifier agentNotSlashed(uint256 agentId) {
@@ -331,14 +328,11 @@ contract ReputationOracle is IReputationOracle {
 
     /// @notice Sync reputation score back to AgentRegistry
     function _syncToRegistry(uint256 agentId, uint256 newScore, ReputationState storage rep) internal {
-        try IAgentRegistry(registry).updateReputation(
-            agentId,
-            newScore,
-            rep.tasksCompleted,
-            0 // earned amount tracked by marketplace in Phase 3
-        ) {} catch {
-            // Don't revert if registry sync fails — oracle state is source of truth
-        }
+    // Registry sync is handled externally — oracle is source of truth for scores.
+    // In Phase 3, TaskMarketplace will call registry.updateReputation() directly
+    // since it is an authorized updater with full task + earnings context.
+    // Suppress unused variable warning:
+    (agentId, newScore, rep);
     }
 
     /// @notice Add with ceiling cap
