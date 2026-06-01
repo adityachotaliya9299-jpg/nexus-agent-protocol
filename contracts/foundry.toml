@@ -1,7 +1,7 @@
 [profile.default]
 src = "src"
 out = "out"
-libs = ["lib"]
+libs = ["lib", "../lib"]
 test = "test"
 script = "script"
 solc_version = "0.8.24"
@@ -9,12 +9,10 @@ optimizer = true
 optimizer_runs = 200
 remappings = [
     "@openzeppelin/=lib/openzeppelin-contracts/",
-    "@openzeppelin-upgradeable/=lib/openzeppelin-contracts-upgradeable/",
-    "@chainlink/=lib/chainlink/",
+    "forge-std/=lib/forge-std/src/",
     "@account-abstraction/=lib/account-abstraction/",
 ]
 fuzz = { runs = 256 }
-invariant = { runs = 64 }
 
 [profile.ci]
 fuzz = { runs = 1000 }
