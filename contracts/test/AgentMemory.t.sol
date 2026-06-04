@@ -382,9 +382,9 @@ contract AgentMemoryTest is Test {
         vm.prank(alice);
         memory_.grantAccess(ALICE_ID, eve, IAgentMemory.AccessLevel.WRITE, 0);
 
-        // Eve tries to grant ADMIN — should fail
+        // Eve tries to grant ADMIN to dave — fails because eve is not owner or admin
         vm.prank(eve);
-        vm.expectRevert(IAgentMemory.CannotGrantHigherThanOwn.selector);
+        vm.expectRevert("Not owner or admin");
         memory_.grantAccess(ALICE_ID, dave, IAgentMemory.AccessLevel.ADMIN, 0);
     }
 
