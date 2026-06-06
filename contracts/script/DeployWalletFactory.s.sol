@@ -6,12 +6,10 @@ import {AgentWallet} from "../src/AgentWallet.sol";
 import {AgentWalletFactory} from "../src/AgentWalletFactory.sol";
 
 /// @notice Deployment script for Phase 1B — AgentWallet + AgentWalletFactory
-/// @dev Run after Phase 1A (AgentRegistry must already be deployed)
-///      forge script script/DeployWalletFactory.s.sol --rpc-url $SEPOLIA_RPC_URL --broadcast --verify
 contract DeployWalletFactoryScript is Script {
 
     /// @dev The AgentRegistry address deployed in Phase 1A
-    address constant AGENT_REGISTRY = address(0); // TODO: fill after Phase 1A deploy
+    address constant AGENT_REGISTRY = address(0); 
 
     /// @dev Standard ERC-4337 EntryPoint v0.6 on Sepolia and all major chains
     address constant ENTRY_POINT = 0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789;
@@ -45,7 +43,6 @@ contract DeployWalletFactoryScript is Script {
         console.log("  3. Call registry.setAgentWallet() to link wallet to agent profile");
         console.log("  4. Phase 2: Deploy ReputationOracle");
 
-        // Show a sample computed address for deployer if registered
         address predicted = factory.computeWalletAddress(deployer, 1, bytes32(0));
         console.log("  Sample wallet address for deployer (agentId=1):", predicted);
     }
