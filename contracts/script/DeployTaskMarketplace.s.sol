@@ -7,9 +7,9 @@ import {TaskMarketplace} from "../src/marketplace/TaskMarketplace.sol";
 /// @notice Deployment script for Phase 3 — TaskMarketplace
 /// @dev forge script script/DeployTaskMarketplace.s.sol --rpc-url $SEPOLIA_RPC_URL --broadcast --verify
 contract DeployTaskMarketplaceScript is Script {
-    address constant AGENT_REGISTRY    = address(0); // TODO: Phase 1A deploy address
-    address constant REPUTATION_ORACLE = address(0); // TODO: Phase 2A deploy address
-    address constant ARBITRATOR        = address(0); // TODO: Set multisig as arbitrator
+    address constant AGENT_REGISTRY    = address(0); 
+    address constant REPUTATION_ORACLE = address(0); 
+    address constant ARBITRATOR        = address(0); 
     uint256 constant PLATFORM_FEE_BPS  = 250;        // 2.5%
 
     function run() external {
