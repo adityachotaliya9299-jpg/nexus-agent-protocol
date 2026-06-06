@@ -13,7 +13,7 @@ contract DeployReputationOracleScript is Script {
     // ============================================================
 
     /// @dev AgentRegistry address from Phase 1A deployment
-    address constant AGENT_REGISTRY = address(0); // TODO: fill after Phase 1A deploy
+    address constant AGENT_REGISTRY = address(0); 
 
     function run() external {
         require(AGENT_REGISTRY != address(0), "Set AGENT_REGISTRY address first");
