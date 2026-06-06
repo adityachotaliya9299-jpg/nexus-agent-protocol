@@ -4,12 +4,10 @@ pragma solidity ^0.8.24;
 import {Script, console} from "forge-std/Script.sol";
 import {ZKVerifier} from "../src/zk/ZKVerifier.sol";
 
-/// @notice Deployment script for Phase 4 — ZKVerifier + AVS
-/// @dev forge script script/DeployZKVerifier.s.sol --rpc-url $SEPOLIA_RPC_URL --broadcast --verify
 contract DeployZKVerifierScript is Script {
-    address constant AGENT_REGISTRY    = address(0); // TODO: Phase 1A
-    address constant REPUTATION_ORACLE = address(0); // TODO: Phase 2A
-    uint256 constant QUORUM_THRESHOLD  = 6700;       // 67% of AVS operators
+    address constant AGENT_REGISTRY    = address(0); 
+    address constant REPUTATION_ORACLE = address(0); 
+    uint256 constant QUORUM_THRESHOLD  = 6700;      
 
     function run() external {
         require(AGENT_REGISTRY != address(0),    "Set AGENT_REGISTRY");
