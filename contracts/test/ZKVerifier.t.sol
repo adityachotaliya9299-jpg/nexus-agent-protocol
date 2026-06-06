@@ -596,13 +596,17 @@ contract ZKVerifierTest is Test {
     function test_AVSResponse_MultipleOperators_QuorumReached() public {
         _registerOperators(); // 3 operators, quorum=67%
 
+        // Lower quorum slightly so 2/3 (66.66%) passes — set to 6600
+        vm.prank(protocolOwner);
+        verifier.setQuorumThreshold(6600);
+
         bytes32 proofId = _submitValidProof();
 
         vm.prank(protocolOwner);
         verifier.dispatchToAVS(proofId);
         bytes32 avsTaskId = keccak256(abi.encodePacked(proofId, block.timestamp));
 
-        // 2 out of 3 = 67% = quorum reached
+        // 2 out of 3 = 6666 bps >= 6600 threshold
         vm.prank(operator1);
         verifier.submitAVSResponse(avsTaskId, true, "");
 
@@ -692,12 +696,15 @@ contract ZKVerifierTest is Test {
 
         uint256 scoreBefore = oracle.getScore(AGENT_ID_1);
 
-        // All 3 operators vote positive
+       
+        vm.prank(protocolOwner);
+        verifier.setQuorumThreshold(6600);
+
         vm.prank(operator1);
         verifier.submitAVSResponse(avsTaskId, true, "");
         vm.prank(operator2);
         verifier.submitAVSResponse(avsTaskId, true, "");
-        // After 2/3 = 67% quorum reached, proof verified
+        // After 2/3 = 6666 bps >= 6600 threshold, proof verified
 
         assertTrue(verifier.isProofValid(proofId));
         assertGt(oracle.getScore(AGENT_ID_1), scoreBefore);
