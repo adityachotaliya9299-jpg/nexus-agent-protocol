@@ -9,10 +9,10 @@ import {AgentMemory} from "../src/memory/AgentMemory.sol";
 ///      forge script script/DeployAgentMemory.s.sol --rpc-url $SEPOLIA_RPC_URL --broadcast --verify
 contract DeployAgentMemoryScript is Script {
     /// @dev AgentRegistry address from Phase 1A deployment
-    address constant AGENT_REGISTRY    = address(0); // TODO: fill after Phase 1A deploy
+    address constant AGENT_REGISTRY    = address(0); 
 
     /// @dev TaskMarketplace address (Phase 3) — authorize after deploy
-    address constant TASK_MARKETPLACE  = address(0); // TODO: fill after Phase 3 deploy
+    address constant TASK_MARKETPLACE  = address(0); 
 
     function run() external {
         require(AGENT_REGISTRY != address(0), "Set AGENT_REGISTRY address first");
