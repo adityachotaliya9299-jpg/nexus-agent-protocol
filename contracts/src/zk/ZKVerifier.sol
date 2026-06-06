@@ -40,7 +40,7 @@ contract ZKVerifier is IZKVerifier {
     uint256 public constant MAX_PROOF_SIZE    = 10_000; // bytes
     uint256 public constant PROOF_TTL         = 30 days;
     uint256 public constant MIN_QUORUM        = 1;
-    uint256 public constant MAX_QUORUM        = 100;
+    uint256 public constant MAX_QUORUM        = 10000;
     uint256 public constant REPUTATION_BOOST  = 200;    // bp boost for verified proof
 
     // ============================================================
