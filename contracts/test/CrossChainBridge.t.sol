@@ -254,11 +254,9 @@ contract CrossChainBridgeTest is Test {
         bytes32 messageId = _bridgeAgentToPolygon();
 
         ICrossChainBridge.BridgeMessage memory msg_ = bridge.getMessage(messageId);
-        assertEq(msg_.agentId, AGENT_ID_1);
-        // Can't directly access agentId from BridgeMessage struct (it's in payload)
-        // Verify via messageId and destChain
         assertEq(msg_.destChain, POLYGON_CHAIN);
         assertEq(msg_.sourceChain, ETH_CHAIN);
+        assertEq(msg_.sender, agentOwner);
         assertEq(uint256(msg_.msgType), uint256(ICrossChainBridge.MessageType.AGENT_REGISTRATION));
         assertEq(uint256(msg_.status), uint256(ICrossChainBridge.MessageStatus.PENDING));
     }
