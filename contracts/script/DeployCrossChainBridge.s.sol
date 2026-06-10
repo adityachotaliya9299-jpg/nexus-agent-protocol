@@ -20,8 +20,8 @@ contract DeployCrossChainBridgeScript is Script {
     // ============================================================
     //     FILL THESE IN FROM PREVIOUS PHASE DEPLOYMENTS
     // ============================================================
-    address constant AGENT_REGISTRY    = address(0); // Phase 1A
-    address constant REPUTATION_ORACLE = address(0); // Phase 2A
+    address constant AGENT_REGISTRY    = address(0); 
+    address constant REPUTATION_ORACLE = address(0); 
 
     // CCIP Router addresses per chain (from Chainlink docs)
     // Ethereum Sepolia: 0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59
