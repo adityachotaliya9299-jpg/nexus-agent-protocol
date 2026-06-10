@@ -11,7 +11,7 @@ import {IReputationOracle} from "../interfaces/IReputationOracle.sol";
 ///
 /// @dev Architecture mirrors Chainlink CCIP pattern:
 ///
-///   SEND PATH (source chain):
+///   SEND PATH (source chain) :
 ///     1. Caller pays CCIP fee + optional payment amount
 ///     2. Bridge encodes message payload
 ///     3. Calls CCIP router to dispatch message
