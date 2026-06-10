@@ -166,6 +166,7 @@ interface ICrossChainBridge {
     //                      VIEW FUNCTIONS
     // ============================================================
 
+
     function getMessage(bytes32 messageId) external view returns (BridgeMessage memory);
 
     function getSupportedChain(uint64 chainSelector) external view returns (SupportedChain memory);
