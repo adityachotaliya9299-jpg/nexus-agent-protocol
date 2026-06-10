@@ -129,8 +129,7 @@ contract CrossChainBridgeTest is Test {
     //                    HELPER FUNCTIONS
     // ============================================================
 
-    function _getFee(ICrossChainBridge.MessageType msgType, uint256 payloadSize)
-        internal view returns (uint256)
+    function _getFee(ICrossChainBridge.MessageType msgType, uint256 payloadSize)internal view returns (uint256)
     {
         return bridge.estimateFee(POLYGON_CHAIN, msgType, payloadSize);
     }
@@ -232,7 +231,7 @@ contract CrossChainBridgeTest is Test {
     }
 
     // ============================================================
-    //           BRIDGE AGENT TESTS (8 tests)
+    //           BRIDGE AGENT TESTS 
     // ============================================================
 
     function test_BridgeAgent_Success() public {
@@ -311,7 +310,7 @@ contract CrossChainBridgeTest is Test {
     }
 
     // ============================================================
-    //           SYNC REPUTATION TESTS (6 tests)
+    //           SYNC REPUTATION TESTS 
     // ============================================================
 
     function test_SyncReputation_Success() public {
@@ -380,7 +379,7 @@ contract CrossChainBridgeTest is Test {
     }
 
     // ============================================================
-    //           BRIDGE PAYMENT TESTS (7 tests)
+    //           BRIDGE PAYMENT TESTS
     // ============================================================
 
     function test_BridgePayment_Success() public {
@@ -457,7 +456,7 @@ contract CrossChainBridgeTest is Test {
     }
 
     // ============================================================
-    //           CCIP RECEIVE TESTS (7 tests)
+    //           CCIP RECEIVE TESTS 
     // ============================================================
 
     function test_CCIPReceive_AgentRegistration() public {
@@ -582,7 +581,7 @@ contract CrossChainBridgeTest is Test {
     }
 
     // ============================================================
-    //           ADMIN TESTS (3 tests)
+    //           ADMIN TESTS 
     // ============================================================
 
     function test_UpdateCCIPRouter_Success() public {
@@ -607,7 +606,7 @@ contract CrossChainBridgeTest is Test {
     }
 
     // ============================================================
-    //           VIEW FUNCTION TESTS (3 tests)
+    //           VIEW FUNCTION TESTS 
     // ============================================================
 
     function test_EstimateFee_ScalesWithPayload() public view {
