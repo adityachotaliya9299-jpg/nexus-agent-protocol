@@ -4,6 +4,7 @@ pragma solidity ^0.8.24;
 import {Script, console} from "forge-std/Script.sol";
 import {TaskMarketplace} from "../src/marketplace/TaskMarketplace.sol";
 
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 /// @notice Deployment script for Phase 3 — TaskMarketplace
 /// @dev forge script script/DeployTaskMarketplace.s.sol --rpc-url $SEPOLIA_RPC_URL --broadcast --verify
 contract DeployTaskMarketplaceScript is Script {
