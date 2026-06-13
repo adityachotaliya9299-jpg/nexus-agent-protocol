@@ -4,8 +4,9 @@ pragma solidity ^0.8.24;
 import {Script, console} from "forge-std/Script.sol";
 import {AgentMemory} from "../src/memory/AgentMemory.sol";
 
-/// @notice Deployment script for Phase 2B — AgentMemory
-/// @dev Run after Phase 1A (AgentRegistry must already be deployed)
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
+/// @notice Deployment script for  — AgentMemory
+/// @dev run this
 ///      forge script script/DeployAgentMemory.s.sol --rpc-url $SEPOLIA_RPC_URL --broadcast --verify
 contract DeployAgentMemoryScript is Script {
     /// @dev AgentRegistry address from Phase 1A deployment
