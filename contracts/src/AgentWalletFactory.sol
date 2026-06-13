@@ -6,7 +6,7 @@ import {IAgentRegistry} from "./interfaces/IAgentRegistry.sol";
 import {AgentWallet} from "./AgentWallet.sol";
 
 /// @title AgentWalletFactory
-/// @author Nexus Agent Protocol
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 /// @notice Deploys AgentWallet instances using CREATE2 for deterministic addresses
 ///
 /// @dev Why CREATE2?
