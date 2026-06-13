@@ -5,6 +5,7 @@ import {Script, console} from "forge-std/Script.sol";
 import {AgentWallet} from "../src/AgentWallet.sol";
 import {AgentWalletFactory} from "../src/AgentWalletFactory.sol";
 
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 /// @notice Deployment script for Phase 1B — AgentWallet + AgentWalletFactory
 contract DeployWalletFactoryScript is Script {
 
