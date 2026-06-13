@@ -4,12 +4,13 @@ pragma solidity ^0.8.24;
 import {Script, console} from "forge-std/Script.sol";
 import {ReputationOracle} from "../src/reputation/ReputationOracle.sol";
 
-/// @notice Deployment script for Phase 2A — ReputationOracle
-/// @dev Run after Phase 1A+1B (AgentRegistry must already be deployed)
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
+/// @notice Deployment script for - ReputationOracle
+/// @dev Run  (AgentRegistry must already be deployed)
 ///      forge script script/DeployReputationOracle.s.sol --rpc-url $SEPOLIA_RPC_URL --broadcast --verify
 contract DeployReputationOracleScript is Script {
     // ============================================================
-    //     FILL THESE IN AFTER PHASE 1 DEPLOYMENT
+    //     FILL THESE IN AFTER  DEPLOYMENT
     // ============================================================
 
     /// @dev AgentRegistry address from Phase 1A deployment
