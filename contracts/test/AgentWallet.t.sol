@@ -16,7 +16,7 @@ import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/Messa
 // ============================================================
 //                     MOCK CONTRACTS
 // ============================================================
-
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 /// @notice Mock ERC-20 token for payment tests
 contract MockERC20 is ERC20 {
     constructor() ERC20("Mock USDC", "mUSDC") {}
