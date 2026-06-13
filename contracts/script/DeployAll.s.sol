@@ -13,6 +13,7 @@ import {SubscriptionManager}  from "../src/subscriptions/SubscriptionManager.sol
 import {CrossChainBridge}     from "../src/bridge/CrossChainBridge.sol";
 
 /// @title DeployAll
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 /// @notice Unified deployment script for the full Nexus Agent Protocol
 /// @dev Deploys all 9 contracts in correct dependency order,
 ///      wires authorizations, and logs all addresses.
