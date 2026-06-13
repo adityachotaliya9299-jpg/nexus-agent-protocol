@@ -5,7 +5,7 @@ import {IAgentMemory} from "../interfaces/IAgentMemory.sol";
 import {IAgentRegistry} from "../interfaces/IAgentRegistry.sol";
 
 /// @title AgentMemory
-/// @author Aditya Chotaliya [adityachotaliya.vercel.app]
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 /// @notice Versioned on-chain memory pointer registry for autonomous AI agents
 ///
 /// @dev Architecture:
