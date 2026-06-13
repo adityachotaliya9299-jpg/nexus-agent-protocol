@@ -2,7 +2,7 @@
 pragma solidity ^0.8.24;
 
 /// @title ISubscriptionManager
-/// @author Aditya Chotaliya [adityachotaliya.vercel.app]
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 /// @notice Interface for the recurring payment subscription system
 /// @dev Enables:
 ///      - Clients to subscribe to agents for recurring access/service
