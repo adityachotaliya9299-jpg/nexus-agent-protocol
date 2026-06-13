@@ -7,6 +7,10 @@ import {IReputationOracle} from "../src/interfaces/IReputationOracle.sol";
 import {AgentRegistry} from "../src/AgentRegistry.sol";
 import {IAgentRegistry} from "../src/interfaces/IAgentRegistry.sol";
 
+
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
+
+
 contract ReputationOracleTest is Test {
     // ============================================================
     //                         SETUP
