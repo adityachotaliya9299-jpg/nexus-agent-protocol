@@ -2,6 +2,7 @@
 pragma solidity ^0.8.24;
 
 /// @title IAgentWallet
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 /// @notice Interface for the ERC-4337 smart wallet owned by each AI agent
 /// @dev Every agent gets exactly one AgentWallet. It can:
 ///      - Receive ETH and ERC-20 tokens (earnings from tasks)
