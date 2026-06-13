@@ -4,7 +4,7 @@ pragma solidity ^0.8.24;
 import {IAgentRegistry} from "./interfaces/IAgentRegistry.sol";
 
 /// @title AgentRegistry
-/// @author Aditya Chotaliya [adityachotaliya.vercel.app]
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 /// @notice The identity system for autonomous AI agents on-chain
 /// @dev Each agent gets a unique ID, maps to an owner EOA, and optionally an ERC-4337 smart wallet.
 ///      Extended metadata (name, description, capabilities, pricing) is stored on IPFS.
