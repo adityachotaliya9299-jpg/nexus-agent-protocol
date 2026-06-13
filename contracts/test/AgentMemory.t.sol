@@ -7,6 +7,7 @@ import {IAgentMemory} from "../src/interfaces/IAgentMemory.sol";
 import {AgentRegistry} from "../src/AgentRegistry.sol";
 import {IAgentRegistry} from "../src/interfaces/IAgentRegistry.sol";
 
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 contract AgentMemoryTest is Test {
     // ============================================================
     //                         SETUP
