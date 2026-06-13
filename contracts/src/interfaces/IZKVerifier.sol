@@ -2,7 +2,7 @@
 pragma solidity ^0.8.24;
 
 /// @title IZKVerifier
-/// @author Aditya Chotaliya [adityachotaliya.vercel.app]
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 /// @notice Interface for ZK proof verification of agent task completions
 /// @dev Agents can submit zkProofs to prove:
 ///      - Task was completed correctly (without revealing inputs)
