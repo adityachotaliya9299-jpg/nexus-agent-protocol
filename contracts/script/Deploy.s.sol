@@ -4,7 +4,8 @@ pragma solidity ^0.8.24;
 import {Script, console} from "forge-std/Script.sol";
 import {AgentRegistry} from "../src/AgentRegistry.sol";
 
-/// @notice Deployment script for Phase 1A — AgentRegistry
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
+/// @notice Deployment script for  — AgentRegistry
 /// @dev Run: forge script script/Deploy.s.sol --rpc-url $SEPOLIA_RPC_URL --broadcast --verify
 contract DeployScript is Script {
     function run() external {
