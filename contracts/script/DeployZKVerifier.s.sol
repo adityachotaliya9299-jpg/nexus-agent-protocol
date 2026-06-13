@@ -4,6 +4,7 @@ pragma solidity ^0.8.24;
 import {Script, console} from "forge-std/Script.sol";
 import {ZKVerifier} from "../src/zk/ZKVerifier.sol";
 
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 contract DeployZKVerifierScript is Script {
     address constant AGENT_REGISTRY    = address(0); 
     address constant REPUTATION_ORACLE = address(0); 
