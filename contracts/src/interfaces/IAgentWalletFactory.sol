@@ -2,6 +2,7 @@
 pragma solidity ^0.8.24;
 
 /// @title IAgentWalletFactory
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 /// @notice Interface for the factory that deploys AgentWallet instances
 /// @dev Uses CREATE2 so wallet addresses are deterministic and predictable
 ///      before deployment — important for pre-funding agent wallets
