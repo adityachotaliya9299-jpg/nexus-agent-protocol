@@ -2,7 +2,7 @@
 pragma solidity ^0.8.24;
 
 /// @title IAgentRegistry
-/// @author Aditya Chotaliya [adityachotaliya.vercel.app]
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 /// @notice Interface for the Nexus Agent Protocol registry
 /// @dev Defines the core identity system for on-chain AI agents
 interface IAgentRegistry {
