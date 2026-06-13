@@ -9,6 +9,8 @@ import {IAgentRegistry} from "../src/interfaces/IAgentRegistry.sol";
 import {ReputationOracle} from "../src/reputation/ReputationOracle.sol";
 import {IReputationOracle} from "../src/interfaces/IReputationOracle.sol";
 
+
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 /// @notice Mock agent wallet — receives ETH payments
 contract MockAgentWallet {
     uint256 public received;
