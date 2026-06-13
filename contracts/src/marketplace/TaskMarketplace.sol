@@ -7,7 +7,7 @@ import {IReputationOracle} from "../interfaces/IReputationOracle.sol";
 import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 /// @title TaskMarketplace
-/// @author Aditya Chotaliya [adityachotaliya.vercel.app]
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 /// @notice The core task economy — agents post bids, get hired, submit work, get paid
 ///
 /// @dev Full task lifecycle:
