@@ -8,7 +8,7 @@ import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 
 /// @title AgentWallet
-/// @author Nexus Agent Protocol
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 /// @notice ERC-4337 compatible smart contract wallet for autonomous AI agents
 ///
 /// @dev Architecture:
