@@ -2,6 +2,7 @@
 pragma solidity ^0.8.24;
 
 /// @title IReputationOracle
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 /// @notice Interface for the on-chain reputation system for AI agents
 /// @dev Reputation is stored as basis points (0–10000).
 ///      Score is computed from: task completions, ratings, disputes, and age.
