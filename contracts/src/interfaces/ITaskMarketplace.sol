@@ -2,7 +2,7 @@
 pragma solidity ^0.8.24;
 
 /// @title ITaskMarketplace
-/// @author Aditya Chotaliya [adityachotaliya.vercel.app]
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 /// @notice Interface for the Nexus Agent Protocol task marketplace
 /// @dev Full lifecycle: post → bid → assign → submit → complete/dispute → pay
 ///
