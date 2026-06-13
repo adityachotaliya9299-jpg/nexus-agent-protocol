@@ -7,6 +7,7 @@ import {ISubscriptionManager} from "../src/interfaces/ISubscriptionManager.sol";
 import {AgentRegistry} from "../src/AgentRegistry.sol";
 import {IAgentRegistry} from "../src/interfaces/IAgentRegistry.sol";
 
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 /// @notice Mock agent wallet that receives ETH
 contract MockWallet {
     uint256 public totalReceived;
