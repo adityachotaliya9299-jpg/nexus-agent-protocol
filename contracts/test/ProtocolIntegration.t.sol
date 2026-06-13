@@ -457,7 +457,7 @@ contract ProtocolIntegrationTest is Test {
         marketplace.submitBid(eliteTask, ALICE_ID, "ipfs://QmProposal", 1 days);
 
         // Build Alice's reputation with multiple task completions
-        for (uint256 i = 0; i < 5; i++) {
+        for (uint256 i = 0; i < 40; i++) {
             vm.prank(carol);
             bytes32 t = marketplace.postTask{value: 0.1 ether}(
                 TASK_META, block.timestamp + 7 days, 0
@@ -474,7 +474,7 @@ contract ProtocolIntegrationTest is Test {
 
         // Now Alice should have enough reputation
         uint256 aliceScore = oracle.getScore(ALICE_ID);
-        assertGe(aliceScore, 7000);
+        assertGe(aliceScore, 7000, "Score should reach 7000 after 40 tasks");
 
         // Alice can now bid
         vm.prank(alice);
