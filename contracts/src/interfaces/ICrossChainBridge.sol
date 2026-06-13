@@ -2,7 +2,7 @@
 pragma solidity ^0.8.24;
 
 /// @title ICrossChainBridge
-/// @author Aditya Chotaliya [adityachotaliya.vercel.app]
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 /// @notice Interface for cross-chain agent identity and payment bridging
 /// @dev Uses Chainlink CCIP messaging pattern for cross-chain communication
 ///
