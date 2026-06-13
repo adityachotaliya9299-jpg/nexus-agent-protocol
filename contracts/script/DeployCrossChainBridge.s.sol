@@ -4,6 +4,7 @@ pragma solidity ^0.8.24;
 import {Script, console} from "forge-std/Script.sol";
 import {CrossChainBridge} from "../src/bridge/CrossChainBridge.sol";
 
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 /// @notice Deployment script for CrossChainBridge
 /// @dev Deploy on each chain where agents operate
 ///      forge script script/DeployCrossChainBridge.s.sol --rpc-url $SEPOLIA_RPC_URL --broadcast --verify
