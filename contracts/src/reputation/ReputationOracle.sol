@@ -5,7 +5,7 @@ import {IReputationOracle} from "../interfaces/IReputationOracle.sol";
 import {IAgentRegistry} from "../interfaces/IAgentRegistry.sol";
 
 /// @title ReputationOracle
-/// @author Aditya Chotaliya [adityachotaliya.vercel.app]
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 /// @notice On-chain reputation system for autonomous AI agents
 ///
 /// @dev Score Model (basis points, 0–10000, starts at 5000):
