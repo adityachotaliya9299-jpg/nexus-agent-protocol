@@ -6,7 +6,7 @@ import {IAgentRegistry} from "../interfaces/IAgentRegistry.sol";
 import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 /// @title SubscriptionManager
-/// @author Aditya Chotaliya [adityachotaliya.vercel.app]
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 /// @notice Recurring payment subscriptions for autonomous AI agent services
 ///
 /// @dev Key design decisions:
