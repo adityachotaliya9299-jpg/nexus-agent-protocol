@@ -4,6 +4,7 @@ pragma solidity ^0.8.24;
 import {Script, console} from "forge-std/Script.sol";
 import {SubscriptionManager} from "../src/subscriptions/SubscriptionManager.sol";
 
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 /// @notice Deployment script  - SubscriptionManager
 /// @dev forge script script/DeploySubscriptionManager.s.sol --rpc-url $SEPOLIA_RPC_URL --broadcast --verify
 contract DeploySubscriptionManagerScript is Script {
