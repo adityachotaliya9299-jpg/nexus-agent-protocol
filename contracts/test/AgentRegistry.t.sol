@@ -5,6 +5,7 @@ import {Test, console} from "forge-std/Test.sol";
 import {AgentRegistry} from "../src/AgentRegistry.sol";
 import {IAgentRegistry} from "../src/interfaces/IAgentRegistry.sol";
 
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 contract AgentRegistryTest is Test {
     AgentRegistry public registry;
 
