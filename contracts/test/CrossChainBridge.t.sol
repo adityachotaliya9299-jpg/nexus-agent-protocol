@@ -13,6 +13,7 @@ import {IReputationOracle} from "../src/interfaces/IReputationOracle.sol";
 //                     MOCK CONTRACTS
 // ============================================================
 
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 /// @notice Simulates Chainlink CCIP router — accepts messages, can replay them
 contract MockCCIPRouter {
     CrossChainBridge public bridge;
