@@ -2,7 +2,7 @@
 pragma solidity ^0.8.24;
 
 /// @title IAgentMemory
-/// @author Aditya Chotaliya [adityachotaliya.vercel.app]
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 /// @notice Interface for the on-chain memory pointer registry for AI agents
 ///
 /// @dev Each agent has versioned memory stored off-chain (IPFS/Arweave).
