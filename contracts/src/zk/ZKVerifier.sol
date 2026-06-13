@@ -6,7 +6,7 @@ import {IAgentRegistry} from "../interfaces/IAgentRegistry.sol";
 import {IReputationOracle} from "../interfaces/IReputationOracle.sol";
 
 /// @title ZKVerifier
-/// @author Aditya Chotaliya [adityachotaliya.vercel.app]
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 /// @notice ZK proof verification system with EigenLayer AVS operator network
 ///
 /// @dev Architecture:
