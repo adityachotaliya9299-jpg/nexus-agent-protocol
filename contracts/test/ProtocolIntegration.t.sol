@@ -25,7 +25,7 @@ import {ICrossChainBridge}    from "../src/interfaces/ICrossChainBridge.sol";
 // ============================================================
 //                     MOCK HELPERS
 // ============================================================
-
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 contract MockEntryPoint {
     receive() external payable {}
 }
