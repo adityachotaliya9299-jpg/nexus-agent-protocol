@@ -6,7 +6,7 @@ import {IAgentRegistry} from "../interfaces/IAgentRegistry.sol";
 import {IReputationOracle} from "../interfaces/IReputationOracle.sol";
 
 /// @title CrossChainBridge
-/// @author Aditya Chotaliya [adityachotaliya.vercel.app]
+/// @author Aditya Chotaliya [adityachotaliya.xyz]
 /// @notice Cross-chain bridge for agent identity, reputation, and payments
 ///
 /// @dev Architecture mirrors Chainlink CCIP pattern:
