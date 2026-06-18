@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&family=Inter:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* { box-sizing: border-box; padding: 0; margin: 0; }
+
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  background-color: #080B12;
+  color: #F0F4FF;
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #080B12; }
+::-webkit-scrollbar-thumb { background: #1A2035; border-radius: 3px; }
+::selection { background: rgba(0,229,255,0.2); color: #00E5FF; }
+
+@layer components {
+  .card { @apply bg-[#0D1120] border border-[#1A2035] rounded-lg; }
+  .card-hover { @apply card transition-all duration-200 hover:border-cyan/30 hover:bg-[#0F1628]; }
+  .border-glow { box-shadow: 0 0 0 1px rgba(0,229,255,0.3), 0 0 20px rgba(0,229,255,0.05); }
+  .label { @apply text-[11px] font-mono uppercase tracking-widest text-[#8892B0]; }
+  .badge { @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-mono font-medium; }
+  .badge-active { @apply badge bg-emerald/10 text-emerald border border-emerald/20; }
+  .badge-pending { @apply badge bg-amber/10 text-amber border border-amber/20; }
+  .badge-inactive { @apply badge bg-[#2A3555]/30 text-[#8892B0] border border-[#1A2035]; }
+  .badge-violet { @apply badge bg-violet/10 text-violet border border-violet/20; }
+  .rep-bar { @apply h-1 rounded-full bg-[#1A2035] overflow-hidden; }
+  .btn-primary { @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-cyan text-[#080B12] font-display font-semibold text-sm transition-all duration-200 hover:bg-cyan/90 hover:shadow-[0_0_20px_rgba(0,229,255,0.4)] active:scale-[0.98]; }
+  .btn-secondary { @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-[#0D1120] border border-[#1A2035] text-[#F0F4FF] font-display font-medium text-sm transition-all duration-200 hover:border-cyan/40 hover:bg-[#0F1628] active:scale-[0.98]; }
+  .btn-ghost { @apply inline-flex items-center gap-2 px-4 py-2 rounded-md text-[#8892B0] font-medium text-sm transition-colors duration-200 hover:text-[#F0F4FF] hover:bg-[#1A2035]/50; }
+  .gradient-text { background: linear-gradient(135deg, #00E5FF, #8B5CF6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .grid-bg { background-image: linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px); background-size: 48px 48px; }
+  .address { @apply font-mono text-xs text-[#8892B0]; }
+  .input { @apply w-full bg-[#0D1120] border border-[#1A2035] rounded-md px-4 py-2.5 text-sm text-[#F0F4FF] placeholder:text-[#4A5568] focus:outline-none focus:border-cyan/50 focus:shadow-[0_0_0_3px_rgba(0,229,255,0.08)] transition-all duration-200; }
+  .stat-block { @apply flex flex-col gap-1; }
+}
+
+@keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+.ticker-track { display: flex; width: max-content; animation: ticker 40s linear infinite; }
+.ticker-track:hover { animation-play-state: paused; }
+
+@keyframes pulse-dot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } }
+.pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
+
+.hero-glow { background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,229,255,0.12), transparent 70%); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track { animation: none; }
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
