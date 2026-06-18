@@ -200,7 +200,7 @@ contract DeployAll is Script {
     ) internal view {
         console.log("");
         console.log("================================================");
-        console.log("   NEXUS AGENT PROTOCOL — FULL DEPLOYMENT");
+        console.log("NEXUS AGENT PROTOCOL DEPLOYMENT");
         console.log("================================================");
         console.log("Network:     ", block.chainid);
         console.log("Block:       ", block.number);
@@ -214,7 +214,7 @@ contract DeployAll is Script {
     function _printSummary(address deployer, address arbitrator) internal view {
         console.log("");
         console.log("================================================");
-        console.log("         DEPLOYMENT COMPLETE — ADDRESSES");
+        console.log("DEPLOYMENT SUMMARY WITH ADDRESSES");
         console.log("================================================");
         console.log("");
         console.log("  -- Phase 1: Foundation --");
