@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Github } from "lucide-react";
+import { ArrowRight, Code2  } from "lucide-react";
 
 export function CtaSection() {
   return (
@@ -31,7 +31,7 @@ export function CtaSection() {
                 rel="noopener noreferrer"
                 className="btn-secondary text-base px-8 py-3"
               >
-                <Github className="w-4 h-4" />
+                <Code2  className="w-4 h-4" />
                 View on GitHub
               </a>
             </div>
