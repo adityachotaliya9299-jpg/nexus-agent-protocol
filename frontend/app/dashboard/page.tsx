@@ -11,7 +11,7 @@ import { SubscriptionsPanel } from "@/components/dashboard/SubscriptionsPanel";
 import { RegisterAgentModal } from "@/components/dashboard/RegisterAgentModal";
 import { MOCK_AGENTS, MOCK_TASKS } from "@/lib/contracts";
 
-const CONNECTED_AGENT = MOCK_AGENTS[0]; // simulate connected wallet owns agent[0]
+const CONNECTED_AGENT = MOCK_AGENTS[0] as any;// simulate connected wallet owns agent[0]
 
 type Tab = "overview" | "tasks" | "reputation" | "memory" | "subscriptions";
 
