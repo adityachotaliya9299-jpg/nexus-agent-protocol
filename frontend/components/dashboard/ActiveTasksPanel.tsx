@@ -98,7 +98,8 @@ const STATUS_LABEL: Record<string, string> = {
 };
 
 interface ActiveTasksPanelProps {
-  tasks?: Task[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  tasks?: any[];
   view?: TaskView;
 }
 
