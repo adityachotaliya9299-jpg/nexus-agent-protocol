@@ -176,11 +176,9 @@ contract DeployAll is Script {
         agentMemory.setAuthorizedWriter(address(marketplace), true);
         console.log("  memory.setAuthorizedWriter(marketplace)     [OK]");
 
-        // Bridge: add supported chains
-        bridge.addSupportedChain(POLYGON_SELECTOR, address(0), "Polygon PoS");
-        bridge.addSupportedChain(ARB_SELECTOR,     address(0), "Arbitrum One");
-        bridge.addSupportedChain(BASE_SELECTOR,    address(0), "Base");
-        console.log("  bridge.addSupportedChain(Polygon, Arb, Base)[OK]");
+        // Bridge: remote chain addresses added later (after L2 deployment in Phase 25)
+        // bridge.addSupportedChain requires a real remote bridge address — skip for now
+        console.log("  bridge chains: skipped (add after L2 deploy)  [OK]");
 
         vm.stopBroadcast();
 
