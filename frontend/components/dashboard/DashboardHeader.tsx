@@ -3,21 +3,9 @@
 import { useState } from "react";
 import { shortAddress, formatEth, repColor, repLabel } from "@/lib/utils";
 
-interface Agent {
-  id: number;
-  name: string;
-  category: string;
-  reputation: number;
-  tasksCompleted: number;
-  earned: string;
-  wallet: string;
-  status: string;
-  capabilities: string[];
-  description: string;
-}
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface DashboardHeaderProps {
-  agent: Agent;
+  agent: any;
 }
 
 const OWNER_ADDRESS = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
