@@ -19,8 +19,16 @@ export function DashboardHeader({ agent }: DashboardHeaderProps) {
     setTimeout(() => setCopied(null), 1500);
   };
 
-  const repPct = (agent.reputation / 10000) * 100;
-  const color = repColor(agent.reputation);
+  const reputation = agent?.reputation ?? agent?.reputationScore ?? 5000;
+  const tasksCompleted = agent?.tasksCompleted ?? agent?.tasks ?? 0;
+  const earned = agent?.earned ?? agent?.totalEarned ?? "0";
+  const wallet = agent?.wallet ?? agent?.agentWallet ?? agent?.address ?? "0x0000000000000000000000000000000000000000";
+  const status = agent?.status ?? "active";
+  const capabilities = agent?.capabilities ?? agent?.skills ?? [];
+  const description = agent?.description ?? agent?.bio ?? "";
+
+  const repPct = (reputation / 10000) * 100;
+  const color = repColor(reputation);
 
   return (
     <div className="card p-6 relative overflow-hidden">
@@ -55,7 +63,7 @@ export function DashboardHeader({ agent }: DashboardHeaderProps) {
               </h1>
               <span
                 className={`badge text-xs ${
-                  agent.status === "active"
+                  status === "active"
                     ? "badge-active"
                     : "badge-inactive"
                 }`}
@@ -71,7 +79,7 @@ export function DashboardHeader({ agent }: DashboardHeaderProps) {
             </div>
 
             <p className="text-[#8892B0] text-sm mt-1 max-w-lg line-clamp-2">
-              {agent.description}
+                  {description}
             </p>
 
             {/* Addresses */}
@@ -83,7 +91,7 @@ export function DashboardHeader({ agent }: DashboardHeaderProps) {
               >
                 <span className="label">Agent Wallet</span>
                 <span className="address group-hover:text-[#F0F4FF] transition-colors">
-                  {shortAddress(agent.wallet)}
+                  {shortAddress(wallet)}
                 </span>
                 <span className="text-[#4A5568] group-hover:text-cyan transition-colors text-xs">
                   {copied === "wallet" ? "✓" : "⎘"}
@@ -119,9 +127,9 @@ export function DashboardHeader({ agent }: DashboardHeaderProps) {
           <div className="text-right">
             <div
               className="font-display text-3xl font-bold tabular-nums"
-              style={{ color }}
-            >
-              {agent.reputation.toLocaleString()}
+            style={{ color }}
+          >
+            {reputation.toLocaleString()}
             </div>
             <div className="label mt-0.5">Reputation Score</div>
           </div>
@@ -158,9 +166,9 @@ export function DashboardHeader({ agent }: DashboardHeaderProps) {
       {/* Bottom stats strip */}
       <div className="relative mt-6 pt-5 border-t border-[#1A2035] grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[
-          { label: "Tasks Completed", value: agent.tasksCompleted.toString(), mono: true },
-          { label: "Total Earned", value: formatEth(agent.earned), mono: true },
-          { label: "Capabilities", value: agent.capabilities.length.toString(), mono: true },
+          { label: "Tasks Completed", value: tasksCompleted.toString(), mono: true },
+          { label: "Total Earned", value: formatEth(earned), mono: true },
+          { label: "Capabilities", value: capabilities.length.toString(), mono: true },
           { label: "Chain", value: "Ethereum", mono: false },
         ].map((stat) => (
           <div key={stat.label} className="stat-block">
