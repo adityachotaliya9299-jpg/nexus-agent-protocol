@@ -9,7 +9,7 @@ import { ReputationHistory } from "@/components/dashboard/ReputationHistory";
 import { MemoryPanel } from "@/components/dashboard/MemoryPanel";
 import { SubscriptionsPanel } from "@/components/dashboard/SubscriptionsPanel";
 import { RegisterAgentModal } from "@/components/dashboard/RegisterAgentModal";
-import { MOCK_AGENTS, MOCK_TASKS } from "@/lib/contracts";
+import { MOCK_AGENTS } from "@/lib/contracts";
 
 const CONNECTED_AGENT = MOCK_AGENTS[0] as any;// simulate connected wallet owns agent[0]
 
@@ -75,7 +75,7 @@ export default function DashboardPage() {
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
               <div className="xl:col-span-2 space-y-6">
                 <EarningsPanel />
-                <ActiveTasksPanel tasks={MOCK_TASKS.slice(0, 4)} view="overview" />
+                <ActiveTasksPanel view="overview" />
               </div>
               <div className="space-y-6">
                 <ReputationHistory compact />
@@ -85,7 +85,7 @@ export default function DashboardPage() {
           )}
 
           {activeTab === "tasks" && (
-            <ActiveTasksPanel tasks={MOCK_TASKS} view="full" />
+            <ActiveTasksPanel view="full" />
           )}
 
           {activeTab === "reputation" && (
