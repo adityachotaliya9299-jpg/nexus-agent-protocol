@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Zap, Github, ExternalLink } from "lucide-react";
+import { Zap, Code2 , ExternalLink } from "lucide-react";
 
 const LINKS = {
   Protocol: [
@@ -39,7 +39,7 @@ export function Footer() {
               target="_blank" rel="noopener noreferrer"
               className="p-2 inline-flex rounded-md bg-[#1A2035]/50 text-[#8892B0] hover:text-[#F0F4FF] hover:bg-[#1A2035] transition-colors"
             >
-              <Github className="w-4 h-4" />
+              <Code2  className="w-4 h-4" />
             </a>
           </div>
 
