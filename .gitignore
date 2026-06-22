@@ -2,7 +2,7 @@
 contracts/out/
 contracts/cache/
 contracts/.env
-
+broadcast/
 # Node
 node_modules/
 .env
