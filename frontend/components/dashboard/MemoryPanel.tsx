@@ -1,224 +1,264 @@
 "use client";
 
-// Mock reputation event history
-const REP_EVENTS = [
-  { timestamp: "2025-03-18", score: 5000, delta: 0, reason: "Registered", type: "init" },
-  { timestamp: "2025-03-20", score: 5050, delta: +50, reason: "Task Completed", type: "up" },
-  { timestamp: "2025-03-22", score: 5100, delta: +50, reason: "Task Completed", type: "up" },
-  { timestamp: "2025-03-24", score: 5125, delta: +25, reason: "5-Star Rating", type: "up" },
-  { timestamp: "2025-03-27", score: 5175, delta: +50, reason: "Task Completed", type: "up" },
-  { timestamp: "2025-03-30", score: 5075, delta: -100, reason: "Dispute Lost", type: "down" },
-  { timestamp: "2025-04-02", score: 5125, delta: +50, reason: "Task Completed", type: "up" },
-  { timestamp: "2025-04-05", score: 5175, delta: +50, reason: "Task Completed", type: "up" },
-  { timestamp: "2025-04-08", score: 5225, delta: +50, reason: "Task Completed", type: "up" },
-  { timestamp: "2025-04-10", score: 5250, delta: +25, reason: "ZK Proof Verified", type: "up" },
-];
+import { useState } from "react";
 
-const TYPE_STYLES = {
-  init: { color: "#8892B0", bg: "bg-[#2A3555]/30", label: "INIT" },
-  up: { color: "#10B981", bg: "bg-emerald-500/10", label: "▲" },
-  down: { color: "#F87171", bg: "bg-red-500/10", label: "▼" },
+type MemoryType = "TASK_HISTORY" | "CONTEXT" | "SKILLS" | "PREFERENCES" | "KNOWLEDGE" | "STATE";
+
+const MEMORY_COLORS: Record<MemoryType, string> = {
+  TASK_HISTORY: "#00E5FF",
+  CONTEXT: "#8B5CF6",
+  SKILLS: "#10B981",
+  PREFERENCES: "#F59E0B",
+  KNOWLEDGE: "#6366F1",
+  STATE: "#EC4899",
 };
 
-interface ReputationHistoryProps {
+const MEMORY_SNAPSHOTS = [
+  {
+    version: 5,
+    type: "TASK_HISTORY" as MemoryType,
+    cid: "QmYwAPJzv5CZsnA625s3Xf2nemtYgPpHdWEz79ojWnPbdG",
+    size: "2.1 KB",
+    timestamp: "2025-04-10T09:33:00Z",
+    description: "Task completion log: 5 tasks, avg 4.8 rating",
+    accessCount: 12,
+  },
+  {
+    version: 4,
+    type: "CONTEXT" as MemoryType,
+    cid: "QmZQVmxmezAcuKfF6qrFvXxvUKrFpqCr7kxvJGQNNKGn",
+    size: "5.7 KB",
+    timestamp: "2025-04-08T14:21:00Z",
+    description: "Current task context: Uniswap v4 hook development",
+    accessCount: 8,
+  },
+  {
+    version: 3,
+    type: "SKILLS" as MemoryType,
+    cid: "QmPK1s3pNYLi9ERiq3BDxKa4XosgWwFRQUydHUtz4YgpqB",
+    size: "1.3 KB",
+    timestamp: "2025-04-05T11:00:00Z",
+    description: "Skill registry: Solidity, Foundry, DeFi protocols, zkProofs",
+    accessCount: 24,
+  },
+  {
+    version: 2,
+    type: "PREFERENCES" as MemoryType,
+    cid: "QmQiLbJFYJhkpNNNzGKQFNgHkJsT3Xh95smVBRi1bHJKnE",
+    size: "0.8 KB",
+    timestamp: "2025-03-28T08:15:00Z",
+    description: "Task preferences: min 0.2 ETH, max 7d deadline",
+    accessCount: 5,
+  },
+  {
+    version: 1,
+    type: "STATE" as MemoryType,
+    cid: "QmNLei78zWmzUdbeRB3CiUfAizWUrbeeZh5K1rhAQKCh51",
+    size: "0.5 KB",
+    timestamp: "2025-03-18T10:00:00Z",
+    description: "Initial agent state snapshot at registration",
+    accessCount: 3,
+  },
+];
+
+const ACCESS_GRANTS = [
+  { address: "0x742d35Cc6634C0532925a3b8D4C9C3", level: "READ", expires: "30 days" },
+  { address: "0xTaskMarketplace", level: "WRITE", expires: "Never" },
+];
+
+function shortCid(cid: string) {
+  return cid.slice(0, 8) + "..." + cid.slice(-6);
+}
+
+function shortAddress(addr: string) {
+  if (addr.startsWith("0x") && addr.length > 10) {
+    return addr.slice(0, 8) + "..." + addr.slice(-4);
+  }
+  return addr;
+}
+
+interface MemoryPanelProps {
   compact?: boolean;
 }
 
-export function ReputationHistory({ compact = false }: ReputationHistoryProps) {
-  const scores = REP_EVENTS.map((e) => e.score);
-  const minScore = Math.min(...scores) - 50;
-  const maxScore = Math.max(...scores) + 50;
-  const range = maxScore - minScore;
+export function MemoryPanel({ compact = false }: MemoryPanelProps) {
+  const [showWriteModal, setShowWriteModal] = useState(false);
+  const [selectedVersion, setSelectedVersion] = useState<number | null>(null);
 
-  // Build SVG polyline points
-  const W = 400;
-  const H = compact ? 60 : 100;
-  const points = REP_EVENTS.map((e, i) => {
-    const x = (i / (REP_EVENTS.length - 1)) * W;
-    const y = H - ((e.score - minScore) / range) * H;
-    return `${x},${y}`;
-  }).join(" ");
-
-  // Area fill path
-  const areaPath = `M0,${H} L${points
-    .split(" ")
-    .map((p, i) => (i === 0 ? p : p))
-    .join(" L")} L${W},${H} Z`;
-
-  const displayEvents = compact ? REP_EVENTS.slice(-4) : REP_EVENTS;
-  const current = REP_EVENTS[REP_EVENTS.length - 1].score;
-  const first = REP_EVENTS[0].score;
-  const totalGain = current - first;
+  const displaySnapshots = compact ? MEMORY_SNAPSHOTS.slice(0, 3) : MEMORY_SNAPSHOTS;
+  const latest = MEMORY_SNAPSHOTS[0];
 
   return (
     <div className="card p-6 space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="font-display font-semibold text-[#F0F4FF] text-lg">
-          Reputation
-        </h2>
+        <div>
+          <h2 className="font-display font-semibold text-[#F0F4FF] text-lg">Memory</h2>
+          {!compact && (
+            <p className="text-[#8892B0] text-sm mt-0.5">
+              IPFS-pinned agent memory snapshots
+            </p>
+          )}
+        </div>
         {!compact && (
-          <div className="flex items-center gap-2">
-            <span className="label">Net change</span>
-            <span
-              className={`font-mono text-sm font-semibold ${
-                totalGain >= 0 ? "text-emerald-400" : "text-red-400"
-              }`}
-            >
-              {totalGain >= 0 ? "+" : ""}
-              {totalGain}
-            </span>
-          </div>
+          <button
+            onClick={() => setShowWriteModal(true)}
+            className="btn-primary text-xs px-3 py-2"
+          >
+            + Write Snapshot
+          </button>
         )}
       </div>
 
-      {/* Current score */}
-      <div>
-        <div className="font-display text-3xl font-bold text-cyan tabular-nums">
-          {current.toLocaleString()}
-        </div>
-        <div className="label mt-0.5">Current Score</div>
-      </div>
-
-      {/* Sparkline chart */}
-      <div className="overflow-hidden rounded">
-        <svg
-          viewBox={`0 0 ${W} ${H}`}
-          preserveAspectRatio="none"
-          className="w-full"
-          style={{ height: compact ? "60px" : "100px" }}
-        >
-          {/* Grid lines */}
-          {!compact && [0.25, 0.5, 0.75].map((frac) => (
-            <line
-              key={frac}
-              x1={0}
-              x2={W}
-              y1={H * (1 - frac)}
-              y2={H * (1 - frac)}
-              stroke="#1A2035"
-              strokeWidth="1"
+      {!compact && (
+        <div className="p-3.5 rounded-lg bg-[#080B12] border border-cyan/15">
+          <div className="flex items-center gap-2 mb-2">
+            <span
+              className="w-2 h-2 rounded-full"
+              style={{ background: MEMORY_COLORS[latest.type] }}
             />
-          ))}
-
-          {/* Area fill */}
-          <path
-            d={areaPath}
-            fill="url(#rep-gradient)"
-            opacity="0.3"
-          />
-
-          {/* Line */}
-          <polyline
-            points={points}
-            fill="none"
-            stroke="#00E5FF"
-            strokeWidth="2"
-            strokeLinejoin="round"
-            strokeLinecap="round"
-          />
-
-          {/* Dots */}
-          {REP_EVENTS.map((e, i) => {
-            const x = (i / (REP_EVENTS.length - 1)) * W;
-            const y = H - ((e.score - minScore) / range) * H;
-            return (
-              <circle
-                key={i}
-                cx={x}
-                cy={y}
-                r={i === REP_EVENTS.length - 1 ? 4 : 2.5}
-                fill={
-                  i === REP_EVENTS.length - 1
-                    ? "#00E5FF"
-                    : e.type === "down"
-                    ? "#F87171"
-                    : "#1A3A5C"
-                }
-                stroke="#00E5FF"
-                strokeWidth={i === REP_EVENTS.length - 1 ? 2 : 1}
-              />
-            );
-          })}
-
-          <defs>
-            <linearGradient id="rep-gradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#00E5FF" />
-              <stop offset="100%" stopColor="#00E5FF" stopOpacity="0" />
-            </linearGradient>
-          </defs>
-        </svg>
-      </div>
-
-      {/* Event list */}
-      {!compact ? (
-        <div className="space-y-2 pt-1">
-          <h3 className="label">Event History</h3>
-          <div className="space-y-1.5 max-h-64 overflow-y-auto pr-1">
-            {[...displayEvents].reverse().map((event, i) => {
-              const style = TYPE_STYLES[event.type as keyof typeof TYPE_STYLES];
-              return (
-                <div
-                  key={i}
-                  className="flex items-center gap-3 p-2.5 rounded-md bg-[#080B12] border border-[#1A2035]"
-                >
-                  <span
-                    className={`text-xs font-mono font-bold w-6 text-center ${
-                      event.type === "up"
-                        ? "text-emerald-400"
-                        : event.type === "down"
-                        ? "text-red-400"
-                        : "text-[#8892B0]"
-                    }`}
-                  >
-                    {style.label}
-                  </span>
-                  <div className="flex-1">
-                    <span className="text-sm text-[#F0F4FF]">{event.reason}</span>
-                  </div>
-                  <div className="text-right">
-                    {event.delta !== 0 && (
-                      <span
-                        className={`font-mono text-xs font-semibold ${
-                          event.delta > 0 ? "text-emerald-400" : "text-red-400"
-                        }`}
-                      >
-                        {event.delta > 0 ? "+" : ""}{event.delta}
-                      </span>
-                    )}
-                    <div className="label text-[10px]">
-                      {new Date(event.timestamp).toLocaleDateString("en", {
-                        month: "short",
-                        day: "numeric",
-                      })}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+            <span className="label text-[10px]">Latest — v{latest.version}</span>
+            <span
+              className="font-mono text-[10px] px-1.5 py-0.5 rounded"
+              style={{
+                background: `${MEMORY_COLORS[latest.type]}15`,
+                color: MEMORY_COLORS[latest.type],
+              }}
+            >
+              {latest.type}
+            </span>
+          </div>
+          <p className="text-sm text-[#F0F4FF]">{latest.description}</p>
+          <div className="flex items-center gap-3 mt-2">
+            <span className="label font-mono">{shortCid(latest.cid)}</span>
+            <span className="label">{latest.size}</span>
+            <span className="label">
+              {new Date(latest.timestamp).toLocaleDateString("en", {
+                month: "short",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </span>
           </div>
         </div>
-      ) : (
-        <div className="space-y-1.5 pt-1">
-          {displayEvents.slice(-3).reverse().map((event, i) => {
-            const style = TYPE_STYLES[event.type as keyof typeof TYPE_STYLES];
-            return (
-              <div key={i} className="flex items-center gap-2.5">
+      )}
+
+      <div className="space-y-2">
+        {compact && <h3 className="label">Recent Snapshots</h3>}
+        {displaySnapshots.map((snap) => (
+          <button
+            key={snap.version}
+            onClick={() => setSelectedVersion(snap.version === selectedVersion ? null : snap.version)}
+            className={`w-full flex items-center gap-3 p-3 rounded-lg border transition-all duration-150 text-left ${
+              selectedVersion === snap.version
+                ? "bg-[#0F1A2E] border-cyan/20"
+                : "bg-[#080B12] border-[#1A2035] hover:border-[#2A3555]"
+            }`}
+          >
+            <div
+              className="w-1 h-8 rounded-full flex-shrink-0"
+              style={{ background: MEMORY_COLORS[snap.type] }}
+            />
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2">
+                <span className="font-mono text-xs text-[#F0F4FF]">v{snap.version}</span>
                 <span
-                  className={`text-xs font-mono ${
-                    event.type === "up" ? "text-emerald-400" : event.type === "down" ? "text-red-400" : "text-[#8892B0]"
-                  }`}
+                  className="text-[10px] px-1.5 py-0.5 rounded font-mono"
+                  style={{
+                    background: `${MEMORY_COLORS[snap.type]}15`,
+                    color: MEMORY_COLORS[snap.type],
+                  }}
                 >
-                  {style.label}
+                  {snap.type}
                 </span>
-                <span className="text-xs text-[#8892B0] flex-1">{event.reason}</span>
-                {event.delta !== 0 && (
-                  <span className={`font-mono text-xs font-semibold ${event.delta > 0 ? "text-emerald-400" : "text-red-400"}`}>
-                    {event.delta > 0 ? "+" : ""}{event.delta}
-                  </span>
-                )}
               </div>
-            );
-          })}
+              {!compact && (
+                <p className="text-xs text-[#8892B0] truncate mt-0.5">{snap.description}</p>
+              )}
+            </div>
+            <div className="text-right flex-shrink-0">
+              <div className="label text-[10px]">
+                {new Date(snap.timestamp).toLocaleDateString("en", {
+                  month: "short",
+                  day: "numeric",
+                })}
+              </div>
+              {!compact && (
+                <div className="label text-[10px]">{snap.size}</div>
+              )}
+            </div>
+          </button>
+        ))}
+      </div>
+
+      {!compact && (
+        <div className="pt-4 border-t border-[#1A2035] space-y-3">
+          <h3 className="label">Access Grants</h3>
+          {ACCESS_GRANTS.map((grant) => (
+            <div
+              key={grant.address}
+              className="flex items-center gap-3 p-3 rounded-lg bg-[#080B12] border border-[#1A2035]"
+            >
+              <div className="flex-1">
+                <div className="font-mono text-xs text-[#F0F4FF]">
+                  {shortAddress(grant.address)}
+                </div>
+                <div className="label text-[10px] mt-0.5">Expires: {grant.expires}</div>
+              </div>
+              <span
+                className={`text-xs font-mono font-semibold px-2 py-0.5 rounded ${
+                  grant.level === "WRITE"
+                    ? "bg-violet/10 text-violet border border-violet/20"
+                    : "bg-[#1A2035] text-[#8892B0] border border-[#2A3555]"
+                }`}
+              >
+                {grant.level}
+              </span>
+              <button className="text-[#4A5568] hover:text-red-400 transition-colors text-xs">
+                ✕
+              </button>
+            </div>
+          ))}
+          <button className="btn-ghost text-xs w-full border border-dashed border-[#2A3555] py-2">
+            + Grant Access
+          </button>
+        </div>
+      )}
+
+      {showWriteModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+            onClick={() => setShowWriteModal(false)}
+          />
+          <div className="relative card p-6 w-full max-w-md space-y-4">
+            <h3 className="font-display font-bold text-[#F0F4FF] text-lg">Write Memory Snapshot</h3>
+            <div>
+              <label className="label block mb-1.5">Memory Type</label>
+              <select className="input">
+                {Object.keys(MEMORY_COLORS).map((t) => (
+                  <option key={t} value={t}>{t}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="label block mb-1.5">IPFS CID</label>
+              <input className="input" placeholder="Qm..." />
+            </div>
+            <div>
+              <label className="label block mb-1.5">Description</label>
+              <textarea className="input resize-none" rows={3} placeholder="Describe this memory snapshot..." />
+            </div>
+            <div className="flex gap-3 pt-2">
+              <button
+                onClick={() => setShowWriteModal(false)}
+                className="btn-secondary flex-1"
+              >
+                Cancel
+              </button>
+              <button className="btn-primary flex-1">Write On-Chain</button>
+            </div>
+          </div>
         </div>
       )}
     </div>
