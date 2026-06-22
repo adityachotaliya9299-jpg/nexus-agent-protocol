@@ -1,13 +1,105 @@
+
 export const CONTRACTS = {
-  AgentRegistry:       "0x0000000000000000000000000000000000000000",
-  AgentWalletFactory:  "0x0000000000000000000000000000000000000000",
-  ReputationOracle:    "0x0000000000000000000000000000000000000000",
-  AgentMemory:         "0x0000000000000000000000000000000000000000",
-  TaskMarketplace:     "0x0000000000000000000000000000000000000000",
-  ZKVerifier:          "0x0000000000000000000000000000000000000000",
-  SubscriptionManager: "0x0000000000000000000000000000000000000000",
-  CrossChainBridge:    "0x0000000000000000000000000000000000000000",
+  AgentRegistry:       (process.env.NEXT_PUBLIC_AGENT_REGISTRY       ?? "0x0000000000000000000000000000000000000000") as `0x${string}`,
+  AgentWalletFactory:  (process.env.NEXT_PUBLIC_WALLET_FACTORY        ?? "0x0000000000000000000000000000000000000000") as `0x${string}`,
+  ReputationOracle:    (process.env.NEXT_PUBLIC_REPUTATION_ORACLE     ?? "0x0000000000000000000000000000000000000000") as `0x${string}`,
+  AgentMemory:         (process.env.NEXT_PUBLIC_AGENT_MEMORY          ?? "0x0000000000000000000000000000000000000000") as `0x${string}`,
+  TaskMarketplace:     (process.env.NEXT_PUBLIC_TASK_MARKETPLACE      ?? "0x0000000000000000000000000000000000000000") as `0x${string}`,
+  ZKVerifier:          (process.env.NEXT_PUBLIC_ZK_VERIFIER           ?? "0x0000000000000000000000000000000000000000") as `0x${string}`,
+  SubscriptionManager: (process.env.NEXT_PUBLIC_SUBSCRIPTION_MANAGER  ?? "0x0000000000000000000000000000000000000000") as `0x${string}`,
+  CrossChainBridge:    (process.env.NEXT_PUBLIC_CROSS_CHAIN_BRIDGE    ?? "0x0000000000000000000000000000000000000000") as `0x${string}`,
 } as const;
+
+export function isDeployed(): boolean {
+  return CONTRACTS.AgentRegistry !== "0x0000000000000000000000000000000000000000";
+}
+
+
+export const AGENT_REGISTRY_ABI = [
+  // Events
+  { type: "event", name: "AgentRegistered", inputs: [{ name: "agentId", type: "uint256", indexed: true }, { name: "owner", type: "address", indexed: true }, { name: "category", type: "uint8", indexed: false }, { name: "metadataURI", type: "string", indexed: false }] },
+  { type: "event", name: "AgentUpdated", inputs: [{ name: "agentId", type: "uint256", indexed: true }, { name: "metadataURI", type: "string", indexed: false }] },
+  { type: "event", name: "AgentWalletSet", inputs: [{ name: "agentId", type: "uint256", indexed: true }, { name: "wallet", type: "address", indexed: false }] },
+  { type: "event", name: "AgentStatusChanged", inputs: [{ name: "agentId", type: "uint256", indexed: true }, { name: "status", type: "uint8", indexed: false }] },
+  { type: "event", name: "ReputationUpdated", inputs: [{ name: "agentId", type: "uint256", indexed: true }, { name: "oldScore", type: "uint256", indexed: false }, { name: "newScore", type: "uint256", indexed: false }] },
+  // Read functions
+  { type: "function", name: "getAgent", stateMutability: "view", inputs: [{ name: "agentId", type: "uint256" }], outputs: [{ name: "", type: "tuple", components: [{ name: "agentId", type: "uint256" }, { name: "owner", type: "address" }, { name: "agentWallet", type: "address" }, { name: "metadataURI", type: "string" }, { name: "category", type: "uint8" }, { name: "status", type: "uint8" }, { name: "reputationScore", type: "uint256" }, { name: "totalTasksCompleted", type: "uint256" }, { name: "totalEarned", type: "uint256" }, { name: "registeredAt", type: "uint256" }, { name: "lastActiveAt", type: "uint256" }] }] },
+  { type: "function", name: "getAgentByOwner", stateMutability: "view", inputs: [{ name: "owner", type: "address" }], outputs: [{ name: "agentId", type: "uint256" }] },
+  { type: "function", name: "totalAgents", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
+  { type: "function", name: "isRegistered", stateMutability: "view", inputs: [{ name: "agentId", type: "uint256" }], outputs: [{ name: "", type: "bool" }] },
+  { type: "function", name: "ownerOf", stateMutability: "view", inputs: [{ name: "agentId", type: "uint256" }], outputs: [{ name: "", type: "address" }] },
+  // Write functions
+  { type: "function", name: "registerAgent", stateMutability: "nonpayable", inputs: [{ name: "metadataURI", type: "string" }, { name: "category", type: "uint8" }], outputs: [{ name: "agentId", type: "uint256" }] },
+  { type: "function", name: "updateMetadata", stateMutability: "nonpayable", inputs: [{ name: "agentId", type: "uint256" }, { name: "metadataURI", type: "string" }], outputs: [] },
+  { type: "function", name: "setAgentWallet", stateMutability: "nonpayable", inputs: [{ name: "agentId", type: "uint256" }, { name: "wallet", type: "address" }], outputs: [] },
+  { type: "function", name: "setStatus", stateMutability: "nonpayable", inputs: [{ name: "agentId", type: "uint256" }, { name: "status", type: "uint8" }], outputs: [] },
+] as const;
+
+export const TASK_MARKETPLACE_ABI = [
+  // Events
+  { type: "event", name: "TaskPosted", inputs: [{ name: "taskId", type: "bytes32", indexed: true }, { name: "client", type: "address", indexed: true }, { name: "reward", type: "uint256", indexed: false }, { name: "deadline", type: "uint256", indexed: false }] },
+  { type: "event", name: "BidSubmitted", inputs: [{ name: "taskId", type: "bytes32", indexed: true }, { name: "agentId", type: "uint256", indexed: true }, { name: "proposalURI", type: "string", indexed: false }] },
+  { type: "event", name: "AgentAssigned", inputs: [{ name: "taskId", type: "bytes32", indexed: true }, { name: "agentId", type: "uint256", indexed: true }] },
+  { type: "event", name: "WorkSubmitted", inputs: [{ name: "taskId", type: "bytes32", indexed: true }, { name: "agentId", type: "uint256", indexed: true }, { name: "resultURI", type: "string", indexed: false }] },
+  { type: "event", name: "WorkApproved", inputs: [{ name: "taskId", type: "bytes32", indexed: true }, { name: "agentId", type: "uint256", indexed: true }, { name: "payment", type: "uint256", indexed: false }] },
+  { type: "event", name: "TaskCancelled", inputs: [{ name: "taskId", type: "bytes32", indexed: true }] },
+  { type: "event", name: "DisputeRaised", inputs: [{ name: "taskId", type: "bytes32", indexed: true }, { name: "raisedBy", type: "address", indexed: false }] },
+  { type: "event", name: "DisputeResolved", inputs: [{ name: "taskId", type: "bytes32", indexed: true }, { name: "outcome", type: "uint8", indexed: false }] },
+  // Read functions
+  { type: "function", name: "getTask", stateMutability: "view", inputs: [{ name: "taskId", type: "bytes32" }], outputs: [{ name: "", type: "tuple", components: [{ name: "taskId", type: "bytes32" }, { name: "client", type: "address" }, { name: "metadataURI", type: "string" }, { name: "reward", type: "uint256" }, { name: "deadline", type: "uint256" }, { name: "createdAt", type: "uint256" }, { name: "status", type: "uint8" }, { name: "assignedAgentId", type: "uint256" }, { name: "minReputation", type: "uint256" }] }] },
+  { type: "function", name: "getBid", stateMutability: "view", inputs: [{ name: "taskId", type: "bytes32" }, { name: "agentId", type: "uint256" }], outputs: [{ name: "", type: "tuple", components: [{ name: "agentId", type: "uint256" }, { name: "proposalURI", type: "string" }, { name: "deliveryTime", type: "uint256" }, { name: "submittedAt", type: "uint256" }, { name: "active", type: "bool" }] }] },
+  { type: "function", name: "totalTasks", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
+  { type: "function", name: "protocolFeeBps", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
+  // Write functions
+  { type: "function", name: "postTask", stateMutability: "payable", inputs: [{ name: "metadataURI", type: "string" }, { name: "deadline", type: "uint256" }, { name: "minReputation", type: "uint256" }], outputs: [{ name: "taskId", type: "bytes32" }] },
+  { type: "function", name: "submitBid", stateMutability: "nonpayable", inputs: [{ name: "taskId", type: "bytes32" }, { name: "agentId", type: "uint256" }, { name: "proposalURI", type: "string" }, { name: "deliveryTime", type: "uint256" }], outputs: [] },
+  { type: "function", name: "withdrawBid", stateMutability: "nonpayable", inputs: [{ name: "taskId", type: "bytes32" }, { name: "agentId", type: "uint256" }], outputs: [] },
+  { type: "function", name: "assignAgent", stateMutability: "nonpayable", inputs: [{ name: "taskId", type: "bytes32" }, { name: "agentId", type: "uint256" }], outputs: [] },
+  { type: "function", name: "submitWork", stateMutability: "nonpayable", inputs: [{ name: "taskId", type: "bytes32" }, { name: "resultURI", type: "string" }], outputs: [] },
+  { type: "function", name: "approveWork", stateMutability: "nonpayable", inputs: [{ name: "taskId", type: "bytes32" }], outputs: [] },
+  { type: "function", name: "cancelTask", stateMutability: "nonpayable", inputs: [{ name: "taskId", type: "bytes32" }], outputs: [] },
+  { type: "function", name: "raiseDispute", stateMutability: "nonpayable", inputs: [{ name: "taskId", type: "bytes32" }, { name: "evidenceURI", type: "string" }], outputs: [] },
+] as const;
+
+export const REPUTATION_ORACLE_ABI = [
+  // Events
+  { type: "event", name: "ReputationInitialized", inputs: [{ name: "agentId", type: "uint256", indexed: true }, { name: "initialScore", type: "uint256", indexed: false }] },
+  { type: "event", name: "ReputationUpdated", inputs: [{ name: "agentId", type: "uint256", indexed: true }, { name: "oldScore", type: "uint256", indexed: false }, { name: "newScore", type: "uint256", indexed: false }, { name: "reason", type: "uint8", indexed: false }, { name: "updatedBy", type: "address", indexed: false }, { name: "referenceId", type: "bytes32", indexed: false }] },
+  { type: "event", name: "AgentSlashed", inputs: [{ name: "agentId", type: "uint256", indexed: true }, { name: "amount", type: "uint256", indexed: false }] },
+  // Read functions
+  { type: "function", name: "getScore", stateMutability: "view", inputs: [{ name: "agentId", type: "uint256" }], outputs: [{ name: "", type: "uint256" }] },
+  { type: "function", name: "getReputation", stateMutability: "view", inputs: [{ name: "agentId", type: "uint256" }], outputs: [{ name: "", type: "tuple", components: [{ name: "score", type: "uint256" }, { name: "tasksCompleted", type: "uint256" }, { name: "registeredAt", type: "uint256" }, { name: "lastUpdated", type: "uint256" }, { name: "slashCount", type: "uint256" }] }] },
+  { type: "function", name: "getHistory", stateMutability: "view", inputs: [{ name: "agentId", type: "uint256" }], outputs: [{ name: "", type: "tuple[]", components: [{ name: "oldScore", type: "uint256" }, { name: "newScore", type: "uint256" }, { name: "reason", type: "uint8" }, { name: "updatedBy", type: "address" }, { name: "referenceId", type: "bytes32" }, { name: "timestamp", type: "uint256" }] }] },
+  { type: "function", name: "INITIAL_SCORE", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
+  { type: "function", name: "taskCompleteWeight", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
+] as const;
+
+export const SUBSCRIPTION_MANAGER_ABI = [
+  // Events
+  { type: "event", name: "PlanCreated", inputs: [{ name: "planId", type: "bytes32", indexed: true }, { name: "agentId", type: "uint256", indexed: true }, { name: "tier", type: "uint8", indexed: false }, { name: "pricePerPeriod", type: "uint256", indexed: false }] },
+  { type: "event", name: "Subscribed", inputs: [{ name: "planId", type: "bytes32", indexed: true }, { name: "subscriber", type: "address", indexed: true }] },
+  { type: "event", name: "PaymentProcessed", inputs: [{ name: "planId", type: "bytes32", indexed: true }, { name: "subscriber", type: "address", indexed: true }, { name: "amount", type: "uint256", indexed: false }] },
+  { type: "event", name: "SubscriptionCancelled", inputs: [{ name: "planId", type: "bytes32", indexed: true }, { name: "subscriber", type: "address", indexed: true }] },
+  // Read functions
+  { type: "function", name: "getPlan", stateMutability: "view", inputs: [{ name: "planId", type: "bytes32" }], outputs: [{ name: "", type: "tuple", components: [{ name: "planId", type: "bytes32" }, { name: "agentId", type: "uint256" }, { name: "tier", type: "uint8" }, { name: "pricePerPeriod", type: "uint256" }, { name: "periodDuration", type: "uint256" }, { name: "maxSubscribers", type: "uint256" }, { name: "currentSubscribers", type: "uint256" }, { name: "isActive", type: "bool" }] }] },
+  { type: "function", name: "getSubscription", stateMutability: "view", inputs: [{ name: "planId", type: "bytes32" }, { name: "subscriber", type: "address" }], outputs: [{ name: "", type: "tuple", components: [{ name: "startedAt", type: "uint256" }, { name: "nextPaymentAt", type: "uint256" }, { name: "status", type: "uint8" }] }] },
+  { type: "function", name: "totalPlans", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
+  // Write functions
+  { type: "function", name: "createPlan", stateMutability: "nonpayable", inputs: [{ name: "agentId", type: "uint256" }, { name: "tier", type: "uint8" }, { name: "pricePerPeriod", type: "uint256" }, { name: "periodDuration", type: "uint256" }, { name: "maxSubscribers", type: "uint256" }], outputs: [{ name: "planId", type: "bytes32" }] },
+  { type: "function", name: "subscribe", stateMutability: "payable", inputs: [{ name: "planId", type: "bytes32" }], outputs: [] },
+  { type: "function", name: "cancelSubscription", stateMutability: "nonpayable", inputs: [{ name: "planId", type: "bytes32" }], outputs: [] },
+  { type: "function", name: "pauseSubscription", stateMutability: "nonpayable", inputs: [{ name: "planId", type: "bytes32" }], outputs: [] },
+  { type: "function", name: "resumeSubscription", stateMutability: "payable", inputs: [{ name: "planId", type: "bytes32" }], outputs: [] },
+] as const;
+
+export const AGENT_WALLET_FACTORY_ABI = [
+  { type: "event", name: "WalletDeployed", inputs: [{ name: "agentId", type: "uint256", indexed: true }, { name: "wallet", type: "address", indexed: true }, { name: "owner", type: "address", indexed: false }] },
+  { type: "function", name: "deployWallet", stateMutability: "nonpayable", inputs: [{ name: "agentId", type: "uint256" }], outputs: [{ name: "wallet", type: "address" }] },
+  { type: "function", name: "getWalletAddress", stateMutability: "view", inputs: [{ name: "agentId", type: "uint256" }], outputs: [{ name: "", type: "address" }] },
+  { type: "function", name: "isDeployed", stateMutability: "view", inputs: [{ name: "agentId", type: "uint256" }], outputs: [{ name: "", type: "bool" }] },
+] as const;
+
+
 
 export type Agent = {
   agentId: number; owner: string; agentWallet: string; metadataURI: string;
@@ -27,6 +119,8 @@ export type SubscriptionPlan = {
   periodDuration: number; maxSubscribers: number; currentSubscribers: number;
   isActive: boolean; agentName?: string;
 };
+
+
 
 export const MOCK_AGENTS: Agent[] = [
   {
