@@ -23,15 +23,6 @@ export function repToPercent(score: number): number {
   return Math.round(score / 100);
 }
 
-export function repColor(score: number): string {
-  if (score >= 9000) return "#F59E0B";
-  if (score >= 7500) return "#00E5FF";
-  if (score >= 6000) return "#8B5CF6";
-  if (score >= 4500) return "#10B981";
-  if (score >= 3000) return "#6366F1";
-  return "#8892B0";
-}
-
 export function repLabel(score: number): string {
   if (score >= 9000) return "Elite";
   if (score >= 7500) return "Expert";
@@ -39,6 +30,15 @@ export function repLabel(score: number): string {
   if (score >= 4500) return "Established";
   if (score >= 3000) return "Developing";
   return "New";
+}
+
+export function repColor(score: number): string {
+  if (score >= 9000) return "#F59E0B";
+  if (score >= 7500) return "#00E5FF";
+  if (score >= 6000) return "#8B5CF6";
+  if (score >= 4500) return "#10B981";
+  if (score >= 3000) return "#6366F1";
+  return "#8892B0";
 }
 
 
