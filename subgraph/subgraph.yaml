@@ -1,0 +1,129 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: AgentRegistry
+    network: sepolia
+    source:
+      address: "0x74A78Ee2cE70cC129289dceDd2539A949aDbaE8b"
+      abi: AgentRegistry
+      startBlock: 11115911
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Agent
+        - ProtocolStats
+      abis:
+        - name: AgentRegistry
+          file: ./abis/AgentRegistry.json
+      eventHandlers:
+        - event: AgentRegistered(indexed uint256,indexed address,uint8,string)
+          handler: handleAgentRegistered
+        - event: AgentUpdated(indexed uint256,string)
+          handler: handleAgentUpdated
+        - event: AgentWalletSet(indexed uint256,address)
+          handler: handleAgentWalletSet
+        - event: AgentStatusChanged(indexed uint256,uint8)
+          handler: handleAgentStatusChanged
+        - event: ReputationUpdated(indexed uint256,uint256,uint256)
+          handler: handleRegistryReputationUpdated
+      file: ./src/agent-registry.ts
+
+  - kind: ethereum
+    name: ReputationOracle
+    network: sepolia
+    source:
+      address: "0x8759673B8f308B539CDa50556ed529119a7ad4A5"
+      abi: ReputationOracle
+      startBlock: 11115911
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Agent
+        - ReputationEvent
+      abis:
+        - name: ReputationOracle
+          file: ./abis/ReputationOracle.json
+      eventHandlers:
+        - event: ReputationInitialized(indexed uint256,uint256)
+          handler: handleReputationInitialized
+        - event: ReputationUpdated(indexed uint256,uint256,uint256,uint8,address,bytes32)
+          handler: handleReputationUpdated
+        - event: AgentSlashed(indexed uint256,uint256)
+          handler: handleAgentSlashed
+      file: ./src/reputation-oracle.ts
+
+  - kind: ethereum
+    name: TaskMarketplace
+    network: sepolia
+    source:
+      address: "0xF80E63D39A276CBb6C0042D4e78Aab4225f67884"
+      abi: TaskMarketplace
+      startBlock: 11115911
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Task
+        - Bid
+        - Dispute
+        - Agent
+        - ProtocolStats
+      abis:
+        - name: TaskMarketplace
+          file: ./abis/TaskMarketplace.json
+      eventHandlers:
+        - event: TaskPosted(indexed bytes32,indexed address,uint256,uint256)
+          handler: handleTaskPosted
+        - event: BidSubmitted(indexed bytes32,indexed uint256,string)
+          handler: handleBidSubmitted
+        - event: AgentAssigned(indexed bytes32,indexed uint256)
+          handler: handleAgentAssigned
+        - event: WorkSubmitted(indexed bytes32,indexed uint256,string)
+          handler: handleWorkSubmitted
+        - event: WorkApproved(indexed bytes32,indexed uint256,uint256)
+          handler: handleWorkApproved
+        - event: TaskCancelled(indexed bytes32)
+          handler: handleTaskCancelled
+        - event: DisputeRaised(indexed bytes32,address)
+          handler: handleDisputeRaised
+        - event: DisputeResolved(indexed bytes32,uint8)
+          handler: handleDisputeResolved
+      file: ./src/task-marketplace.ts
+
+  - kind: ethereum
+    name: SubscriptionManager
+    network: sepolia
+    source:
+      address: "0x35dcC557C4F076f0E8a34bBc8d83d94E0403AEd2"
+      abi: SubscriptionManager
+      startBlock: 11115911
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - SubscriptionPlan
+        - Subscription
+        - Agent
+      abis:
+        - name: SubscriptionManager
+          file: ./abis/SubscriptionManager.json
+      eventHandlers:
+        - event: PlanCreated(indexed bytes32,indexed uint256,uint8,uint256)
+          handler: handlePlanCreated
+        - event: Subscribed(indexed bytes32,indexed address)
+          handler: handleSubscribed
+        - event: PaymentProcessed(indexed bytes32,indexed address,uint256)
+          handler: handlePaymentProcessed
+        - event: SubscriptionCancelled(indexed bytes32,indexed address)
+          handler: handleSubscriptionCancelled
+      file: ./src/subscription-manager.ts
