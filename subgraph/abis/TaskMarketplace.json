@@ -1,10 +1,6 @@
 [
-  {"type":"event","name":"TaskPosted","inputs":[{"name":"taskId","type":"bytes32","indexed":true},{"name":"client","type":"address","indexed":true},{"name":"reward","type":"uint256","indexed":false},{"name":"deadline","type":"uint256","indexed":false}]},
-  {"type":"event","name":"BidSubmitted","inputs":[{"name":"taskId","type":"bytes32","indexed":true},{"name":"agentId","type":"uint256","indexed":true},{"name":"proposalURI","type":"string","indexed":false}]},
-  {"type":"event","name":"AgentAssigned","inputs":[{"name":"taskId","type":"bytes32","indexed":true},{"name":"agentId","type":"uint256","indexed":true}]},
-  {"type":"event","name":"WorkSubmitted","inputs":[{"name":"taskId","type":"bytes32","indexed":true},{"name":"agentId","type":"uint256","indexed":true},{"name":"resultURI","type":"string","indexed":false}]},
-  {"type":"event","name":"WorkApproved","inputs":[{"name":"taskId","type":"bytes32","indexed":true},{"name":"agentId","type":"uint256","indexed":true},{"name":"payment","type":"uint256","indexed":false}]},
-  {"type":"event","name":"TaskCancelled","inputs":[{"name":"taskId","type":"bytes32","indexed":true}]},
-  {"type":"event","name":"DisputeRaised","inputs":[{"name":"taskId","type":"bytes32","indexed":true},{"name":"raisedBy","type":"address","indexed":false}]},
-  {"type":"event","name":"DisputeResolved","inputs":[{"name":"taskId","type":"bytes32","indexed":true},{"name":"outcome","type":"uint8","indexed":false}]}
+  {"type":"event","name":"PlanCreated","anonymous":false,"inputs":[{"name":"planId","type":"bytes32","indexed":true},{"name":"agentId","type":"uint256","indexed":true},{"name":"tier","type":"uint8","indexed":false},{"name":"pricePerPeriod","type":"uint256","indexed":false}]},
+  {"type":"event","name":"Subscribed","anonymous":false,"inputs":[{"name":"planId","type":"bytes32","indexed":true},{"name":"subscriber","type":"address","indexed":true}]},
+  {"type":"event","name":"PaymentProcessed","anonymous":false,"inputs":[{"name":"planId","type":"bytes32","indexed":true},{"name":"subscriber","type":"address","indexed":true},{"name":"amount","type":"uint256","indexed":false}]},
+  {"type":"event","name":"SubscriptionCancelled","anonymous":false,"inputs":[{"name":"planId","type":"bytes32","indexed":true},{"name":"subscriber","type":"address","indexed":true}]}
 ]
