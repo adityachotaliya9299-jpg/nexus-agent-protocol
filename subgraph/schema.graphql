@@ -1,0 +1,117 @@
+type Agent @entity(immutable: false) {
+  id: ID!                         # agentId as string
+  agentId: BigInt!
+  owner: Bytes!
+  agentWallet: Bytes
+  metadataURI: String!
+  category: Int!
+  status: Int!
+  reputationScore: BigInt!
+  totalTasksCompleted: BigInt!
+  totalEarned: BigInt!
+  registeredAt: BigInt!
+  lastActiveAt: BigInt!
+
+  # Reverse lookups
+  tasksAsWorker: [Task!]! @derivedFrom(field: "assignedAgent")
+  tasksAsClient: [Task!]! @derivedFrom(field: "clientAddress")
+  bids: [Bid!]! @derivedFrom(field: "agent")
+  reputationEvents: [ReputationEvent!]! @derivedFrom(field: "agent")
+  subscriptionPlans: [SubscriptionPlan!]! @derivedFrom(field: "agent")
+}
+
+type Task @entity(immutable: false) {
+  id: ID!                         # taskId (bytes32 as hex)
+  taskId: Bytes!
+  clientAddress: Agent
+  rawClient: Bytes!               # client address even if not an agent
+  metadataURI: String!
+  reward: BigInt!
+  deadline: BigInt!
+  createdAt: BigInt!
+  status: Int!                    # 0=OPEN 1=ASSIGNED 2=SUBMITTED 3=COMPLETED 4=DISPUTED 5=CANCELLED
+  assignedAgent: Agent
+  minReputation: BigInt!
+  resultURI: String
+  payment: BigInt
+
+  # Reverse lookups
+  bids: [Bid!]! @derivedFrom(field: "task")
+  disputes: [Dispute!]! @derivedFrom(field: "task")
+
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Bid @entity(immutable: false) {
+  id: ID!                         # taskId-agentId
+  task: Task!
+  agent: Agent!
+  proposalURI: String!
+  active: Boolean!
+  submittedAt: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+
+type Dispute @entity(immutable: false) {
+  id: ID!                         # taskId
+  task: Task!
+  raisedBy: Bytes!
+  raisedAt: BigInt!
+  outcome: Int                    # null until resolved. 0=CLIENT 1=AGENT 2=SPLIT
+  resolvedAt: BigInt
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+
+type ReputationEvent @entity(immutable: true) {
+  id: ID!                         # txHash-logIndex
+  agent: Agent!
+  oldScore: BigInt!
+  newScore: BigInt!
+  delta: BigInt!
+  reason: Int!                    # UpdateReason enum: 0=TASK_COMPLETED 1=RATING etc
+  updatedBy: Bytes!
+  referenceId: Bytes!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+
+type SubscriptionPlan @entity(immutable: false) {
+  id: ID!                         # planId (bytes32 as hex)
+  planId: Bytes!
+  agent: Agent!
+  tier: Int!
+  pricePerPeriod: BigInt!
+  periodDuration: BigInt!
+  maxSubscribers: BigInt!
+  currentSubscribers: BigInt!
+  isActive: Boolean!
+  createdAt: BigInt!
+
+  subscriptions: [Subscription!]! @derivedFrom(field: "plan")
+}
+
+type Subscription @entity(immutable: false) {
+  id: ID!                         # planId-subscriber
+  plan: SubscriptionPlan!
+  subscriber: Bytes!
+  startedAt: BigInt!
+  lastPaymentAt: BigInt!
+  totalPaid: BigInt!
+  status: Int!                    # 0=ACTIVE 1=PAUSED 2=CANCELLED
+}
+
+type ProtocolStats @entity(immutable: false) {
+  id: ID!                         # "global" singleton
+  totalAgents: BigInt!
+  totalTasks: BigInt!
+  totalTasksCompleted: BigInt!
+  totalValueLocked: BigInt!       # sum of all open task rewards
+  totalPayouts: BigInt!           # sum of all approved work payments
+  totalSubscriptionRevenue: BigInt!
+  lastUpdatedBlock: BigInt!
+}
