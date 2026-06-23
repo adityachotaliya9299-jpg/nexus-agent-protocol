@@ -5,7 +5,7 @@ import {
   PaymentProcessed,
   SubscriptionCancelled,
 } from "../generated/SubscriptionManager/SubscriptionManager";
-import { SubscriptionPlan, Subscription, Agent, ProtocolStats } from "../generated/schema";
+import { SubscriptionPlan, AgentSubscription, Agent, ProtocolStats } from "../generated/schema";
 
 function getOrCreateStats(): ProtocolStats {
   let stats = ProtocolStats.load("global");
@@ -48,7 +48,7 @@ export function handleSubscribed(event: Subscribed): void {
     plan.save();
   }
 
-  let sub = new Subscription(subId);
+    let sub = new AgentSubscription(subId);
   sub.plan = planId;
   sub.subscriber = event.params.subscriber;
   sub.startedAt = event.block.timestamp;
@@ -62,7 +62,7 @@ export function handlePaymentProcessed(event: PaymentProcessed): void {
   let planId = event.params.planId.toHexString();
   let subId = planId + "-" + event.params.subscriber.toHexString().toLowerCase();
 
-  let sub = Subscription.load(subId);
+  let sub = AgentSubscription.load(subId);
   if (sub) {
     sub.lastPaymentAt = event.block.timestamp;
     sub.totalPaid = sub.totalPaid.plus(event.params.amount);
@@ -85,7 +85,7 @@ export function handleSubscriptionCancelled(event: SubscriptionCancelled): void 
     plan.save();
   }
 
-  let sub = Subscription.load(subId);
+  let sub = AgentSubscription.load(subId);
   if (sub) {
     sub.status = 2; // CANCELLED
     sub.save();
