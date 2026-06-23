@@ -92,10 +92,10 @@ type SubscriptionPlan @entity(immutable: false) {
   isActive: Boolean!
   createdAt: BigInt!
 
-  subscriptions: [Subscription!]! @derivedFrom(field: "plan")
+  subscriptions: [AgentSubscription!]! @derivedFrom(field: "plan")
 }
 
-type Subscription @entity(immutable: false) {
+type AgentSubscription @entity(immutable: false) {
   id: ID!                         # planId-subscriber
   plan: SubscriptionPlan!
   subscriber: Bytes!
