@@ -1,0 +1,5 @@
+[
+  {"type":"event","name":"ReputationInitialized","inputs":[{"name":"agentId","type":"uint256","indexed":true},{"name":"initialScore","type":"uint256","indexed":false}]},
+  {"type":"event","name":"ReputationUpdated","inputs":[{"name":"agentId","type":"uint256","indexed":true},{"name":"oldScore","type":"uint256","indexed":false},{"name":"newScore","type":"uint256","indexed":false},{"name":"reason","type":"uint8","indexed":false},{"name":"updatedBy","type":"address","indexed":false},{"name":"referenceId","type":"bytes32","indexed":false}]},
+  {"type":"event","name":"AgentSlashed","inputs":[{"name":"agentId","type":"uint256","indexed":true},{"name":"amount","type":"uint256","indexed":false}]}
+]
