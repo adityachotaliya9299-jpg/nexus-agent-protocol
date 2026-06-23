@@ -1,6 +1,6 @@
 [
-  {"type":"event","name":"PlanCreated","inputs":[{"name":"planId","type":"bytes32","indexed":true},{"name":"agentId","type":"uint256","indexed":true},{"name":"tier","type":"uint8","indexed":false},{"name":"pricePerPeriod","type":"uint256","indexed":false}]},
-  {"type":"event","name":"Subscribed","inputs":[{"name":"planId","type":"bytes32","indexed":true},{"name":"subscriber","type":"address","indexed":true}]},
-  {"type":"event","name":"PaymentProcessed","inputs":[{"name":"planId","type":"bytes32","indexed":true},{"name":"subscriber","type":"address","indexed":true},{"name":"amount","type":"uint256","indexed":false}]},
-  {"type":"event","name":"SubscriptionCancelled","inputs":[{"name":"planId","type":"bytes32","indexed":true},{"name":"subscriber","type":"address","indexed":true}]}
+  {"type":"event","name":"PlanCreated","anonymous":false,"inputs":[{"name":"planId","type":"bytes32","indexed":true},{"name":"agentId","type":"uint256","indexed":true},{"name":"tier","type":"uint8","indexed":false},{"name":"pricePerPeriod","type":"uint256","indexed":false}]},
+  {"type":"event","name":"Subscribed","anonymous":false,"inputs":[{"name":"planId","type":"bytes32","indexed":true},{"name":"subscriber","type":"address","indexed":true}]},
+  {"type":"event","name":"PaymentProcessed","anonymous":false,"inputs":[{"name":"planId","type":"bytes32","indexed":true},{"name":"subscriber","type":"address","indexed":true},{"name":"amount","type":"uint256","indexed":false}]},
+  {"type":"event","name":"SubscriptionCancelled","anonymous":false,"inputs":[{"name":"planId","type":"bytes32","indexed":true},{"name":"subscriber","type":"address","indexed":true}]}
 ]
