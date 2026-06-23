@@ -162,8 +162,8 @@ export function handleDisputeRaised(event: DisputeRaised): void {
   dispute.task = taskId;
   dispute.raisedBy = event.params.raisedBy;
   dispute.raisedAt = event.block.timestamp;
-  dispute.outcome = null;
-  dispute.resolvedAt = null;
+  dispute.outcome = -1;
+  dispute.resolvedAt = BigInt.fromI32(0);
   dispute.blockNumber = event.block.number;
   dispute.transactionHash = event.transaction.hash;
   dispute.save();
