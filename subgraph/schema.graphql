@@ -60,8 +60,8 @@ type Dispute @entity(immutable: false) {
   task: Task!
   raisedBy: Bytes!
   raisedAt: BigInt!
-  outcome: Int                    # null until resolved. 0=CLIENT 1=AGENT 2=SPLIT
-  resolvedAt: BigInt
+  outcome: Int!                   # -1=PENDING 0=CLIENT_WINS 1=AGENT_WINS 2=SPLIT
+  resolvedAt: BigInt!
   blockNumber: BigInt!
   transactionHash: Bytes!
 }
