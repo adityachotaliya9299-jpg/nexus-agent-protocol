@@ -1,0 +1,7 @@
+[
+  {"type":"event","name":"AgentRegistered","inputs":[{"name":"agentId","type":"uint256","indexed":true},{"name":"owner","type":"address","indexed":true},{"name":"category","type":"uint8","indexed":false},{"name":"metadataURI","type":"string","indexed":false}]},
+  {"type":"event","name":"AgentUpdated","inputs":[{"name":"agentId","type":"uint256","indexed":true},{"name":"metadataURI","type":"string","indexed":false}]},
+  {"type":"event","name":"AgentWalletSet","inputs":[{"name":"agentId","type":"uint256","indexed":true},{"name":"wallet","type":"address","indexed":false}]},
+  {"type":"event","name":"AgentStatusChanged","inputs":[{"name":"agentId","type":"uint256","indexed":true},{"name":"status","type":"uint8","indexed":false}]},
+  {"type":"event","name":"ReputationUpdated","inputs":[{"name":"agentId","type":"uint256","indexed":true},{"name":"oldScore","type":"uint256","indexed":false},{"name":"newScore","type":"uint256","indexed":false}]}
+]
