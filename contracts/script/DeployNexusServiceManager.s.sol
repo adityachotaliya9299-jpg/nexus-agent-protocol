@@ -37,7 +37,7 @@ import {NexusServiceManager} from "../src/avs/NexusServiceManager.sol";
 contract DeployNexusServiceManager is Script {
 
    
-    address constant AVS_DIRECTORY_SEPOLIA  = 0x135DDa560e946695d6f155dAcAfc6f1F25C1F5Af;
+    address constant AVS_DIRECTORY_SEPOLIA  = 0xa789c91ECDdae96865913130B786140Ee17aF545;
 
     function run() external {
         uint256 deployerKey   = vm.envUint("PRIVATE_KEY");
