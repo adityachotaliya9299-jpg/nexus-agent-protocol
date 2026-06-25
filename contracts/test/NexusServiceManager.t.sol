@@ -57,8 +57,8 @@ contract NexusServiceManagerTest is Test {
     MockZKVerifier internal zkVerifier;
 
     address constant OWNER     = address(0xA11CE);
-    address constant OPERATOR1 = address(0x0P1);
-    address constant OPERATOR2 = address(0x0P2);
+    address constant OPERATOR1 = address(uint160(1));
+    address constant OPERATOR2 = address(uint160(2));
     uint256 constant AGENT_ID  = 42;
 
     string constant METADATA_URI = "ipfs://QmNexusAVSMetadata";
