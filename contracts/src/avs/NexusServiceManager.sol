@@ -30,10 +30,10 @@ contract NexusServiceManager {
     //                       CONSTANTS
     // ============================================================
 
-    /// @notice EigenLayer AVSDirectory on Sepolia
-    /// @dev Updated when EigenLayer deploys to Sepolia. Verify at:
-    ///      github.com/Layr-Labs/eigenlayer-contracts (testnet-sepolia branch)
-    address public constant AVS_DIRECTORY_SEPOLIA = 0x135DDa560e946695d6f155dAcAfc6f1F25C1F5Af;
+  
+    /// @notice EigenLayer AVSDirectory on Sepolia (v1.12.1)
+
+    address public constant AVS_DIRECTORY_SEPOLIA = 0xa789c91ECDdae96865913130B786140Ee17aF545;
 
     // ============================================================
     //                        STORAGE
