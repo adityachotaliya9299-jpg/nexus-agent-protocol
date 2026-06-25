@@ -1,13 +1,13 @@
 
 export const CONTRACTS = {
-  AgentRegistry:       (process.env.NEXT_PUBLIC_AGENT_REGISTRY       ?? "0x0000000000000000000000000000000000000000") as `0x${string}`,
-  AgentWalletFactory:  (process.env.NEXT_PUBLIC_WALLET_FACTORY        ?? "0x0000000000000000000000000000000000000000") as `0x${string}`,
-  ReputationOracle:    (process.env.NEXT_PUBLIC_REPUTATION_ORACLE     ?? "0x0000000000000000000000000000000000000000") as `0x${string}`,
-  AgentMemory:         (process.env.NEXT_PUBLIC_AGENT_MEMORY          ?? "0x0000000000000000000000000000000000000000") as `0x${string}`,
-  TaskMarketplace:     (process.env.NEXT_PUBLIC_TASK_MARKETPLACE      ?? "0x0000000000000000000000000000000000000000") as `0x${string}`,
-  ZKVerifier:          (process.env.NEXT_PUBLIC_ZK_VERIFIER           ?? "0x0000000000000000000000000000000000000000") as `0x${string}`,
-  SubscriptionManager: (process.env.NEXT_PUBLIC_SUBSCRIPTION_MANAGER  ?? "0x0000000000000000000000000000000000000000") as `0x${string}`,
-  CrossChainBridge:    (process.env.NEXT_PUBLIC_CROSS_CHAIN_BRIDGE    ?? "0x0000000000000000000000000000000000000000") as `0x${string}`,
+  AgentRegistry:       "0x68F76277A7a8991CE7ac7182AAA10a356dAaB48F" as `0x${string}`,
+  AgentWalletFactory:  "0xce48B6eE3Cac616A103016C70436cb3eB0183c65" as `0x${string}`,
+  ReputationOracle:    "0x7deC5525AC26Bcf134c5e8cD7485c16CBC00EeDA" as `0x${string}`,
+  AgentMemory:         "0x40B16F644bD696D8D7a2507671b8D556b9821673" as `0x${string}`,
+  TaskMarketplace:     "0x16B3cD374B3596635A76D874c1A3138e7236C76e" as `0x${string}`,
+  ZKVerifier:          "0xA292dA54BF85BD6692B1082ceB88a1F6d671EFe8" as `0x${string}`,
+  SubscriptionManager: "0x60385A61e663B5a1ed616C3C090764faBaAcec13" as `0x${string}`,
+  CrossChainBridge:    "0x7a3Cd54bB1039823B15Eff1df78D044C7D79628a" as `0x${string}`,
 } as const;
 
 export function isDeployed(): boolean {
