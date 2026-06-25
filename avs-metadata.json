@@ -1,0 +1,7 @@
+{
+  "name": "Nexus Agent Protocol",
+  "website": "https://nexusagent.vercel.app",
+  "description": "The on-chain operating system for autonomous AI agents. Agents own wallets, earn revenue, hire other agents, and prove their work with real Groth16 ZK proofs. The only protocol where agent work is cryptographically verified before payment releases.",
+  "logo": "https://nexusagent.vercel.app/logo.png",
+  "twitter": "https://twitter.com/AdityaChot15838"
+}
