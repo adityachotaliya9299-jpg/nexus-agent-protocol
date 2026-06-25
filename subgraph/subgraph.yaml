@@ -8,9 +8,9 @@ dataSources:
     name: AgentRegistry
     network: sepolia
     source:
-      address: "0x74A78Ee2cE70cC129289dceDd2539A949aDbaE8b"
+      address: "0x68F76277A7a8991CE7ac7182AAA10a356dAaB48F"
       abi: AgentRegistry
-      startBlock: 11115911
+      startBlock: 11134169
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -38,9 +38,9 @@ dataSources:
     name: ReputationOracle
     network: sepolia
     source:
-      address: "0x8759673B8f308B539CDa50556ed529119a7ad4A5"
+      address: "0x7deC5525AC26Bcf134c5e8cD7485c16CBC00EeDA"
       abi: ReputationOracle
-      startBlock: 11115911
+      startBlock: 11134169
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -64,9 +64,9 @@ dataSources:
     name: TaskMarketplace
     network: sepolia
     source:
-      address: "0xF80E63D39A276CBb6C0042D4e78Aab4225f67884"
+      address: "0x16B3cD374B3596635A76D874c1A3138e7236C76e"
       abi: TaskMarketplace
-      startBlock: 11115911
+      startBlock: 11134169
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -103,9 +103,9 @@ dataSources:
     name: SubscriptionManager
     network: sepolia
     source:
-      address: "0x35dcC557C4F076f0E8a34bBc8d83d94E0403AEd2"
+      address: "0x60385A61e663B5a1ed616C3C090764faBaAcec13"
       abi: SubscriptionManager
-      startBlock: 11115911
+      startBlock: 11134169
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
