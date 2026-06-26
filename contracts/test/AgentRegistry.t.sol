@@ -162,7 +162,7 @@ contract AgentRegistryTest is Test {
         uint256 agentId = registry.registerAgent(METADATA_URI_1, IAgentRegistry.AgentCategory.CODE);
 
         vm.prank(bob);
-        vm.expectRevert("Not authorized to update reputation");
+        vm.expectRevert(IAgentRegistry.NotAuthorized.selector);
         registry.updateReputation(agentId, 7500, 1, 1 ether);
     }
 
@@ -174,7 +174,7 @@ contract AgentRegistryTest is Test {
         registry.setReputationUpdater(marketplace, true);
 
         vm.prank(marketplace);
-        vm.expectRevert("Score exceeds max (10000 basis points)");
+        vm.expectRevert(IAgentRegistry.InvalidScore.selector);
         registry.updateReputation(agentId, 10001, 1, 0);
     }
 
