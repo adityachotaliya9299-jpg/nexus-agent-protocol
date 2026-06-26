@@ -87,6 +87,8 @@ interface IAgentRegistry {
     error InvalidMetadataURI();
     error AgentNotActive(uint256 agentId);
     error ZeroAddress();
+    error NotAuthorized();
+    error InvalidScore();
 
     // ============================================================
     //                     CORE FUNCTIONS
