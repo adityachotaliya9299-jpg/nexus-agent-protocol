@@ -750,7 +750,7 @@ contract TaskMarketplaceTest is Test {
         _fullFlowToSubmitted(taskId);
 
         vm.prank(stranger);
-        vm.expectRevert("Not client or agent");
+        vm.expectRevert(ITaskMarketplace.NotAuthorized.selector);
         marketplace.raiseDispute(taskId, DISPUTE_URI);
     }
 
