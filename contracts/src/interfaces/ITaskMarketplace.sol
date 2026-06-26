@@ -152,6 +152,7 @@ interface ITaskMarketplace {
     error InvalidFee();
     error EscrowTransferFailed();
     error CannotBidOwnTask();
+    error NotAuthorized();
 
     // ============================================================
     //                    CORE FUNCTIONS
