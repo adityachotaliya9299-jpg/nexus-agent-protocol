@@ -6,40 +6,29 @@ import {IAgentRegistry} from "./interfaces/IAgentRegistry.sol";
 /// @title AgentRegistry
 /// @author Aditya Chotaliya [adityachotaliya.xyz]
 /// @notice The identity system for autonomous AI agents on-chain
-/// @dev Each agent gets a unique ID, maps to an owner EOA, and optionally an ERC-4337 smart wallet.
-///      Extended metadata (name, description, capabilities, pricing) is stored on IPFS.
-///
-/// Security properties:
-///   - One agent per owner address
-///   - Only owner can update their agent
-///   - Reputation can only be updated by authorized protocol contracts (Phase 2)
-///   - Status transitions are validated
+/// @dev Phase 11 gas optimizations applied:
+///      - Custom errors replace require strings (~50 gas each)
+///      - Storage pointer caching in updateReputation (avoids repeated keccak)
 contract AgentRegistry is IAgentRegistry {
     // ============================================================
     //                         STORAGE
     // ============================================================
 
-    /// @notice Protocol owner — can authorize reputation writers, pause, etc.
     address public immutable protocolOwner;
 
-    /// @notice Auto-incrementing agent ID counter (starts at 1)
     uint256 private _nextAgentId;
 
-    /// @notice agentId => AgentProfile
     mapping(uint256 => AgentProfile) private _agents;
-
-    /// @notice owner address => agentId (0 means not registered)
-    mapping(address => uint256) private _ownerToAgentId;
-
-    /// @notice Addresses authorized to update reputation scores (Phase 2: marketplace, AVS)
-    mapping(address => bool) public reputationUpdaters;
+    mapping(address => uint256)      private _ownerToAgentId;
+    mapping(address => bool)         public reputationUpdaters;
 
     // ============================================================
     //                       MODIFIERS
     // ============================================================
 
     modifier onlyProtocolOwner() {
-        require(msg.sender == protocolOwner, "Not protocol owner");
+        // OPT: custom error instead of require string
+        if (msg.sender != protocolOwner) revert NotAuthorized();
         _;
     }
 
@@ -61,39 +50,34 @@ contract AgentRegistry is IAgentRegistry {
     constructor(address _protocolOwner) {
         if (_protocolOwner == address(0)) revert ZeroAddress();
         protocolOwner = _protocolOwner;
-        _nextAgentId = 1; // IDs start at 1
+        _nextAgentId  = 1;
     }
 
     // ============================================================
     //                    REGISTRATION
     // ============================================================
 
-    /// @notice Register a new AI agent on-chain
-    /// @param metadataURI IPFS CID (e.g. "ipfs://Qm...") pointing to agent metadata JSON
-    /// @param category The specialization category for this agent
-    /// @return agentId The newly assigned unique agent ID
     function registerAgent(
         string calldata metadataURI,
         AgentCategory category
     ) external returns (uint256 agentId) {
-        // One agent per address
         if (_ownerToAgentId[msg.sender] != 0) revert AgentAlreadyRegistered(msg.sender);
         if (bytes(metadataURI).length == 0) revert InvalidMetadataURI();
 
         agentId = _nextAgentId++;
 
         _agents[agentId] = AgentProfile({
-            agentId: agentId,
-            owner: msg.sender,
-            agentWallet: address(0), // Set separately via setAgentWallet
-            metadataURI: metadataURI,
-            category: category,
-            status: AgentStatus.ACTIVE,
-            reputationScore: 5000, // Start at 50% (5000 basis points)
+            agentId:             agentId,
+            owner:               msg.sender,
+            agentWallet:         address(0),
+            metadataURI:         metadataURI,
+            category:            category,
+            status:              AgentStatus.ACTIVE,
+            reputationScore:     5000,
             totalTasksCompleted: 0,
-            totalEarned: 0,
-            registeredAt: block.timestamp,
-            lastActiveAt: block.timestamp
+            totalEarned:         0,
+            registeredAt:        block.timestamp,
+            lastActiveAt:        block.timestamp
         });
 
         _ownerToAgentId[msg.sender] = agentId;
@@ -105,66 +89,68 @@ contract AgentRegistry is IAgentRegistry {
     //                      AGENT UPDATES
     // ============================================================
 
-    /// @notice Update the IPFS metadata URI for an agent
-    /// @dev Called when agent capabilities/pricing change — new IPFS upload, update CID here
     function updateMetadata(uint256 agentId, string calldata metadataURI)
-        external
-        onlyAgentOwner(agentId)
+        external onlyAgentOwner(agentId)
     {
         if (bytes(metadataURI).length == 0) revert InvalidMetadataURI();
-        _agents[agentId].metadataURI = metadataURI;
-        _agents[agentId].lastActiveAt = block.timestamp;
 
-        emit AgentUpdated(agentId, metadataURI, _agents[agentId].status);
+        // OPT: storage pointer — single keccak, multiple writes
+        AgentProfile storage agent = _agents[agentId];
+        agent.metadataURI  = metadataURI;
+        agent.lastActiveAt = block.timestamp;
+
+        emit AgentUpdated(agentId, metadataURI, agent.status);
     }
 
-    /// @notice Change agent lifecycle status
     function setAgentStatus(uint256 agentId, AgentStatus status)
-        external
-        onlyAgentOwner(agentId)
+        external onlyAgentOwner(agentId)
     {
-        AgentStatus oldStatus = _agents[agentId].status;
-        _agents[agentId].status = status;
-        _agents[agentId].lastActiveAt = block.timestamp;
+        AgentProfile storage agent = _agents[agentId];
+        AgentStatus oldStatus = agent.status;
+        agent.status      = status;
+        agent.lastActiveAt = block.timestamp;
 
         emit AgentStatusChanged(agentId, oldStatus, status);
     }
 
-    /// @notice Link an ERC-4337 smart wallet to this agent
-    /// @dev Phase 1B: wallet is deployed separately, linked here
     function setAgentWallet(uint256 agentId, address wallet)
-        external
-        onlyAgentOwner(agentId)
+        external onlyAgentOwner(agentId)
     {
         if (wallet == address(0)) revert ZeroAddress();
-        _agents[agentId].agentWallet = wallet;
-        _agents[agentId].lastActiveAt = block.timestamp;
+
+        AgentProfile storage agent = _agents[agentId];
+        agent.agentWallet  = wallet;
+        agent.lastActiveAt = block.timestamp;
 
         emit AgentWalletSet(agentId, wallet);
     }
 
     // ============================================================
-    //                  REPUTATION (PHASE 2 PREP)
+    //                  REPUTATION UPDATES
     // ============================================================
 
-    /// @notice Authorize a contract to update reputation (marketplace, AVS verifier)
-    function setReputationUpdater(address updater, bool authorized) external onlyProtocolOwner {
+    function setReputationUpdater(address updater, bool authorized)
+        external onlyProtocolOwner
+    {
         reputationUpdaters[updater] = authorized;
     }
 
-    /// @notice Update agent reputation — only callable by authorized contracts
-    /// @dev Phase 2: TaskMarketplace will call this after task completion
-    function updateReputation(uint256 agentId, uint256 newScore, uint256 tasksCompleted, uint256 earned)
-        external
-        agentExists(agentId)
-    {
-        require(reputationUpdaters[msg.sender], "Not authorized to update reputation");
-        require(newScore <= 10000, "Score exceeds max (10000 basis points)");
+    function updateReputation(
+        uint256 agentId,
+        uint256 newScore,
+        uint256 tasksCompleted,
+        uint256 earned
+    ) external agentExists(agentId) {
+        // OPT: custom errors instead of require strings
+        if (!reputationUpdaters[msg.sender]) revert NotAuthorized();
+        if (newScore > 10000) revert InvalidScore();
 
-        _agents[agentId].reputationScore = newScore;
-        _agents[agentId].totalTasksCompleted += tasksCompleted;
-        _agents[agentId].totalEarned += earned;
-        _agents[agentId].lastActiveAt = block.timestamp;
+        // OPT: single storage pointer — avoids 4x keccak hash computation
+        AgentProfile storage agent = _agents[agentId];
+        agent.reputationScore      = newScore;
+        agent.totalTasksCompleted  += tasksCompleted;
+        agent.totalEarned          += earned;
+        agent.lastActiveAt         = block.timestamp;
     }
 
     // ============================================================
