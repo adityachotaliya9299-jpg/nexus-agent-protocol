@@ -75,7 +75,7 @@ interface IAgentStaking {
     error ZeroAddress();
     error ZeroAmount();
     error InsufficientStake(uint256 agentId, uint256 required, uint256 actual);
-    error StakeLocked(uint256 agentId, uint256 lockedAmount);
+    error StakeIsLocked(uint256 agentId, uint256 lockedAmount);
     error UnstakePending(uint256 agentId);
     error UnbondingNotComplete(uint256 agentId, uint256 unlocksAt);
     error NothingToUnstake(uint256 agentId);
