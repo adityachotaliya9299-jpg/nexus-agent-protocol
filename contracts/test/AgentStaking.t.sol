@@ -510,7 +510,7 @@ contract AgentStakingTest is Test {
 
         vm.prank(DELEGATOR);
         vm.expectRevert(
-            abi.encodeWithSelector(IAgentStaking.StakeLocked.selector, AGENT_ID, 1.5 ether)
+            abi.encodeWithSelector(IAgentStaking.StakeIsLocked.selector, AGENT_ID, 1.5 ether)
         );
         staking.removeDelegatedStake(AGENT_ID);
     }
