@@ -214,10 +214,9 @@ contract AgentStaking is IAgentStaking, ReentrancyGuard {
         uint256 amount = _delegatorStakes[msg.sender][agentId];
         if (amount == 0) revert NoDelegationFound(msg.sender, agentId);
 
-        // Simple unbonding: just check if agent has no locked stake
-        // (simplified — production would track per-delegator unbonding)
+        
         StakeInfo storage s = _stakes[agentId];
-        if (s.lockedStake > 0) revert StakeLocked(agentId, s.lockedStake);
+        if (s.lockedStake > 0) revert StakeIsLocked(agentId, s.lockedStake);
 
         _delegatorStakes[msg.sender][agentId] = 0;
         s.totalStaked    -= amount;
