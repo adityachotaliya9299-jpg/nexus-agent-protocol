@@ -51,9 +51,9 @@ contract AgentNFTTest is Test {
     MockOracle       internal oracle;
 
     address constant OWNER      = address(0xA11CE);
-    address constant MINTER     = address(0x4A3E7); // marketplace
+    address constant MINTER     = address(0x4A3E7); 
     address constant AGENT_OWN  = address(0xA6E4);
-    address constant AGENT_WALL = address(0xWA11);
+    address constant AGENT_WALL = address(0xEA11);
     address constant STRANGER   = address(0x577A4);
 
     uint256 constant AGENT_ID   = 1;
