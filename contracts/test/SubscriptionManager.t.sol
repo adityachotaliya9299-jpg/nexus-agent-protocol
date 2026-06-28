@@ -616,13 +616,13 @@ contract SubscriptionManagerTest is Test {
         bytes32 subId = _subscribe();
 
         for (uint256 i = 0; i < 5; i++) {
-            vm.warp(block.timestamp + PERIOD + 1);
+            vm.warp(manager.getSubscription(subId).nextPaymentDue + 1);
             vm.prank(subscriber);
             manager.processPayment{value: PRICE}(subId);
         }
 
         ISubscriptionManager.Subscription memory sub = manager.getSubscription(subId);
-        assertEq(sub.paymentsCount, 6); // 1 initial + 5 recurring
+        assertEq(sub.paymentsCount, 6); 
         assertEq(sub.totalPaid, PRICE * 6);
     }
 
