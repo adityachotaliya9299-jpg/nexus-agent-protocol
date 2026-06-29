@@ -43,10 +43,10 @@ contract AgentComposabilityTest is Test {
     MockOracle         internal oracle;
 
     address constant OWNER        = address(0xA11CE);
-    address constant PARENT_OWN   = address(0xPA3E4);
-    address constant PARENT_WALL  = address(0xPWA11);
+    address constant PARENT_OWN   = address(0xDA3E4);
+    address constant PARENT_WALL  = address(0xDEA11);
     address constant SUB_OWN      = address(0x5B0E4);
-    address constant SUB_WALL     = address(0x5BWA1);
+    address constant SUB_WALL     = address(0x5BAA1);
     address constant STRANGER     = address(0x577A4);
 
     uint256 constant PARENT_ID    = 1;
