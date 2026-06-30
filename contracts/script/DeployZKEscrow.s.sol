@@ -64,7 +64,7 @@ contract DeployZKEscrow is Script {
         console.log("     (share salt with agent off-chain after task is assigned)");
         console.log("  3. Agent: generate Groth16 proof off-chain via scripts/zk/generate-proof.js");
         console.log("  4. Agent: releaseWithProof(escrowId, resultHash, salt, pA, pB, pC, pubSignals)");
-        console.log("  5. ETH auto-released to agentWallet — no client approval needed");
+        console.log("  5. ETH auto-released to agentWallet - no client approval needed");
         console.log("==========================================");
     }
 }
