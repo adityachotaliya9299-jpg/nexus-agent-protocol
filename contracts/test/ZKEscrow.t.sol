@@ -27,12 +27,13 @@ contract MockGroth16Verifier {
 
 contract ZKEscrowTest is Test {
     ZKEscrow            internal escrow;
+    bytes32 constant RESULT_HASH = bytes32(uint256(0xAE5017));
     MockGroth16Verifier internal verifier;
 
     address constant OWNER      = address(0xA11CE);
     address constant ARBITRATOR = address(0xAA);
     address constant CLIENT     = address(0xC11E4);
-    address payable  AGENT_WALL = payable(address(0xAWA11));
+    address payable  AGENT_WALL = payable(address(0xAAA11));
     address constant STRANGER   = address(0x577A4);
 
     bytes32 constant TASK_ID    = bytes32(uint256(0xBEEF));
@@ -46,7 +47,6 @@ contract ZKEscrowTest is Test {
     uint256[2]    internal pubSignals = [uint256(9), uint256(10)];
 
     // Commitment scheme helpers
-    bytes32 constant RESULT_HASH = bytes32(uint256(0xRESULT));
     bytes32 constant SALT        = bytes32(uint256(0x5A17));
 
     function setUp() public {
@@ -121,10 +121,10 @@ contract ZKEscrowTest is Test {
     }
 
     function test_Create_EmitsEvent() public {
-        vm.expectEmit(false, true, true, true);
-        emit IZKEscrow.EscrowCreated(bytes32(0), TASK_ID, CLIENT, AMOUNT, 0);
-        _createEscrow();
-    }
+    vm.expectEmit(false, true, true, true);
+    emit IZKEscrow.EscrowCreated(bytes32(0), TASK_ID, CLIENT, AMOUNT, block.timestamp + DEADLINE);
+    _createEscrow();
+}
 
     function test_Create_EscrowsETH() public {
         uint256 balBefore = address(escrow).balance;
