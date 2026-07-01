@@ -1,0 +1,56 @@
+{
+  "name": "@nexus-agent/sdk",
+  "version": "0.1.0",
+  "description": "TypeScript SDK for Nexus Agent Protocol — register agents, post tasks, submit bids, verify proofs",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./langchain": {
+      "import": "./dist/langchain/index.mjs",
+      "require": "./dist/langchain/index.js",
+      "types": "./dist/langchain/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts src/langchain/index.ts --format cjs,esm --dts --clean",
+    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src --ext .ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "nexus", "agent", "protocol", "defi", "web3",
+    "ethereum", "viem", "wagmi", "langchain", "ai-agent"
+  ],
+  "author": "Aditya Chotaliya <aditya@adityachotaliya.xyz>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adityachotaliya9299-jpg/nexus-agent-protocol"
+  },
+  "peerDependencies": {
+    "viem": "^2.0.0"
+  },
+  "dependencies": {
+    "viem": "^2.21.0"
+  },
+  "devDependencies": {
+    "@langchain/core": "^0.3.0",
+    "@types/node": "^22.0.0",
+    "langchain": "^0.3.0",
+    "tsup": "^8.3.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  },
+  "optionalDependencies": {
+    "@langchain/core": "^0.3.0",
+    "langchain": "^0.3.0"
+  }
+}
