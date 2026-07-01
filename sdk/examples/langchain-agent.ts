@@ -1,85 +1,66 @@
-/**
- * Nexus Agent Protocol - LangChain Agent Example
- *
- * Shows how to give a LangChain agent full access to the Nexus
- * protocol as on-chain tools. The AI agent can register itself,
- * browse tasks, submit bids, and hire sub-agents autonomously.
- *
- * Run: npx ts-node examples/langchain-agent.ts
- *
- * Requires:
- *   npm install @langchain/openai @langchain/core langchain
- */
-
+import "dotenv/config";
 import { NexusClient } from "../src";
 import { createNexusTools, toLangChainTools } from "../src/langchain";
+import { ChatGroq } from "@langchain/groq";
+import { ChatPromptTemplate } from "@langchain/core/prompts";
 
-const RPC_URL     = process.env.SEPOLIA_RPC_URL ?? "https://rpc.sepolia.org";
+const RPC_URL     = process.env.SEPOLIA_RPC_URL ?? "https://ethereum-sepolia-rpc.publicnode.com";
 const PRIVATE_KEY = process.env.PRIVATE_KEY as `0x${string}`;
-const OPENAI_KEY  = process.env.OPENAI_API_KEY;
+const GROQ_KEY    = process.env.GROQ_API_KEY;
 
 async function main() {
-  if (!PRIVATE_KEY || !OPENAI_KEY) {
-    console.log("Set PRIVATE_KEY and OPENAI_API_KEY env vars");
-    return;
+  if (!PRIVATE_KEY || !GROQ_KEY) {
+    console.log("Missing env vars"); return;
   }
 
-  // 1. Init Nexus client
-  const nexus = NexusClient.withPrivateKey({ rpcUrl: RPC_URL, privateKey: PRIVATE_KEY });
-
-  // 2. Create framework-agnostic tools
-  const nexusTools = createNexusTools(nexus);
-
-  console.log("Available Nexus tools:");
-  nexusTools.forEach(t => console.log(" -", t.name));
-
-  // 3. Convert to LangChain tools
+  const nexus          = NexusClient.withPrivateKey({ rpcUrl: RPC_URL, privateKey: PRIVATE_KEY });
+  const nexusTools     = createNexusTools(nexus);
   const langchainTools = toLangChainTools(nexusTools);
 
-  // 4. Create LangChain agent
-  const { ChatOpenAI } = await import("@langchain/openai");
-  const { AgentExecutor, createToolCallingAgent } = await import("langchain/agents");
-  const { ChatPromptTemplate } = await import("@langchain/core/prompts");
+  console.log("Nexus tools loaded:", nexusTools.length);
 
-  const llm = new ChatOpenAI({
-    openAIApiKey: OPENAI_KEY,
-    modelName:    "gpt-4o-mini",
-    temperature:  0,
+  const llm = new ChatGroq({
+    apiKey:      GROQ_KEY,
+    model:       "llama-3.1-8b-instant",
+    temperature: 0,
   });
+
+  const llmWithTools = llm.bindTools(langchainTools);
 
   const prompt = ChatPromptTemplate.fromMessages([
-    ["system", `You are an autonomous AI agent operating on the Nexus Agent Protocol — a decentralized marketplace for AI agents.
-You have access to on-chain tools that let you interact with the protocol.
-Your wallet address is: ${nexus.getAddress()}
-
-When asked to do something, use the available tools to accomplish it on-chain.
-Always check protocol stats and your current status before taking actions.
-Report transaction hashes when actions are completed.`],
+    ["system", `You are an autonomous AI agent on Nexus Agent Protocol (Ethereum Sepolia).
+Wallet: ${nexus.getAddress()}
+Use tools to answer questions about the protocol.`],
     ["human", "{input}"],
-    ["placeholder", "{agent_scratchpad}"],
   ]);
 
-  const agent = createToolCallingAgent({ llm, tools: langchainTools, prompt });
-  const executor = AgentExecutor.fromAgentAndTools({
-    agent,
-    tools:   langchainTools,
-    verbose: true,
-  });
+  const chain = prompt.pipe(llmWithTools);
 
-  // 5. Run example tasks
-  console.log("\n=== Running LangChain Agent on Nexus ===\n");
-
-  const tasks = [
+  const questions = [
     "What are the current Nexus protocol stats?",
-    "Check if I'm registered as an agent and what my reputation score is.",
-    "Look up the on-chain relationship history between agent 1 and agent 2.",
+    "What is the total number of agents and tasks on the Nexus protocol?",
   ];
 
-  for (const task of tasks) {
-    console.log("\nTask:", task);
-    console.log("-".repeat(50));
-    const result = await executor.invoke({ input: task });
-    console.log("Result:", result.output);
+  for (const q of questions) {
+    console.log("\n" + "=".repeat(50));
+    console.log("Q:", q);
+
+    const result = await chain.invoke({ input: q });
+
+    if ((result as any).tool_calls?.length) {
+      const call = (result as any).tool_calls[0];
+      console.log("Tool called:", call.name);
+
+      const tool = langchainTools.find((t: any) => t.name === call.name);
+      if (tool) {
+        // Fix: pass empty object if args is null
+        const args = call.args ?? {};
+        const toolResult = await (tool as any).invoke(args);
+        console.log("Result:", toolResult);
+      }
+    } else {
+      console.log("Response:", result.content);
+    }
   }
 }
 

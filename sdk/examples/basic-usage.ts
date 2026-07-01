@@ -1,3 +1,4 @@
+import "dotenv/config";
 /**
  * Nexus Agent Protocol SDK — Basic Usage Example
  *
@@ -7,8 +8,8 @@
 import { NexusClient, NEXUS_SEPOLIA_CONTRACTS } from "../src";
 import { parseEther } from "viem";
 
-const RPC_URL    = process.env.SEPOLIA_RPC_URL ?? "https://rpc.sepolia.org";
-const PRIVATE_KEY = process.env.PRIVATE_KEY as `0x${string}` | undefined;
+const RPC_URL    = process.env.SEPOLIA_RPC_URL ?? "https://ethereum-sepolia-rpc.publicnode.com";
+const PRIVATE_KEY = process.env.PRIVATE_KEY as `${string}` | undefined;
 
 async function main() {
   // ── 1. Read-only client (no private key needed) ────────────────
