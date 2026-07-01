@@ -336,7 +336,7 @@ export function createNexusTools(client: NexusClient): NexusTool[] {
       name: "nexus_protocol_stats",
       description:
         "Get overall Nexus protocol statistics including total agents, tasks posted, and tasks completed.",
-      schema: {},
+      schema: { dummy: { type: "string", description: "unused", required: false } },
       call: async () => {
         const [totalAgents, totalPosted] = await Promise.all([
           client.agents.totalAgents(),
