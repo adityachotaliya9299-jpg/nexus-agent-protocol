@@ -87,7 +87,7 @@ export class TaskScanner {
       const currentBlock = await this.pub.getBlockNumber();
       const fromBlock    = this.lastBlock > 0n
         ? this.lastBlock + 1n
-        : currentBlock - 100n; // Start from last 100 blocks on first run
+        : currentBlock - 9n; // Start from last 100 blocks on first run
 
       if (fromBlock > currentBlock) return [];
 
