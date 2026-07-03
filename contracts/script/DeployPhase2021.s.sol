@@ -67,9 +67,9 @@ contract DeployPhase2021 is Script {
 
         // 5. Index Agent #1 (already registered on Sepolia)
         try discovery.indexAgent(1) {
-            console.log("  agent #1 indexed [OK]");
+            console.log("agent #1 indexed [OK]");
         } catch {
-            console.log("  agent #1 not registered yet — index manually later");
+            console.log("agent #1 not registered yet -index manually later");
         }
 
         vm.stopBroadcast();
