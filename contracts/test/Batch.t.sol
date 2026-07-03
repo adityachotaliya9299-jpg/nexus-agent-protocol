@@ -128,22 +128,20 @@ contract ResultStorageTest is Test {
         assertTrue(store.isAnchored(TASK_ID));
     }
 
-    function test_GetAgentResults_TracksAll() public {
+   function test_GetAgentResults_TracksAll() public {
         bytes32 taskId2 = bytes32(uint256(0xCAFE));
-        string memory arweave2 = "aB3cD4eF5gH6iJ7kL8mN9oP0qR1sT2uV3wX4yZ5aB6";
+        string memory arweave2 = "aB3cD4eF5gH6iJ7kL8mN9oP0qR1sT2uV3wX4yZ5aB67"; 
 
         vm.prank(AGENT1);
         store.anchorResult(TASK_ID, AGENT_ID, ARWEAVE_TX, keccak256("r1"), 0, "");
         vm.prank(AGENT1);
         store.anchorResult(taskId2, AGENT_ID, arweave2, keccak256("r2"), 0, "");
-
         bytes32[] memory results = store.getAgentResults(AGENT_ID);
         assertEq(results.length, 2);
     }
 
     function testFuzz_ArweaveTxId_Exactly43Chars(string calldata id) public {
         vm.assume(bytes(id).length == 43);
-        // May or may not be valid base64url — just test no panic
         vm.prank(AGENT1);
         try store.anchorResult(TASK_ID, AGENT_ID, id, keccak256("r"), 0, "") {} catch {}
     }
