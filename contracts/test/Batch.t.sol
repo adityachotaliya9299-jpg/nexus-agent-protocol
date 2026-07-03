@@ -304,7 +304,7 @@ contract CommunityGrantsTest is Test {
 
     address constant OWNER     = address(0xA11CE);
     address constant PROPOSER  = address(0xA6E41);
-    address constant VOTER1    = address(0xV0071);
+    address constant VOTER1    = address(0xA0071);
     address constant RECIPIENT = address(0x9EC1);
     address constant STRANGER  = address(0x577);
 
