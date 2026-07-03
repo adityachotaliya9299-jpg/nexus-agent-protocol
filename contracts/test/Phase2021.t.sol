@@ -66,7 +66,7 @@ contract ContextualReputationTest is Test {
     MockRegistry         internal registry;
 
     address constant OWNER   = address(0xA11CE);
-    address constant UPDATER = address(0xAUTH);
+    address constant UPDATER = address(0xAA0011);
     address constant CLIENT  = address(0xC11E4);
     address constant AGENT1  = address(0xA6E41);
     address constant STRANGER = address(0x577);
@@ -280,9 +280,9 @@ contract AgentDiscoveryTest is Test {
     MockStaking          internal staking;
 
     address constant OWNER    = address(0xA11CE);
-    address constant INDEXER  = address(0x14DEX);
+    address constant INDEXER  = address(0x14DEF);
     address constant STRANGER = address(0x577);
-    address constant UPDATER  = address(0xAUTH);
+    address constant UPDATER  = address(0xAA0011);
 
     uint256 constant AGENT1   = 1;
     uint256 constant AGENT2   = 2;
