@@ -9,10 +9,10 @@ import {IProtocolGuard} from "./IProtocolGuard.sol";
 ///
 /// @dev Combines four security primitives into one contract:
 ///
-///   1. CIRCUIT BREAKER — pause any contract up to 7 days
-///   2. INVARIANT MONITOR — register + check on-chain invariants
-///   3. GUARDIAN SYSTEM — multi-guardian pause with 2/3 unpause quorum
-///   4. RATE LIMITER — auto-pause on anomalous ETH outflow
+///   1. CIRCUIT BREAKER - pause any contract up to 7 days
+///   2. INVARIANT MONITOR - register + check on-chain invariants
+///   3. GUARDIAN SYSTEM - multi-guardian pause with 2/3 unpause quorum
+///   4. RATE LIMITER - auto-pause on anomalous ETH outflow
 ///
 ///   Integration pattern (in every Nexus contract):
 ///     modifier whenNotPaused() {
@@ -283,7 +283,7 @@ contract ProtocolGuard is IProtocolGuard {
                     pausedAt:       block.timestamp,
                     pauseExpiresAt: block.timestamp + 2 hours,
                     pausedBy:       address(this),
-                    pauseReason:    "Rate limit exceeded — auto-pause",
+                    pauseReason:    "Rate limit exceeded - auto-pause",
                     totalPauses:    _contractStatus[target].totalPauses + 1
                 });
                 emit ContractPaused(target, address(this), "rate limit", block.timestamp + 2 hours);
