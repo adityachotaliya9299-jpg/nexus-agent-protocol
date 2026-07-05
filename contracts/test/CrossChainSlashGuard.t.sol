@@ -34,7 +34,7 @@ contract CrossChainSlashGuardTest is Test {
 
     // ── No pending slash — actions pass ──────────────────────────
 
-    function test_NoSlash_ActionAllowed() public view {
+    function test_NoSlash_ActionAllowed() public  {
         guard.checkAction(AGENT_ID, 100 ether, true); // no revert
     }
 
