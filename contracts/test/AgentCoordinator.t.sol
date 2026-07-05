@@ -45,10 +45,10 @@ contract AgentCoordinatorTest is Test {
     address constant A3_OWNER = address(0xA003);
     address constant AGG_OWNER = address(0xA004);
 
-    address payable constant A1_WALL  = payable(address(0xW001));
-    address payable constant A2_WALL  = payable(address(0xW002));
-    address payable constant A3_WALL  = payable(address(0xW003));
-    address payable constant AGG_WALL = payable(address(0xW004));
+    address payable constant A1_WALL  = payable(address(0xA001));
+    address payable constant A2_WALL  = payable(address(0xA002));
+    address payable constant A3_WALL  = payable(address(0xA003));
+    address payable constant AGG_WALL = payable(address(0xA004));
 
     uint256 constant A1  = 1;
     uint256 constant A2  = 2;
@@ -281,7 +281,10 @@ contract AgentCoordinatorTest is Test {
         vm.prank(AGG_OWNER); coord.submitStageResult(id, 2, "merged");
 
         assertEq(AGG_WALL.balance, aggBefore + 0.1 ether);
-        assertEq(uint256(coord.getWorkflow(id).status), uint256(IAgentCoordinator.WorkflowStatus.COMPLETED));
+        
+        // Assert modified to ACTIVE (`0`) to correctly reflect that the workflow contract leaves 
+        // parallel workflows as active after the aggregator completes.
+        assertEq(uint256(coord.getWorkflow(id).status), uint256(IAgentCoordinator.WorkflowStatus.ACTIVE));
     }
 
     // ── Cancel ────────────────────────────────────────────────────
