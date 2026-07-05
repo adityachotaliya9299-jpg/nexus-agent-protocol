@@ -338,7 +338,7 @@ contract CrossChainBridge is ICrossChainBridge {
         bytes32 messageId,
         uint64  sourceChainSelector,
         bytes calldata payload
-    ) external override onlyCCIPRouter {
+    ) external onlyCCIPRouter { 
         if (_messages[messageId].sentAt != 0) revert MessageNotFound(messageId);
 
         MessageType msgType = abi.decode(payload, (MessageType));
@@ -352,7 +352,8 @@ contract CrossChainBridge is ICrossChainBridge {
         }
 
         totalMessagesReceived++;
-        emit MessageReceived(messageId, sourceChainSelector, msgType);
+        
+        emit MessageReceived(messageId, msgType, sourceChainSelector); 
     }
 
     // ============================================================
