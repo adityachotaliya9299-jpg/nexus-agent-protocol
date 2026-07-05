@@ -7,10 +7,14 @@ import {IProtocolGuard} from "../src/security/IProtocolGuard.sol";
 
 /// @notice Mock contract with an invariant check function
 contract MockTarget {
-    bool public invariantShouldPass = true;
-    function setInvariant(bool v) external { invariantShouldPass = v; }
+    bool public shouldPassInvariant = true; 
+    
+    function setInvariant(bool v) external { 
+        shouldPassInvariant = v; 
+    }
+    
     function checkInvariant_EscrowSolvent() external view returns (bool) {
-        return invariantShouldPass;
+        return shouldPassInvariant;
     }
 }
 
