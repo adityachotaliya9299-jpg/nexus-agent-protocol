@@ -5,6 +5,9 @@ import {IL2Bridge} from "./IL2Bridge.sol";
 import {IAgentRegistry} from "../interfaces/IAgentRegistry.sol";
 import {IReputationOracle} from "../interfaces/IReputationOracle.sol";
 
+
+/// @title L2Bridge
+
 /// @title L2Bridge
 /// @author Aditya Chotaliya [adityachotaliya.xyz]
 /// @notice Bridges agent reputation between Ethereum Sepolia and Base Sepolia.
@@ -22,6 +25,15 @@ import {IReputationOracle} from "../interfaces/IReputationOracle.sol";
 ///   Optimism CrossDomainMessenger addresses:
 ///     L1 (Sepolia): 0x58Cc85b8D04EA49cC6DBd3CbFFd00B4B8D6cb3ef
 ///     L2 (Base):    0x4200000000000000000000000000000000000007
+
+// ── Messenger interface (minimal) ─────────────────────────────
+
+interface ICrossDomainMessenger {
+    function sendMessage(address target, bytes calldata message, uint32 gasLimit) external;
+    function xDomainMessageSender() external view returns (address);
+}
+
+
 contract L2Bridge is IL2Bridge {
 
     // ── Constants ────────────────────────────────────────────────
@@ -53,12 +65,7 @@ contract L2Bridge is IL2Bridge {
 
     uint256 private _nonce;
 
-    // ── Messenger interface (minimal) ─────────────────────────────
-
-    interface ICrossDomainMessenger {
-        function sendMessage(address target, bytes calldata message, uint32 gasLimit) external;
-        function xDomainMessageSender() external view returns (address);
-    }
+   
 
     // ── Modifiers ────────────────────────────────────────────────
 
