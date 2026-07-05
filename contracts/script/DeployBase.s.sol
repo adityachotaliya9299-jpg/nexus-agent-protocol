@@ -50,7 +50,7 @@ contract DeployBase is Script {
         address deployer    = vm.addr(deployerKey);
         address arbitrator  = vm.envOr("ARBITRATOR_ADDRESS", deployer);
 
-        require(block.chainid == CHAIN_ID, "Wrong chain — use Base Sepolia RPC");
+        require(block.chainid == CHAIN_ID, "Wrong chain - use Base Sepolia RPC");
 
         console.log("==========================================");
         console.log("Deploying Nexus to Base Sepolia");
