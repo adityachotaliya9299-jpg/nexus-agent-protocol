@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&family=Inter:wght@300;400;500;600&display=swap');
 
 @tailwind base;
@@ -53,4 +54,148 @@ html, body {
 @media (prefers-reduced-motion: reduce) {
   .ticker-track { animation: none; }
   * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+
+
+
+
+:root {
+  /* ── Nexus palette ─────────────────────────────────────────── */
+  --nx-bg-deep:    #050510;
+  --nx-bg-panel:   #0D0D1F;
+  --nx-bg-card:    #12122A;
+  --nx-bg-card-2:  #161630;
+  --nx-glass:      rgba(255,255,255,0.04);
+  --nx-glass-hover:rgba(255,255,255,0.07);
+
+  /* accents */
+  --nx-violet:     #8B5CF6;
+  --nx-violet-dim: rgba(139,92,246,0.15);
+  --nx-violet-glow:rgba(139,92,246,0.35);
+  --nx-cyan:       #06B6D4;
+  --nx-cyan-dim:   rgba(6,182,212,0.15);
+  --nx-emerald:    #10B981;
+  --nx-emerald-dim:rgba(16,185,129,0.15);
+  --nx-amber:      #F59E0B;
+  --nx-amber-dim:  rgba(245,158,11,0.15);
+  --nx-rose:       #F43F5E;
+  --nx-rose-dim:   rgba(244,63,94,0.15);
+
+  /* borders */
+  --nx-border:     rgba(139,92,246,0.18);
+  --nx-border-2:   rgba(139,92,246,0.30);
+  --nx-border-subtle: rgba(255,255,255,0.06);
+
+  /* text */
+  --nx-text-1:     #F1F5F9;
+  --nx-text-2:     #94A3B8;
+  --nx-text-3:     #475569;
+  --nx-text-4:     #2D3748;
+
+  /* typography */
+  --nx-font-display: 'Space Grotesk', sans-serif;
+  --nx-font-body:    'Inter', sans-serif;
+  --nx-font-mono:    'JetBrains Mono', monospace;
+
+  /* tier colors */
+  --tier-novice:      #64748B;
+  --tier-rising:      #06B6D4;
+  --tier-established: #10B981;
+  --tier-advanced:    #8B5CF6;
+  --tier-expert:      #F59E0B;
+  --tier-elite:       #F43F5E;
+
+  /* category colors */
+  --cat-general:      #64748B;
+  --cat-code:         #8B5CF6;
+  --cat-research:     #06B6D4;
+  --cat-trading:      #10B981;
+  --cat-creative:     #F59E0B;
+  --cat-orchestrator: #F43F5E;
+
+  /* motion */
+  --nx-ease:       cubic-bezier(0.16, 1, 0.3, 1);
+  --nx-ease-back:  cubic-bezier(0.34, 1.56, 0.64, 1);
+  --nx-dur-fast:   150ms;
+  --nx-dur-base:   250ms;
+  --nx-dur-slow:   400ms;
+}
+
+/* ── Nexus utility classes ──────────────────────────────────── */
+.nx-card {
+  background: var(--nx-bg-card);
+  border: 1px solid var(--nx-border);
+  border-radius: 16px;
+  transition: border-color var(--nx-dur-base) var(--nx-ease),
+              transform var(--nx-dur-base) var(--nx-ease),
+              box-shadow var(--nx-dur-base) var(--nx-ease);
+}
+.nx-card:hover {
+  border-color: var(--nx-border-2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(139,92,246,0.12);
+}
+
+.nx-glass {
+  background: var(--nx-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.nx-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-family: var(--nx-font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.nx-mono {
+  font-family: var(--nx-font-mono);
+}
+
+/* ── Score ring animation ───────────────────────────────────── */
+@keyframes nx-ring-draw {
+  from { stroke-dashoffset: 226; }
+  to   { stroke-dashoffset: var(--ring-offset); }
+}
+
+@keyframes nx-ring-pulse {
+  0%, 100% { filter: drop-shadow(0 0 4px var(--ring-color)); }
+  50%       { filter: drop-shadow(0 0 10px var(--ring-color)); }
+}
+
+@keyframes nx-fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes nx-slide-in {
+  from { opacity: 0; transform: translateX(-12px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes nx-counter {
+  from { opacity: 0; transform: scale(0.8); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes nx-particle-float {
+  0%,100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+  33%     { transform: translateY(-20px) translateX(10px); opacity: 0.6; }
+  66%     { transform: translateY(10px) translateX(-10px); opacity: 0.2; }
+}
+
+.nx-animate-up {
+  animation: nx-fade-up var(--nx-dur-slow) var(--nx-ease) both;
+}
+
+.nx-animate-slide {
+  animation: nx-slide-in var(--nx-dur-slow) var(--nx-ease) both;
 }
