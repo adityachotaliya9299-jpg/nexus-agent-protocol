@@ -1,0 +1,11 @@
+{
+  "name": "nexus-agent-protocol-scripts",
+  "version": "1.0.0",
+  "scripts": {
+    "checklist": "node scripts/mainnet-checklist.js"
+  },
+  "dependencies": {
+    "viem": "^2.21.0",
+    "dotenv": "^16.4.0"
+  }
+}
