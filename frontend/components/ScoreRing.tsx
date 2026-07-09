@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { getTier } from '@/lib/nexus-contracts'
+import { getTier } from '@/lib/contracts'
 
 interface ScoreRingProps {
   score: number
