@@ -258,6 +258,94 @@ export const AGENT_SKILL_NFT_ABI = [
   { type: "function", name: "getSkillBadge", stateMutability: "view", inputs: [{ name: "agentId", type: "uint256" }, { name: "category", type: "uint256" }], outputs: [{ name: "", type: "tuple", components: [{ name: "agentId", type: "uint256" }, { name: "category", type: "uint256" }, { name: "completions", type: "uint256" }, { name: "tier", type: "uint8" }, { name: "lastUpdatedAt", type: "uint256" }] }] },
 ] as const;
 
+
+export const AGENT_WALLET_FACTORY_ABI = [
+  {
+    "type": "constructor",
+    "inputs": [
+      { "name": "_entryPoint", "type": "address", "internalType": "address" },
+      { "name": "_registry", "type": "address", "internalType": "address" }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "computeWalletAddress",
+    "inputs": [
+      { "name": "owner", "type": "address", "internalType": "address" },
+      { "name": "agentId", "type": "uint256", "internalType": "uint256" },
+      { "name": "salt", "type": "bytes32", "internalType": "bytes32" }
+    ],
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "deployWallet",
+    "inputs": [
+      { "name": "owner", "type": "address", "internalType": "address" },
+      { "name": "agentId", "type": "uint256", "internalType": "uint256" },
+      { "name": "salt", "type": "bytes32", "internalType": "bytes32" }
+    ],
+    "outputs": [{ "name": "wallet", "type": "address", "internalType": "address" }],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "entryPoint",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getWallet",
+    "inputs": [{ "name": "owner", "type": "address", "internalType": "address" }],
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "hasWallet",
+    "inputs": [{ "name": "owner", "type": "address", "internalType": "address" }],
+    "outputs": [{ "name": "", "type": "bool", "internalType": "bool" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "registry",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "event",
+    "name": "WalletDeployed",
+    "inputs": [
+      { "name": "wallet", "type": "address", "indexed": true, "internalType": "address" },
+      { "name": "owner", "type": "address", "indexed": true, "internalType": "address" },
+      { "name": "agentId", "type": "uint256", "indexed": true, "internalType": "uint256" },
+      { "name": "salt", "type": "bytes32", "indexed": false, "internalType": "bytes32" }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "error",
+    "name": "DeploymentFailed",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "WalletAlreadyExists",
+    "inputs": [{ "name": "owner", "type": "address", "internalType": "address" }]
+  },
+  {
+    "type": "error",
+    "name": "ZeroAddress",
+    "inputs": []
+  }
+] as const;
+
 // ================================================================
 // TYPES (preserved from original)
 // ================================================================
