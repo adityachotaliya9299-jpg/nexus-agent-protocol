@@ -334,7 +334,12 @@ export default function DiscoverPage() {
                 gap: 16,
               }}>
                 {searchResults.map((agent, i) => (
-                  <AgentCard key={agent.agentId.toString()} {...agent} index={i} />
+                 <AgentCard 
+                    key={agent.agentId.toString()} 
+                    {...agent} 
+                    category={Number(agent.category)} 
+                    index={i} 
+                  />
                 ))}
               </div>
             ) : (
