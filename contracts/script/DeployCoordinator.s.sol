@@ -11,12 +11,7 @@ import {AgentCoordinator} from "../src/coordination/AgentCoordinator.sol";
 ///   node scripts/mainnet-checklist.js
 ///
 /// Usage (Sepolia):
-///   forge script script/DeployCoordinator.s.sol \
-///     --rpc-url $SEPOLIA_RPC_URL \
-///     --broadcast \
-///     --verify \
-///     --etherscan-api-key $ETHERSCAN_API_KEY \
-///     -vvvv
+   
 ///
 /// Usage (Mainnet — when ready):
 ///   forge script script/DeployCoordinator.s.sol \
