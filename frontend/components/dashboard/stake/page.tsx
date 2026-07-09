@@ -109,10 +109,10 @@ export default function StakePage() {
   const repScore  = Number((agent as any)?.reputationScore ?? 0)
   const tier      = getTier(repScore)
   const info      = stakeInfo as any
-  const totalS    = info?.totalStaked ?? 0n
-  const ownS      = info?.ownStake ?? 0n
-  const delegS    = info?.delegatedStake ?? 0n
-  const lockedS   = info?.lockedStake ?? 0n
+  const totalS    = (info?.totalStaked as bigint) ?? 0n
+  const ownS      = (info?.ownStake as bigint) ?? 0n
+  const delegS    = (info?.delegatedStake as bigint) ?? 0n
+  const lockedS   = (info?.lockedStake as bigint) ?? 0n
   const slashCount = Number(info?.slashCount ?? 0n)
   const effectiveS = effectiveStake ?? 0n
 
