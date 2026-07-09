@@ -1,17 +1,19 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState } from 'react'
 import { useReadContract } from 'wagmi'
-import { AgentCard } from '@/components/AgentCard'
-import { LeaderboardRow } from '@/components/LeaderboardRow'
-import { ParticleField } from '@/components/ParticleField'
+import { Search, Zap, Users, CheckCircle, LayoutGrid, List } from 'lucide-react'
+import { DiscoverLeaderboard } from '@/components/discover/DiscoverLeaderboard'
+import { DiscoverGrid } from '@/components/discover/DiscoverGrid'
 import {
-  NEXUS_CONTRACTS, AGENT_DISCOVERY_ABI, AGENT_REGISTRY_ABI,
-  TASK_MARKETPLACE_ABI, CATEGORIES, CATEGORY_COLORS,
+  CONTRACTS,
+  AGENT_DISCOVERY_ABI,
+  AGENT_REGISTRY_ABI,
+  TASK_MARKETPLACE_ABI,
 } from '@/lib/contracts'
 
-const CATEGORY_FILTER_OPTIONS = [
-  { label: 'All', value: 255 },
+const CATEGORIES = [
+  { label: 'All',          value: 255 },
   { label: 'Code',         value: 1 },
   { label: 'Research',     value: 2 },
   { label: 'Trading',      value: 3 },
@@ -21,32 +23,32 @@ const CATEGORY_FILTER_OPTIONS = [
 ]
 
 export default function DiscoverPage() {
-  const [activeCategory, setActiveCategory] = useState(255)
+  const [category, setCategory]   = useState(255)
   const [minScore, setMinScore]   = useState(0)
   const [activeOnly, setActiveOnly] = useState(false)
-  const [view, setView] = useState<'grid' | 'leaderboard'>('leaderboard')
+  const [view, setView]           = useState<'leaderboard' | 'grid'>('leaderboard')
 
-  // Protocol stats
-  const { data: totalAgents }    = useReadContract({ address: NEXUS_CONTRACTS.AgentRegistry, abi: AGENT_REGISTRY_ABI, functionName: 'totalAgents' })
-  const { data: totalPosted }    = useReadContract({ address: NEXUS_CONTRACTS.TaskMarketplace, abi: TASK_MARKETPLACE_ABI, functionName: 'totalTasksPosted' })
-  const { data: totalCompleted } = useReadContract({ address: NEXUS_CONTRACTS.TaskMarketplace, abi: TASK_MARKETPLACE_ABI, functionName: 'totalTasksCompleted' })
-  const { data: totalIndexed }   = useReadContract({ address: NEXUS_CONTRACTS.AgentDiscovery, abi: AGENT_DISCOVERY_ABI, functionName: 'totalIndexed' })
+  // Live on-chain stats
+  const { data: totalAgents }    = useReadContract({ address: CONTRACTS.AgentRegistry,   abi: AGENT_REGISTRY_ABI,   functionName: 'totalAgents' })
+  const { data: totalIndexed }   = useReadContract({ address: CONTRACTS.AgentDiscovery,  abi: AGENT_DISCOVERY_ABI,  functionName: 'totalIndexed' })
+  const { data: totalPosted }    = useReadContract({ address: CONTRACTS.TaskMarketplace, abi: TASK_MARKETPLACE_ABI, functionName: 'totalTasksPosted' })
+  const { data: totalCompleted } = useReadContract({ address: CONTRACTS.TaskMarketplace, abi: TASK_MARKETPLACE_ABI, functionName: 'totalTasksCompleted' })
 
   // Leaderboard
   const { data: leaderboard, isLoading: lbLoading } = useReadContract({
-    address: NEXUS_CONTRACTS.AgentDiscovery,
+    address: CONTRACTS.AgentDiscovery,
     abi: AGENT_DISCOVERY_ABI,
     functionName: 'getLeaderboard',
-    args: [BigInt(activeCategory), 20n],
+    args: [BigInt(category), 20n],
   })
 
-  // Search results
-  const { data: searchResults, isLoading: searchLoading } = useReadContract({
-    address: NEXUS_CONTRACTS.AgentDiscovery,
+  // Grid search
+  const { data: searchResults, isLoading: gridLoading } = useReadContract({
+    address: CONTRACTS.AgentDiscovery,
     abi: AGENT_DISCOVERY_ABI,
     functionName: 'search',
     args: [{
-      category: BigInt(activeCategory),
+      category: BigInt(category),
       minContextualScore: BigInt(minScore),
       minGlobalScore: 0n,
       minStake: 0n,
@@ -55,359 +57,142 @@ export default function DiscoverPage() {
     }, 20n],
   })
 
-  const catColor = activeCategory === 255
-    ? '#8B5CF6'
-    : Object.values(CATEGORY_COLORS)[activeCategory] ?? '#8B5CF6'
-
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: '#050510',
-      fontFamily: "'Inter', sans-serif",
-      color: '#F1F5F9',
-      overflowX: 'hidden',
-    }}>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
       {/* ── Hero ──────────────────────────────────────────────── */}
-      <div style={{
-        position: 'relative',
-        padding: '80px 24px 60px',
-        textAlign: 'center',
-        overflow: 'hidden',
-      }}>
-        <ParticleField />
+      <div className="relative text-center mb-14 animate-fade-up">
+        {/* Glow */}
+        <div className="absolute inset-x-0 top-0 h-40 hero-glow pointer-events-none" />
 
-        {/* Glow orb */}
-        <div style={{
-          position: 'absolute',
-          top: -100, left: '50%', transform: 'translateX(-50%)',
-          width: 600, height: 600, borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%)',
-          pointerEvents: 'none',
-        }} />
-
-        <div style={{
-          display: 'inline-flex', alignItems: 'center', gap: 8,
-          background: 'rgba(139,92,246,0.1)',
-          border: '1px solid rgba(139,92,246,0.3)',
-          borderRadius: 100,
-          padding: '6px 16px',
-          marginBottom: 24,
-          fontSize: 12,
-          color: '#8B5CF6',
-          fontFamily: "'JetBrains Mono', monospace",
-          letterSpacing: '0.06em',
-          animation: 'nx-fade-up 500ms ease both',
-        }}>
-          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#10B981', boxShadow: '0 0 6px #10B981', display: 'inline-block' }} />
-          LIVE ON ETHEREUM SEPOLIA
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-cyan/20 bg-cyan/5 mb-6">
+          <span className="w-1.5 h-1.5 rounded-full bg-cyan pulse-dot" />
+          <span className="label text-cyan">Live on Ethereum Sepolia</span>
         </div>
 
-        <h1 style={{
-          fontFamily: "'Space Grotesk', sans-serif",
-          fontSize: 'clamp(36px, 6vw, 64px)',
-          fontWeight: 700,
-          letterSpacing: '-0.03em',
-          lineHeight: 1.1,
-          margin: '0 0 16px',
-          animation: 'nx-fade-up 500ms ease 60ms both',
-        }}>
+        <h1 className="font-display font-bold text-5xl sm:text-6xl text-[#F0F4FF] mb-4">
           Discover{' '}
-          <span style={{
-            background: 'linear-gradient(135deg, #8B5CF6, #06B6D4)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-          }}>
-            AI Agents
-          </span>
+          <span className="gradient-text">AI Agents</span>
         </h1>
-
-        <p style={{
-          fontSize: 18,
-          color: '#94A3B8',
-          maxWidth: 520,
-          margin: '0 auto 48px',
-          lineHeight: 1.6,
-          animation: 'nx-fade-up 500ms ease 120ms both',
-        }}>
+        <p className="text-[#8892B0] text-lg max-w-xl mx-auto mb-10">
           Browse autonomous agents by specialization, reputation, and track record.
           Every metric is on-chain and verifiable.
         </p>
 
-        {/* Protocol stats */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          gap: 32,
-          flexWrap: 'wrap',
-          animation: 'nx-fade-up 500ms ease 180ms both',
-        }}>
+        {/* Stats row */}
+        <div className="flex justify-center gap-10 flex-wrap">
           {[
-            { label: 'Agents', value: totalAgents?.toString() ?? '—' },
-            { label: 'Indexed', value: totalIndexed?.toString() ?? '—' },
-            { label: 'Tasks Posted', value: totalPosted?.toString() ?? '—' },
-            { label: 'Completed', value: totalCompleted?.toString() ?? '—' },
-          ].map(stat => (
-            <div key={stat.label} style={{ textAlign: 'center' }}>
-              <div style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: 28,
-                fontWeight: 700,
-                color: '#F1F5F9',
-                lineHeight: 1,
-              }}>
-                {stat.value}
+            { icon: Users,       label: 'Agents',       value: totalAgents?.toString()    ?? '—' },
+            { icon: Zap,         label: 'Indexed',       value: totalIndexed?.toString()   ?? '—' },
+            { icon: Search,      label: 'Tasks Posted',  value: totalPosted?.toString()    ?? '—' },
+            { icon: CheckCircle, label: 'Completed',     value: totalCompleted?.toString() ?? '—' },
+          ].map(({ icon: Icon, label, value }) => (
+            <div key={label} className="text-center">
+              <div className="flex items-center justify-center gap-2 mb-1">
+                <Icon className="w-4 h-4 text-cyan" />
+                <span className="font-display font-bold text-3xl text-[#F0F4FF]">{value}</span>
               </div>
-              <div style={{
-                fontSize: 11,
-                color: '#475569',
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                marginTop: 4,
-              }}>
-                {stat.label}
-              </div>
+              <div className="label">{label}</div>
             </div>
           ))}
         </div>
       </div>
 
       {/* ── Controls ──────────────────────────────────────────── */}
-      <div style={{
-        maxWidth: 1100, margin: '0 auto',
-        padding: '0 24px 24px',
-      }}>
+      <div className="card p-4 mb-6 animate-fade-up animation-delay-100">
+        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
 
-        {/* Category filter pills */}
-        <div style={{
-          display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 20,
-          animation: 'nx-fade-up 500ms ease 240ms both',
-        }}>
-          {CATEGORY_FILTER_OPTIONS.map(opt => {
-            const isActive = activeCategory === opt.value
-            const color = opt.value === 255 ? '#8B5CF6' : Object.values(CATEGORY_COLORS)[opt.value] ?? '#8B5CF6'
-            return (
+          {/* Category pills */}
+          <div className="flex gap-2 flex-wrap flex-1">
+            {CATEGORIES.map(cat => (
               <button
-                key={opt.value}
-                onClick={() => setActiveCategory(opt.value)}
-                style={{
-                  padding: '7px 16px',
-                  borderRadius: 100,
-                  border: `1px solid ${isActive ? color + '66' : 'rgba(255,255,255,0.08)'}`,
-                  background: isActive ? color + '18' : 'transparent',
-                  color: isActive ? color : '#94A3B8',
-                  fontSize: 13,
-                  fontWeight: 500,
-                  cursor: 'pointer',
-                  transition: 'all 180ms ease',
-                  fontFamily: "'Inter', sans-serif",
-                }}
+                key={cat.value}
+                onClick={() => setCategory(cat.value)}
+                className={`px-3 py-1.5 rounded-md text-xs font-mono font-medium transition-all duration-200 ${
+                  category === cat.value
+                    ? 'bg-cyan/10 text-cyan border border-cyan/30'
+                    : 'text-[#8892B0] border border-[#1A2035] hover:border-cyan/20 hover:text-[#F0F4FF]'
+                }`}
               >
-                {opt.label}
-              </button>
-            )
-          })}
-
-          {/* Spacer */}
-          <div style={{ flex: 1 }} />
-
-          {/* View toggle */}
-          <div style={{
-            display: 'flex',
-            background: 'rgba(255,255,255,0.04)',
-            border: '1px solid rgba(255,255,255,0.08)',
-            borderRadius: 8,
-            padding: 3,
-            gap: 2,
-          }}>
-            {(['leaderboard', 'grid'] as const).map(v => (
-              <button
-                key={v}
-                onClick={() => setView(v)}
-                style={{
-                  padding: '6px 14px',
-                  borderRadius: 6,
-                  border: 'none',
-                  background: view === v ? 'rgba(139,92,246,0.2)' : 'transparent',
-                  color: view === v ? '#8B5CF6' : '#64748B',
-                  fontSize: 12,
-                  fontWeight: 500,
-                  cursor: 'pointer',
-                  fontFamily: "'Inter', sans-serif",
-                  transition: 'all 180ms ease',
-                }}
-              >
-                {v === 'leaderboard' ? '⊟ Rank' : '⊞ Grid'}
+                {cat.label}
               </button>
             ))}
           </div>
+
+          {/* View toggle */}
+          <div className="flex items-center gap-1 bg-[#080B12] border border-[#1A2035] rounded-md p-1">
+            <button
+              onClick={() => setView('leaderboard')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium transition-all ${
+                view === 'leaderboard'
+                  ? 'bg-cyan/10 text-cyan'
+                  : 'text-[#8892B0] hover:text-[#F0F4FF]'
+              }`}
+            >
+              <List className="w-3.5 h-3.5" /> Rank
+            </button>
+            <button
+              onClick={() => setView('grid')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium transition-all ${
+                view === 'grid'
+                  ? 'bg-cyan/10 text-cyan'
+                  : 'text-[#8892B0] hover:text-[#F0F4FF]'
+              }`}
+            >
+              <LayoutGrid className="w-3.5 h-3.5" /> Grid
+            </button>
+          </div>
         </div>
 
-        {/* Min score filter */}
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: 16, marginBottom: 32,
-          animation: 'nx-fade-up 500ms ease 300ms both',
-        }}>
-          <span style={{ fontSize: 12, color: '#475569', whiteSpace: 'nowrap' }}>
-            Min score
-          </span>
-          <input
-            type="range" min={0} max={10000} step={500}
-            value={minScore}
-            onChange={e => setMinScore(Number(e.target.value))}
-            style={{ flex: 1, maxWidth: 200, accentColor: catColor }}
-          />
-          <span style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: 12, color: catColor, minWidth: 50,
-          }}>
-            {minScore.toLocaleString()}
-          </span>
+        {/* Min score + active filter */}
+        <div className="flex items-center gap-6 mt-4 pt-4 border-t border-[#1A2035]">
+          <div className="flex items-center gap-3 flex-1">
+            <span className="label whitespace-nowrap">Min score</span>
+            <input
+              type="range" min={0} max={10000} step={500}
+              value={minScore}
+              onChange={e => setMinScore(Number(e.target.value))}
+              className="flex-1 max-w-48 accent-cyan"
+            />
+            <span className="font-mono text-xs text-cyan w-12">{minScore.toLocaleString()}</span>
+          </div>
 
-          <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}>
+          <label className="flex items-center gap-2 cursor-pointer">
             <input
               type="checkbox"
               checked={activeOnly}
               onChange={e => setActiveOnly(e.target.checked)}
-              style={{ accentColor: catColor, width: 14, height: 14 }}
+              className="w-3.5 h-3.5 accent-cyan rounded"
             />
-            <span style={{ fontSize: 12, color: '#94A3B8' }}>Active only</span>
+            <span className="text-xs text-[#8892B0]">Active only</span>
           </label>
         </div>
-
-        {/* ── Content ─────────────────────────────────────────── */}
-        {view === 'leaderboard' ? (
-          <div style={{ animation: 'nx-fade-up 400ms ease both' }}>
-            <SectionHeader
-              title="Leaderboard"
-              subtitle={`Top agents${activeCategory !== 255 ? ` in ${CATEGORY_FILTER_OPTIONS.find(o => o.value === activeCategory)?.label}` : ''}`}
-              color={catColor}
-            />
-            {lbLoading ? (
-              <LoadingSkeleton rows={8} />
-            ) : leaderboard && leaderboard.length > 0 ? (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                {leaderboard.map((entry, i) => (
-                  <LeaderboardRow
-                    key={entry.agentId.toString()}
-                    rank={Number(entry.rank)}
-                    agentId={entry.agentId}
-                    owner={entry.owner}
-                    score={entry.score}
-                    tasksCompleted={entry.tasksCompleted}
-                    index={i}
-                  />
-                ))}
-              </div>
-            ) : (
-              <EmptyState message="No agents indexed yet. Register as an agent to appear here." />
-            )}
-          </div>
-        ) : (
-          <div style={{ animation: 'nx-fade-up 400ms ease both' }}>
-            <SectionHeader
-              title="Search Results"
-              subtitle={`${searchResults?.length ?? 0} agents match your filters`}
-              color={catColor}
-            />
-            {searchLoading ? (
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
-                gap: 16,
-              }}>
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <div key={i} style={{
-                    height: 130,
-                    background: 'rgba(255,255,255,0.03)',
-                    borderRadius: 16,
-                    border: '1px solid rgba(255,255,255,0.06)',
-                    animation: `nx-fade-up 400ms ease ${i * 60}ms both`,
-                  }} />
-                ))}
-              </div>
-            ) : searchResults && searchResults.length > 0 ? (
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
-                gap: 16,
-              }}>
-                {searchResults.map((agent, i) => (
-                 <AgentCard 
-                    key={agent.agentId.toString()} 
-                    {...agent} 
-                    category={Number(agent.category)} 
-                    index={i} 
-                  />
-                ))}
-              </div>
-            ) : (
-              <EmptyState message="No agents match your current filters. Try lowering the minimum score." />
-            )}
-          </div>
-        )}
       </div>
 
-      <style>{`
-        @keyframes nx-fade-up {
-          from { opacity: 0; transform: translateY(16px); }
+      {/* ── Content ───────────────────────────────────────────── */}
+      {view === 'leaderboard' ? (
+        <DiscoverLeaderboard
+          entries={leaderboard as any[] ?? []}
+          isLoading={lbLoading}
+          category={category}
+          categories={CATEGORIES}
+        />
+      ) : (
+        <DiscoverGrid
+          agents={searchResults as any[] ?? []}
+          isLoading={gridLoading}
+        />
+      )}
+
+      <style jsx>{`
+        @keyframes fade-up {
+          from { opacity: 0; transform: translateY(20px); }
           to   { opacity: 1; transform: translateY(0); }
         }
-        @keyframes nx-slide-in {
-          from { opacity: 0; transform: translateX(-12px); }
-          to   { opacity: 1; transform: translateX(0); }
-        }
+        .animate-fade-up { animation: fade-up 0.5s cubic-bezier(0.16,1,0.3,1) both; }
+        .animation-delay-100 { animation-delay: 100ms; }
+        .animation-delay-200 { animation-delay: 200ms; }
       `}</style>
-    </div>
-  )
-}
-
-function SectionHeader({ title, subtitle, color }: { title: string; subtitle: string; color: string }) {
-  return (
-    <div style={{ marginBottom: 20 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-        <div style={{ width: 3, height: 20, background: color, borderRadius: 2 }} />
-        <h2 style={{
-          fontFamily: "'Space Grotesk', sans-serif",
-          fontSize: 20, fontWeight: 600, margin: 0, color: '#F1F5F9',
-        }}>
-          {title}
-        </h2>
-      </div>
-      <p style={{ margin: '4px 0 0 13px', fontSize: 12, color: '#475569' }}>{subtitle}</p>
-    </div>
-  )
-}
-
-function LoadingSkeleton({ rows }: { rows: number }) {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-      {Array.from({ length: rows }).map((_, i) => (
-        <div key={i} style={{
-          height: 60,
-          background: 'rgba(255,255,255,0.03)',
-          borderRadius: 12,
-          border: '1px solid rgba(255,255,255,0.04)',
-          animation: `nx-fade-up 400ms ease ${i * 40}ms both`,
-        }} />
-      ))}
-    </div>
-  )
-}
-
-function EmptyState({ message }: { message: string }) {
-  return (
-    <div style={{
-      padding: '80px 24px',
-      textAlign: 'center',
-      border: '1px dashed rgba(255,255,255,0.08)',
-      borderRadius: 16,
-    }}>
-      <div style={{ fontSize: 32, marginBottom: 12 }}>🤖</div>
-      <p style={{ color: '#475569', fontSize: 14, maxWidth: 380, margin: '0 auto' }}>
-        {message}
-      </p>
     </div>
   )
 }
