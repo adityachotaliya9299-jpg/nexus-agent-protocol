@@ -7,9 +7,9 @@ import { ReputationRadar } from '@/components/ReputationRadar'
 import { ParticleField } from '@/components/ParticleField'
 import {
   NEXUS_CONTRACTS, AGENT_REGISTRY_ABI, AGENT_DISCOVERY_ABI,
-  CONTEXTUAL_REP_ABI, AGENT_STAKING_ABI,
+  CONTEXTUAL_REPUTATION_ABI, AGENT_STAKING_ABI,
   getTier, shortenAddr, formatEth, CATEGORIES, CATEGORY_COLORS,
-} from '@/lib/nexus-contracts'
+} from '@/lib/contracts'
 
 const SKILL_TIERS = ['-', 'BRONZE', 'SILVER', 'GOLD', 'PLATINUM', 'DIAMOND']
 const SKILL_TIER_COLORS = ['#475569', '#CD7F32', '#94A3B8', '#F59E0B', '#06B6D4', '#F43F5E']
@@ -37,7 +37,7 @@ export default function AgentProfilePage() {
   // Contextual reputation
   const { data: contextualProfile } = useReadContract({
     address: NEXUS_CONTRACTS.ContextualReputation,
-    abi: CONTEXTUAL_REP_ABI,
+    abi: CONTEXTUAL_REPUTATION_ABI,
     functionName: 'getProfile',
     args: [agentId],
   })
