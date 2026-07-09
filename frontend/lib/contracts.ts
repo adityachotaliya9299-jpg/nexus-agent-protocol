@@ -147,17 +147,20 @@ export const REPUTATION_ORACLE_ABI = [
 ] as const;
 
 export const SUBSCRIPTION_MANAGER_ABI = [
-  // Events
+  // Events (keep existing)
   { type: "event", name: "PlanCreated", inputs: [{ name: "planId", type: "bytes32", indexed: true }, { name: "agentId", type: "uint256", indexed: true }, { name: "tier", type: "uint8", indexed: false }, { name: "pricePerPeriod", type: "uint256", indexed: false }] },
   { type: "event", name: "Subscribed", inputs: [{ name: "planId", type: "bytes32", indexed: true }, { name: "subscriber", type: "address", indexed: true }] },
   { type: "event", name: "SubscriptionCancelled", inputs: [{ name: "planId", type: "bytes32", indexed: true }, { name: "subscriber", type: "address", indexed: true }] },
-  // Read functions
+  // Read (keep existing + add missing)
   { type: "function", name: "getPlan", stateMutability: "view", inputs: [{ name: "planId", type: "bytes32" }], outputs: [{ name: "", type: "tuple", components: [{ name: "planId", type: "bytes32" }, { name: "agentId", type: "uint256" }, { name: "tier", type: "uint8" }, { name: "pricePerPeriod", type: "uint256" }, { name: "periodDuration", type: "uint256" }, { name: "maxSubscribers", type: "uint256" }, { name: "currentSubscribers", type: "uint256" }, { name: "isActive", type: "bool" }] }] },
   { type: "function", name: "isSubscribed", stateMutability: "view", inputs: [{ name: "planId", type: "bytes32" }, { name: "subscriber", type: "address" }], outputs: [{ name: "", type: "bool" }] },
-  // Write functions
+  { type: "function", name: "getSubscription", stateMutability: "view", inputs: [{ name: "planId", type: "bytes32" }, { name: "subscriber", type: "address" }], outputs: [{ name: "", type: "tuple", components: [{ name: "planId", type: "bytes32" }, { name: "subscriber", type: "address" }, { name: "startedAt", type: "uint256" }, { name: "expiresAt", type: "uint256" }, { name: "isActive", type: "bool" }, { name: "isPaused", type: "bool" }] }] },
+  { type: "function", name: "totalPlans", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
   { type: "function", name: "createPlan", stateMutability: "nonpayable", inputs: [{ name: "agentId", type: "uint256" }, { name: "tier", type: "uint8" }, { name: "pricePerPeriod", type: "uint256" }, { name: "periodDuration", type: "uint256" }, { name: "maxSubscribers", type: "uint256" }], outputs: [{ name: "planId", type: "bytes32" }] },
   { type: "function", name: "subscribe", stateMutability: "payable", inputs: [{ name: "planId", type: "bytes32" }], outputs: [] },
   { type: "function", name: "cancelSubscription", stateMutability: "nonpayable", inputs: [{ name: "planId", type: "bytes32" }], outputs: [] },
+  { type: "function", name: "pauseSubscription", stateMutability: "nonpayable", inputs: [{ name: "planId", type: "bytes32" }], outputs: [] },
+  { type: "function", name: "resumeSubscription", stateMutability: "payable", inputs: [{ name: "planId", type: "bytes32" }], outputs: [] },
 ] as const;
 
 // ================================================================
