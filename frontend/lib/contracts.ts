@@ -301,11 +301,11 @@ export const AGENT_WALLET_FACTORY_ABI = [
     "stateMutability": "view"
   },
   {
-    "type": "function",
-    "name": "getWallet",
-    "inputs": [{ "name": "owner", "type": "address", "internalType": "address" }],
-    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
-    "stateMutability": "view"
+    type: "function",
+    name: "getWallet",
+    stateMutability: "view",
+    inputs: [{ name: "agentId", type: "uint256" }],
+    outputs: [{ name: "", type: "address" }],
   },
   {
     "type": "function",
