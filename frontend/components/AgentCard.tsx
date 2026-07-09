@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { ScoreRing } from './ScoreRing'
-import { getTier, shortenAddr, formatEth, CATEGORIES, CATEGORY_COLORS } from '@/lib/nexus-contracts'
+import { getTier, shortenAddr, formatEth, CATEGORIES, CATEGORY_COLORS } from '@/lib/contracts'
 
 interface AgentCardProps {
   agentId: bigint
