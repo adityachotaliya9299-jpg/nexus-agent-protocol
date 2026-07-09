@@ -9,6 +9,7 @@ const NAV_LINKS = [
   { href: "/tasks", label: "Marketplace" },
   { href: "/subscriptions", label: "Subscriptions" },
   { href: "/dashboard", label: "Dashboard" },
+  { href: '/dashboard/stake', label: 'Stake' }
 ];
 
 export function Navbar() {
