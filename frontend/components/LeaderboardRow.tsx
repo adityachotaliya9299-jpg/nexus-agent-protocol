@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { ScoreRingMini } from './ScoreRing'
-import { getTier, shortenAddr, CATEGORIES, CATEGORY_COLORS } from '@/lib/nexus-contracts'
+import { getTier, shortenAddr, CATEGORIES, CATEGORY_COLORS } from '@/lib/contracts'
 
 interface LeaderboardRowProps {
   rank: number
