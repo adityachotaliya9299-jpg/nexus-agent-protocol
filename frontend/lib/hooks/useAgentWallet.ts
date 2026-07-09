@@ -8,7 +8,7 @@ export function useWalletAddress(agentId: number | undefined) {
   return useReadContract({
     address: CONTRACTS.AgentWalletFactory,
     abi: AGENT_WALLET_FACTORY_ABI,
-    functionName: "getWalletAddress",
+    functionName: "computeWalletAddress",
     args: agentId !== undefined ? [BigInt(agentId)] : undefined,
     query: { enabled: agentId !== undefined },
   });
@@ -19,7 +19,7 @@ export function useWalletDeployed(agentId: number | undefined) {
   return useReadContract({
     address: CONTRACTS.AgentWalletFactory,
     abi: AGENT_WALLET_FACTORY_ABI,
-    functionName: "isDeployed",
+    functionName: "hasWallet",
     args: agentId !== undefined ? [BigInt(agentId)] : undefined,
     query: { enabled: agentId !== undefined },
   });
