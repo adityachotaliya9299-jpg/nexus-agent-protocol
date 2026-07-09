@@ -8,7 +8,7 @@ import { ParticleField } from '@/components/ParticleField'
 import {
   NEXUS_CONTRACTS, AGENT_DISCOVERY_ABI, AGENT_REGISTRY_ABI,
   TASK_MARKETPLACE_ABI, CATEGORIES, CATEGORY_COLORS,
-} from '@/lib/nexus-contracts'
+} from '@/lib/contracts'
 
 const CATEGORY_FILTER_OPTIONS = [
   { label: 'All', value: 255 },
