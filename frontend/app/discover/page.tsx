@@ -23,16 +23,28 @@ const CATEGORIES = [
 ]
 
 export default function DiscoverPage() {
-  const [category, setCategory]   = useState(255)
-  const [minScore, setMinScore]   = useState(0)
+  const [category, setCategory]     = useState(255)
+  const [minScore, setMinScore]     = useState(0)
   const [activeOnly, setActiveOnly] = useState(false)
-  const [view, setView]           = useState<'leaderboard' | 'grid'>('leaderboard')
+  const [view, setView]             = useState<'leaderboard' | 'grid'>('leaderboard')
 
-  // Live on-chain stats
-  const { data: totalAgents }    = useReadContract({ address: CONTRACTS.AgentRegistry,   abi: AGENT_REGISTRY_ABI,   functionName: 'totalAgents' })
-  const { data: totalIndexed }   = useReadContract({ address: CONTRACTS.AgentDiscovery,  abi: AGENT_DISCOVERY_ABI,  functionName: 'totalIndexed' })
-  const { data: totalPosted }    = useReadContract({ address: CONTRACTS.TaskMarketplace, abi: TASK_MARKETPLACE_ABI, functionName: 'totalTasksPosted' })
-  const { data: totalCompleted } = useReadContract({ address: CONTRACTS.TaskMarketplace, abi: TASK_MARKETPLACE_ABI, functionName: 'totalTasksCompleted' })
+  // Live on-chain stats — using correct function names from your ABI
+  const { data: totalAgents }    = useReadContract({
+    address: CONTRACTS.AgentRegistry,
+    abi: AGENT_REGISTRY_ABI,
+    functionName: 'totalAgents',
+  })
+  const { data: totalIndexed }   = useReadContract({
+    address: CONTRACTS.AgentDiscovery,
+    abi: AGENT_DISCOVERY_ABI,
+    functionName: 'totalIndexed',
+  })
+  // Your marketplace has 'totalTasks' not 'totalTasksPosted'
+  const { data: totalTasks }     = useReadContract({
+    address: CONTRACTS.TaskMarketplace,
+    abi: TASK_MARKETPLACE_ABI,
+    functionName: 'totalTasks',
+  })
 
   // Leaderboard
   const { data: leaderboard, isLoading: lbLoading } = useReadContract({
@@ -62,7 +74,6 @@ export default function DiscoverPage() {
 
       {/* ── Hero ──────────────────────────────────────────────── */}
       <div className="relative text-center mb-14 animate-fade-up">
-        {/* Glow */}
         <div className="absolute inset-x-0 top-0 h-40 hero-glow pointer-events-none" />
 
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-cyan/20 bg-cyan/5 mb-6">
@@ -82,10 +93,10 @@ export default function DiscoverPage() {
         {/* Stats row */}
         <div className="flex justify-center gap-10 flex-wrap">
           {[
-            { icon: Users,       label: 'Agents',       value: totalAgents?.toString()    ?? '—' },
-            { icon: Zap,         label: 'Indexed',       value: totalIndexed?.toString()   ?? '—' },
-            { icon: Search,      label: 'Tasks Posted',  value: totalPosted?.toString()    ?? '—' },
-            { icon: CheckCircle, label: 'Completed',     value: totalCompleted?.toString() ?? '—' },
+            { icon: Users,       label: 'Agents',      value: totalAgents?.toString()  ?? '—' },
+            { icon: Zap,         label: 'Indexed',      value: totalIndexed?.toString() ?? '—' },
+            { icon: Search,      label: 'Tasks Posted', value: totalTasks?.toString()   ?? '—' },
+            { icon: CheckCircle, label: 'Network',      value: 'Sepolia' },
           ].map(({ icon: Icon, label, value }) => (
             <div key={label} className="text-center">
               <div className="flex items-center justify-center gap-2 mb-1">
@@ -99,9 +110,8 @@ export default function DiscoverPage() {
       </div>
 
       {/* ── Controls ──────────────────────────────────────────── */}
-      <div className="card p-4 mb-6 animate-fade-up animation-delay-100">
+      <div className="card p-4 mb-6 animation-delay-100 animate-fade-up">
         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-
           {/* Category pills */}
           <div className="flex gap-2 flex-wrap flex-1">
             {CATEGORIES.map(cat => (
@@ -124,9 +134,7 @@ export default function DiscoverPage() {
             <button
               onClick={() => setView('leaderboard')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium transition-all ${
-                view === 'leaderboard'
-                  ? 'bg-cyan/10 text-cyan'
-                  : 'text-[#8892B0] hover:text-[#F0F4FF]'
+                view === 'leaderboard' ? 'bg-cyan/10 text-cyan' : 'text-[#8892B0] hover:text-[#F0F4FF]'
               }`}
             >
               <List className="w-3.5 h-3.5" /> Rank
@@ -134,9 +142,7 @@ export default function DiscoverPage() {
             <button
               onClick={() => setView('grid')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium transition-all ${
-                view === 'grid'
-                  ? 'bg-cyan/10 text-cyan'
-                  : 'text-[#8892B0] hover:text-[#F0F4FF]'
+                view === 'grid' ? 'bg-cyan/10 text-cyan' : 'text-[#8892B0] hover:text-[#F0F4FF]'
               }`}
             >
               <LayoutGrid className="w-3.5 h-3.5" /> Grid
@@ -156,7 +162,6 @@ export default function DiscoverPage() {
             />
             <span className="font-mono text-xs text-cyan w-12">{minScore.toLocaleString()}</span>
           </div>
-
           <label className="flex items-center gap-2 cursor-pointer">
             <input
               type="checkbox"
@@ -191,7 +196,6 @@ export default function DiscoverPage() {
         }
         .animate-fade-up { animation: fade-up 0.5s cubic-bezier(0.16,1,0.3,1) both; }
         .animation-delay-100 { animation-delay: 100ms; }
-        .animation-delay-200 { animation-delay: 200ms; }
       `}</style>
     </div>
   )
