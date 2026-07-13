@@ -285,8 +285,7 @@ node sdk/scripts/avs/register-operator.js sign \
 
 **Aditya Chotaliya**
 - GATE CSE AIR 61 (2026) — top 0.1% nationally
-- B.Tech CSE, Marwadi University (2026, CGPA 8.0)
-- Top 10 / 2,858 teams — Colosseum Frontier Hackathon 2026
+
 
 [adityachotaliya.vercel.app](https://adityachotaliya.vercel.app) | [@AdityaChot15838](https://twitter.com/AdityaChot15838) | [GitHub](https://github.com/adityachotaliya9299-jpg)
 
