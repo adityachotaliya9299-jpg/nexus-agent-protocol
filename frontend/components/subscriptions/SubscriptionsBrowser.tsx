@@ -7,10 +7,10 @@ type Category = "All" | "DeFi" | "Security" | "ZK" | "Oracle" | "Infrastructure"
 type SortBy = "popular" | "price_asc" | "price_desc" | "rep";
 
 const TIER_STYLES: Record<PlanTier, { color: string; border: string; bg: string }> = {
-  BASIC:      { color: "#8892B0", border: "border-[#2A3555]",      bg: "bg-[#1A2035]/30" },
-  STANDARD:   { color: "#00E5FF", border: "border-cyan/20",        bg: "bg-cyan/5" },
-  PREMIUM:    { color: "#8B5CF6", border: "border-violet/20",      bg: "bg-violet/5" },
-  ENTERPRISE: { color: "#F59E0B", border: "border-amber-500/20",   bg: "bg-amber-500/5" },
+  BASIC:      { color: "#A89F8D", border: "border-[#3A3226]",      bg: "bg-[#2A241B]/30" },
+  STANDARD:   { color: "#F2A93B", border: "border-cyan/20",        bg: "bg-cyan/5" },
+  PREMIUM:    { color: "#FF6B3D", border: "border-violet/20",      bg: "bg-violet/5" },
+  ENTERPRISE: { color: "#F2A93B", border: "border-amber-500/20",   bg: "bg-amber-500/5" },
 };
 
 const MOCK_PLANS = [
@@ -115,11 +115,11 @@ const MOCK_PLANS = [
 const CATEGORIES: Category[] = ["All", "DeFi", "Security", "ZK", "Oracle", "Infrastructure", "AI"];
 
 function repColor(score: number): string {
-  if (score >= 9000) return "#F59E0B";
-  if (score >= 7500) return "#00E5FF";
-  if (score >= 6000) return "#8B5CF6";
-  if (score >= 4500) return "#10B981";
-  return "#8892B0";
+  if (score >= 9000) return "#F2A93B";
+  if (score >= 7500) return "#F2A93B";
+  if (score >= 6000) return "#FF6B3D";
+  if (score >= 4500) return "#57C99B";
+  return "#A89F8D";
 }
 
 function repLabel(score: number): string {
@@ -151,30 +151,30 @@ function SubscribeModal({ plan, onClose }: SubscribeModalProps) {
             >
               {plan.tier}
             </div>
-            <h3 className="font-display font-bold text-[#F0F4FF] text-lg">{plan.name}</h3>
-            <p className="text-[#8892B0] text-sm mt-0.5">by {plan.agentName}</p>
+            <h3 className="font-display font-bold text-[#F4EFE6] text-lg">{plan.name}</h3>
+            <p className="text-[#A89F8D] text-sm mt-0.5">by {plan.agentName}</p>
           </div>
-          <button onClick={onClose} className="text-[#4A5568] hover:text-[#8892B0] text-xl leading-none">✕</button>
+          <button onClick={onClose} className="text-[#6B6355] hover:text-[#A89F8D] text-xl leading-none">✕</button>
         </div>
 
-        <div className="p-4 rounded-lg bg-[#080B12] border border-[#1A2035] space-y-2.5">
+        <div className="p-4 rounded-lg bg-[#0B0A08] border border-[#2A241B] space-y-2.5">
           <div className="flex justify-between">
             <span className="label">Price</span>
-            <span className="font-mono text-[#F0F4FF] font-semibold">{plan.price} ETH / {plan.interval}d</span>
+            <span className="font-mono text-[#F4EFE6] font-semibold">{plan.price} ETH / {plan.interval}d</span>
           </div>
           <div className="flex justify-between">
             <span className="label">Next renewal</span>
-            <span className="font-mono text-sm text-[#F0F4FF]">
+            <span className="font-mono text-sm text-[#F4EFE6]">
               {new Date(Date.now() + plan.interval * 86400000).toLocaleDateString("en", { month: "short", day: "numeric", year: "numeric" })}
             </span>
           </div>
           <div className="flex justify-between">
             <span className="label">Slots remaining</span>
-            <span className="font-mono text-sm text-[#F0F4FF]">{plan.maxSubscribers - plan.currentSubscribers} of {plan.maxSubscribers}</span>
+            <span className="font-mono text-sm text-[#F4EFE6]">{plan.maxSubscribers - plan.currentSubscribers} of {plan.maxSubscribers}</span>
           </div>
           <div className="flex justify-between">
             <span className="label">Payment goes to</span>
-            <span className="font-mono text-xs text-[#8892B0]">{plan.agentName} wallet</span>
+            <span className="font-mono text-xs text-[#A89F8D]">{plan.agentName} wallet</span>
           </div>
         </div>
 
@@ -183,7 +183,7 @@ function SubscribeModal({ plan, onClose }: SubscribeModalProps) {
           {plan.features.map((f) => (
             <div key={f} className="flex items-center gap-2.5">
               <span className="text-cyan text-xs">✓</span>
-              <span className="text-sm text-[#8892B0]">{f}</span>
+              <span className="text-sm text-[#A89F8D]">{f}</span>
             </div>
           ))}
         </div>
@@ -198,7 +198,7 @@ function SubscribeModal({ plan, onClose }: SubscribeModalProps) {
             {confirming ? "Subscribing..." : `Subscribe — ${plan.price} ETH`}
           </button>
         </div>
-        <p className="text-[#4A5568] text-xs text-center">
+        <p className="text-[#6B6355] text-xs text-center">
           Payments flow directly to the agent's ERC-4337 wallet. Cancel anytime.
         </p>
       </div>
@@ -238,10 +238,10 @@ export function SubscriptionsBrowser() {
     <div className="space-y-8">
       {/* Header */}
       <div className="space-y-1">
-        <h1 className="font-display text-3xl font-bold text-[#F0F4FF]">
+        <h1 className="font-display text-3xl font-bold text-[#F4EFE6]">
           Agent Subscriptions
         </h1>
-        <p className="text-[#8892B0] text-base">
+        <p className="text-[#A89F8D] text-base">
           Pay-per-period access to specialized autonomous agent services.
         </p>
       </div>
@@ -255,7 +255,7 @@ export function SubscriptionsBrowser() {
         ].map((stat) => (
           <div key={stat.label} className="card p-4 stat-block">
             <span className="label">{stat.label}</span>
-            <span className="font-mono text-xl font-bold text-[#F0F4FF] mt-1">{stat.value}</span>
+            <span className="font-mono text-xl font-bold text-[#F4EFE6] mt-1">{stat.value}</span>
           </div>
         ))}
       </div>
@@ -264,7 +264,7 @@ export function SubscriptionsBrowser() {
       <div className="flex flex-col sm:flex-row gap-3">
         {/* Search */}
         <div className="relative flex-1">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#4A5568] text-sm">⌕</span>
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#6B6355] text-sm">⌕</span>
           <input
             className="input pl-8"
             placeholder="Search plans or agents..."
@@ -307,7 +307,7 @@ export function SubscriptionsBrowser() {
             className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-all duration-150 ${
               category === cat
                 ? "bg-cyan/10 text-cyan border-cyan/25"
-                : "bg-[#0D1120] text-[#8892B0] border-[#1A2035] hover:border-[#2A3555] hover:text-[#F0F4FF]"
+                : "bg-[#14110D] text-[#A89F8D] border-[#2A241B] hover:border-[#3A3226] hover:text-[#F4EFE6]"
             }`}
           >
             {cat}
@@ -318,7 +318,7 @@ export function SubscriptionsBrowser() {
       {/* Plan grid */}
       {filtered.length === 0 ? (
         <div className="py-20 text-center">
-          <p className="text-[#8892B0]">No plans match your filters.</p>
+          <p className="text-[#A89F8D]">No plans match your filters.</p>
           <button
             onClick={() => { setCategory("All"); setSearch(""); setSelectedTier("All"); }}
             className="btn-ghost mt-3 text-sm"
@@ -351,7 +351,7 @@ export function SubscriptionsBrowser() {
                       </span>
                       <span className="label">{plan.category}</span>
                     </div>
-                    <h3 className="font-display font-semibold text-[#F0F4FF] text-base leading-snug">
+                    <h3 className="font-display font-semibold text-[#F4EFE6] text-base leading-snug">
                       {plan.name}
                     </h3>
                   </div>
@@ -373,13 +373,13 @@ export function SubscriptionsBrowser() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-medium text-[#F0F4FF]">{plan.agentName}</span>
+                      <span className="text-xs font-medium text-[#F4EFE6]">{plan.agentName}</span>
                       <span className="text-[10px] font-mono px-1.5 py-0.5 rounded" style={{ color, background: `${color}12` }}>
                         {repLabel(plan.agentRep)}
                       </span>
                     </div>
                     <div className="flex items-center gap-1.5 mt-0.5">
-                      <div className="h-1 w-16 rounded-full bg-[#1A2035] overflow-hidden">
+                      <div className="h-1 w-16 rounded-full bg-[#2A241B] overflow-hidden">
                         <div
                           className="h-full rounded-full"
                           style={{ width: `${(plan.agentRep / 10000) * 100}%`, background: color }}
@@ -391,7 +391,7 @@ export function SubscriptionsBrowser() {
                 </div>
 
                 {/* Description */}
-                <p className="text-sm text-[#8892B0] leading-relaxed line-clamp-3 flex-1">
+                <p className="text-sm text-[#A89F8D] leading-relaxed line-clamp-3 flex-1">
                   {plan.description}
                 </p>
 
@@ -400,7 +400,7 @@ export function SubscriptionsBrowser() {
                   {plan.features.map((f) => (
                     <div key={f} className="flex items-start gap-1.5">
                       <span className="text-cyan text-[10px] mt-0.5 flex-shrink-0">✓</span>
-                      <span className="text-[11px] text-[#8892B0] leading-snug">{f}</span>
+                      <span className="text-[11px] text-[#A89F8D] leading-snug">{f}</span>
                     </div>
                   ))}
                 </div>
@@ -409,7 +409,7 @@ export function SubscriptionsBrowser() {
                 <div>
                   <div className="flex justify-between mb-1.5">
                     <span className="label">Capacity</span>
-                    <span className="font-mono text-xs text-[#F0F4FF]">
+                    <span className="font-mono text-xs text-[#F4EFE6]">
                       {plan.currentSubscribers}/{plan.maxSubscribers}
                     </span>
                   </div>
@@ -432,8 +432,8 @@ export function SubscriptionsBrowser() {
                   onClick={() => !isFull && setSubscribing(plan)}
                   className={`w-full py-2.5 rounded-md text-sm font-display font-semibold border transition-all duration-200 ${
                     isFull
-                      ? "border-[#2A3555] text-[#4A5568] cursor-not-allowed"
-                      : "border-transparent text-[#080B12] hover:opacity-90 active:scale-[0.98]"
+                      ? "border-[#3A3226] text-[#6B6355] cursor-not-allowed"
+                      : "border-transparent text-[#0B0A08] hover:opacity-90 active:scale-[0.98]"
                   }`}
                   style={isFull ? {} : { background: style.color }}
                   disabled={isFull}
