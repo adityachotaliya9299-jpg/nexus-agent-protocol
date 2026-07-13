@@ -8,7 +8,7 @@ const STATUS_CONFIG: Record<number, { label: string; color: string; bg: string; 
   0: { label: "Open",       color: "text-emerald", bg: "bg-emerald/10 border-emerald/20",  icon: CheckCircle },
   1: { label: "Assigned",   color: "text-amber",   bg: "bg-amber/10 border-amber/20",      icon: Zap },
   2: { label: "Completed",  color: "text-cyan",    bg: "bg-cyan/10 border-cyan/20",         icon: CheckCircle },
-  3: { label: "Cancelled",  color: "text-[#8892B0]", bg: "bg-[#2A3555]/30 border-[#2A3555]", icon: Clock },
+  3: { label: "Cancelled",  color: "text-[#A89F8D]", bg: "bg-[#3A3226]/30 border-[#3A3226]", icon: Clock },
   5: { label: "Disputed",   color: "text-rose",    bg: "bg-rose/10 border-rose/20",         icon: AlertCircle },
 };
 
@@ -58,32 +58,32 @@ function TaskCard({ task }: { task: Task }) {
               </span>
             )}
           </div>
-          <h3 className="font-display font-semibold text-[#F0F4FF] group-hover:text-cyan transition-colors line-clamp-1">
+          <h3 className="font-display font-semibold text-[#F4EFE6] group-hover:text-cyan transition-colors line-clamp-1">
             {task.title}
           </h3>
         </div>
 
         {/* Reward */}
         <div className="text-right shrink-0">
-          <div className="font-display font-bold text-xl text-[#F0F4FF]">
+          <div className="font-display font-bold text-xl text-[#F4EFE6]">
             {formatEth(task.reward, 2)}
           </div>
-          <div className="font-mono text-xs text-[#8892B0]">ETH</div>
+          <div className="font-mono text-xs text-[#A89F8D]">ETH</div>
         </div>
       </div>
 
       {/* Description */}
-      <p className="text-sm text-[#8892B0] leading-relaxed line-clamp-2">
+      <p className="text-sm text-[#A89F8D] leading-relaxed line-clamp-2">
         {task.description}
       </p>
 
       {/* Footer row */}
-      <div className="flex items-center justify-between pt-4 border-t border-[#1A2035]">
+      <div className="flex items-center justify-between pt-4 border-t border-[#2A241B]">
         <div className="flex items-center gap-4">
           {/* Deadline */}
           <div className="flex items-center gap-1.5">
-            <Clock className={`w-3.5 h-3.5 ${isUrgent ? "text-rose" : "text-[#4A5568]"}`} />
-            <span className={`font-mono text-xs ${isUrgent ? "text-rose" : "text-[#8892B0]"}`}>
+            <Clock className={`w-3.5 h-3.5 ${isUrgent ? "text-rose" : "text-[#6B6355]"}`} />
+            <span className={`font-mono text-xs ${isUrgent ? "text-rose" : "text-[#A89F8D]"}`}>
               {timeLeft(task.deadline)}
             </span>
           </div>
@@ -100,10 +100,10 @@ function TaskCard({ task }: { task: Task }) {
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="font-mono text-[10px] text-[#4A5568]">
+          <span className="font-mono text-[10px] text-[#6B6355]">
             by {shortAddress(task.client)} · {timeAgo(task.createdAt)}
           </span>
-          <ArrowRight className="w-3.5 h-3.5 text-[#4A5568] group-hover:text-cyan transition-colors" />
+          <ArrowRight className="w-3.5 h-3.5 text-[#6B6355] group-hover:text-cyan transition-colors" />
         </div>
       </div>
     </Link>
@@ -117,12 +117,12 @@ export function TaskGrid() {
   return (
     <div>
       <div className="flex items-center justify-between mb-5">
-        <span className="font-mono text-xs text-[#8892B0]">
+        <span className="font-mono text-xs text-[#A89F8D]">
           <span className="text-emerald font-medium">{open.length} open</span>
           {" · "}
-          <span className="text-[#F0F4FF] font-medium">{MOCK_TASKS.length}</span> total tasks
+          <span className="text-[#F4EFE6] font-medium">{MOCK_TASKS.length}</span> total tasks
         </span>
-        <span className="font-mono text-xs text-[#4A5568]">Sorted by reward</span>
+        <span className="font-mono text-xs text-[#6B6355]">Sorted by reward</span>
       </div>
 
       {/* Open tasks */}
@@ -142,7 +142,7 @@ export function TaskGrid() {
       {other.length > 0 && (
         <div>
           <div className="flex items-center gap-2 mb-4">
-            <div className="w-2 h-2 rounded-full bg-[#4A5568]" />
+            <div className="w-2 h-2 rounded-full bg-[#6B6355]" />
             <span className="label">In Progress / Completed</span>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
@@ -153,7 +153,7 @@ export function TaskGrid() {
 
       <div className="mt-10 text-center">
         <button className="btn-secondary px-8">Load more tasks</button>
-        <p className="mt-3 font-mono text-xs text-[#4A5568]">
+        <p className="mt-3 font-mono text-xs text-[#6B6355]">
           Showing {MOCK_TASKS.length} of {MOCK_STATS.totalTasks.toLocaleString()} tasks
         </p>
       </div>
