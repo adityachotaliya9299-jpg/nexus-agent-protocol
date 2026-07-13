@@ -25,8 +25,8 @@ export function TaskBidList({ task }: { task: Task }) {
     <div className="card p-6">
       <div className="flex items-center justify-between mb-5">
         <div>
-          <h3 className="font-display font-semibold text-[#F0F4FF]">Agent Bids</h3>
-          <p className="text-xs text-[#8892B0] mt-0.5">
+          <h3 className="font-display font-semibold text-[#F4EFE6]">Agent Bids</h3>
+          <p className="text-xs text-[#A89F8D] mt-0.5">
             {bids.length > 0 ? `${bids.length} proposals received` : "No bids yet"}
           </p>
         </div>
@@ -36,9 +36,9 @@ export function TaskBidList({ task }: { task: Task }) {
       </div>
 
       {bids.length === 0 ? (
-        <div className="text-center py-10 border border-dashed border-[#1A2035] rounded-lg">
-          <div className="font-mono text-sm text-[#4A5568] mb-2">No bids submitted yet</div>
-          <div className="font-mono text-xs text-[#2A3555]">
+        <div className="text-center py-10 border border-dashed border-[#2A241B] rounded-lg">
+          <div className="font-mono text-sm text-[#6B6355] mb-2">No bids submitted yet</div>
+          <div className="font-mono text-xs text-[#3A3226]">
             {task.status === 0
               ? "Registered agents can submit proposals"
               : "Task is no longer accepting bids"}
@@ -55,16 +55,16 @@ export function TaskBidList({ task }: { task: Task }) {
 
             return (
               <div key={bid.agentId}
-                className="p-4 rounded-lg bg-[#080B12] border border-[#1A2035] hover:border-[#2A3555] transition-all">
+                className="p-4 rounded-lg bg-[#0B0A08] border border-[#2A241B] hover:border-[#3A3226] transition-all">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
                     {/* Agent name */}
                     <Link href={`/agents/${agent.agentId}`}
-                      className="font-display font-semibold text-sm text-[#F0F4FF] hover:text-cyan transition-colors flex items-center gap-1.5">
+                      className="font-display font-semibold text-sm text-[#F4EFE6] hover:text-cyan transition-colors flex items-center gap-1.5">
                       {agent.name}
                       <ArrowRight className="w-3 h-3" />
                     </Link>
-                    <div className="font-mono text-[10px] text-[#4A5568] mt-0.5">
+                    <div className="font-mono text-[10px] text-[#6B6355] mt-0.5">
                       {shortAddress(agent.owner)} · submitted {timeAgo(bid.submittedAt)}
                     </div>
 
@@ -82,7 +82,7 @@ export function TaskBidList({ task }: { task: Task }) {
                       <Clock className="w-3.5 h-3.5" />
                       <span className="font-mono text-xs">{bid.estimatedDays}d est.</span>
                     </div>
-                    <div className="flex items-center gap-1 text-[#8892B0] mt-1">
+                    <div className="flex items-center gap-1 text-[#A89F8D] mt-1">
                       <Star className="w-3.5 h-3.5" />
                       <span className="font-mono text-xs">{agent.totalTasksCompleted} tasks</span>
                     </div>
@@ -90,8 +90,8 @@ export function TaskBidList({ task }: { task: Task }) {
                 </div>
 
                 {/* Assign button (client only) */}
-                <div className="mt-3 pt-3 border-t border-[#1A2035] flex justify-between items-center">
-                  <span className="font-mono text-[10px] text-[#4A5568]">
+                <div className="mt-3 pt-3 border-t border-[#2A241B] flex justify-between items-center">
+                  <span className="font-mono text-[10px] text-[#6B6355]">
                     Price: {agent.pricePerTask} ETH
                   </span>
                   <button className="text-xs font-mono text-cyan hover:text-cyan/80 transition-colors">
