@@ -44,7 +44,7 @@ export function TaskTimeline({ task }: { task: Task }) {
 
   return (
     <div className="card p-6">
-      <h3 className="font-display font-semibold text-[#F0F4FF] mb-5">Task Timeline</h3>
+      <h3 className="font-display font-semibold text-[#F4EFE6] mb-5">Task Timeline</h3>
 
       <div className="space-y-0">
         {steps.map((step, i) => {
@@ -54,8 +54,8 @@ export function TaskTimeline({ task }: { task: Task }) {
             ? "text-emerald"
             : step.active
             ? "text-amber"
-            : "text-[#2A3555]";
-          const lineColor = step.done ? "bg-emerald" : "bg-[#1A2035]";
+            : "text-[#3A3226]";
+          const lineColor = step.done ? "bg-emerald" : "bg-[#2A241B]";
 
           return (
             <div key={step.label} className="flex gap-4">
@@ -72,11 +72,11 @@ export function TaskTimeline({ task }: { task: Task }) {
               {/* Content */}
               <div className={`pb-6 ${isLast ? "" : ""}`}>
                 <div className={`font-display font-semibold text-sm ${
-                  step.done ? "text-[#F0F4FF]" : step.active ? "text-amber" : "text-[#4A5568]"
+                  step.done ? "text-[#F4EFE6]" : step.active ? "text-amber" : "text-[#6B6355]"
                 }`}>
                   {step.label}
                 </div>
-                <div className="font-mono text-xs text-[#4A5568] mt-0.5">{step.desc}</div>
+                <div className="font-mono text-xs text-[#6B6355] mt-0.5">{step.desc}</div>
               </div>
             </div>
           );
