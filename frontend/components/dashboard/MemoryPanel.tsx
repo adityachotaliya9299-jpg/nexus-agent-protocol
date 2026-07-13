@@ -5,10 +5,10 @@ import { useState } from "react";
 type MemoryType = "TASK_HISTORY" | "CONTEXT" | "SKILLS" | "PREFERENCES" | "KNOWLEDGE" | "STATE";
 
 const MEMORY_COLORS: Record<MemoryType, string> = {
-  TASK_HISTORY: "#00E5FF",
-  CONTEXT: "#8B5CF6",
-  SKILLS: "#10B981",
-  PREFERENCES: "#F59E0B",
+  TASK_HISTORY: "#F2A93B",
+  CONTEXT: "#FF6B3D",
+  SKILLS: "#57C99B",
+  PREFERENCES: "#F2A93B",
   KNOWLEDGE: "#6366F1",
   STATE: "#EC4899",
 };
@@ -92,9 +92,9 @@ export function MemoryPanel({ compact = false }: MemoryPanelProps) {
     <div className="card p-6 space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="font-display font-semibold text-[#F0F4FF] text-lg">Memory</h2>
+          <h2 className="font-display font-semibold text-[#F4EFE6] text-lg">Memory</h2>
           {!compact && (
-            <p className="text-[#8892B0] text-sm mt-0.5">
+            <p className="text-[#A89F8D] text-sm mt-0.5">
               IPFS-pinned agent memory snapshots
             </p>
           )}
@@ -110,7 +110,7 @@ export function MemoryPanel({ compact = false }: MemoryPanelProps) {
       </div>
 
       {!compact && (
-        <div className="p-3.5 rounded-lg bg-[#080B12] border border-cyan/15">
+        <div className="p-3.5 rounded-lg bg-[#0B0A08] border border-cyan/15">
           <div className="flex items-center gap-2 mb-2">
             <span
               className="w-2 h-2 rounded-full"
@@ -127,7 +127,7 @@ export function MemoryPanel({ compact = false }: MemoryPanelProps) {
               {latest.type}
             </span>
           </div>
-          <p className="text-sm text-[#F0F4FF]">{latest.description}</p>
+          <p className="text-sm text-[#F4EFE6]">{latest.description}</p>
           <div className="flex items-center gap-3 mt-2">
             <span className="label font-mono">{shortCid(latest.cid)}</span>
             <span className="label">{latest.size}</span>
@@ -152,7 +152,7 @@ export function MemoryPanel({ compact = false }: MemoryPanelProps) {
             className={`w-full flex items-center gap-3 p-3 rounded-lg border transition-all duration-150 text-left ${
               selectedVersion === snap.version
                 ? "bg-[#0F1A2E] border-cyan/20"
-                : "bg-[#080B12] border-[#1A2035] hover:border-[#2A3555]"
+                : "bg-[#0B0A08] border-[#2A241B] hover:border-[#3A3226]"
             }`}
           >
             <div
@@ -161,7 +161,7 @@ export function MemoryPanel({ compact = false }: MemoryPanelProps) {
             />
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
-                <span className="font-mono text-xs text-[#F0F4FF]">v{snap.version}</span>
+                <span className="font-mono text-xs text-[#F4EFE6]">v{snap.version}</span>
                 <span
                   className="text-[10px] px-1.5 py-0.5 rounded font-mono"
                   style={{
@@ -173,7 +173,7 @@ export function MemoryPanel({ compact = false }: MemoryPanelProps) {
                 </span>
               </div>
               {!compact && (
-                <p className="text-xs text-[#8892B0] truncate mt-0.5">{snap.description}</p>
+                <p className="text-xs text-[#A89F8D] truncate mt-0.5">{snap.description}</p>
               )}
             </div>
             <div className="text-right flex-shrink-0">
@@ -192,15 +192,15 @@ export function MemoryPanel({ compact = false }: MemoryPanelProps) {
       </div>
 
       {!compact && (
-        <div className="pt-4 border-t border-[#1A2035] space-y-3">
+        <div className="pt-4 border-t border-[#2A241B] space-y-3">
           <h3 className="label">Access Grants</h3>
           {ACCESS_GRANTS.map((grant) => (
             <div
               key={grant.address}
-              className="flex items-center gap-3 p-3 rounded-lg bg-[#080B12] border border-[#1A2035]"
+              className="flex items-center gap-3 p-3 rounded-lg bg-[#0B0A08] border border-[#2A241B]"
             >
               <div className="flex-1">
-                <div className="font-mono text-xs text-[#F0F4FF]">
+                <div className="font-mono text-xs text-[#F4EFE6]">
                   {shortAddress(grant.address)}
                 </div>
                 <div className="label text-[10px] mt-0.5">Expires: {grant.expires}</div>
@@ -209,17 +209,17 @@ export function MemoryPanel({ compact = false }: MemoryPanelProps) {
                 className={`text-xs font-mono font-semibold px-2 py-0.5 rounded ${
                   grant.level === "WRITE"
                     ? "bg-violet/10 text-violet border border-violet/20"
-                    : "bg-[#1A2035] text-[#8892B0] border border-[#2A3555]"
+                    : "bg-[#2A241B] text-[#A89F8D] border border-[#3A3226]"
                 }`}
               >
                 {grant.level}
               </span>
-              <button className="text-[#4A5568] hover:text-red-400 transition-colors text-xs">
+              <button className="text-[#6B6355] hover:text-red-400 transition-colors text-xs">
                 ✕
               </button>
             </div>
           ))}
-          <button className="btn-ghost text-xs w-full border border-dashed border-[#2A3555] py-2">
+          <button className="btn-ghost text-xs w-full border border-dashed border-[#3A3226] py-2">
             + Grant Access
           </button>
         </div>
@@ -232,7 +232,7 @@ export function MemoryPanel({ compact = false }: MemoryPanelProps) {
             onClick={() => setShowWriteModal(false)}
           />
           <div className="relative card p-6 w-full max-w-md space-y-4">
-            <h3 className="font-display font-bold text-[#F0F4FF] text-lg">Write Memory Snapshot</h3>
+            <h3 className="font-display font-bold text-[#F4EFE6] text-lg">Write Memory Snapshot</h3>
             <div>
               <label className="label block mb-1.5">Memory Type</label>
               <select className="input">
