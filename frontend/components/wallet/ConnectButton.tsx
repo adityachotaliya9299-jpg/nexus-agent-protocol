@@ -33,7 +33,7 @@ export function ConnectButton() {
                 {/* Chain indicator */}
                 <button
                   onClick={openChainModal}
-                  className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-md bg-[#0D1120] border border-[#1A2035] text-xs font-mono text-[#8892B0] hover:border-cyan/30 hover:text-[#F0F4FF] transition-all"
+                  className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-md bg-[#14110D] border border-[#2A241B] text-xs font-mono text-[#A89F8D] hover:border-cyan/30 hover:text-[#F4EFE6] transition-all"
                 >
                   {chain.hasIcon && chain.iconUrl && (
                     <img
@@ -48,16 +48,16 @@ export function ConnectButton() {
                 {/* Account button */}
                 <button
                   onClick={openAccountModal}
-                  className="flex items-center gap-2 px-3 py-2 rounded-md bg-[#0D1120] border border-[#1A2035] hover:border-cyan/30 transition-all group"
+                  className="flex items-center gap-2 px-3 py-2 rounded-md bg-[#14110D] border border-[#2A241B] hover:border-cyan/30 transition-all group"
                 >
                   {/* Balance */}
                   {account.displayBalance && (
-                    <span className="hidden md:block font-mono text-xs text-[#8892B0] group-hover:text-[#F0F4FF] transition-colors">
+                    <span className="hidden md:block font-mono text-xs text-[#A89F8D] group-hover:text-[#F4EFE6] transition-colors">
                       {account.displayBalance}
                     </span>
                   )}
                   {/* Address */}
-                  <span className="font-mono text-xs text-[#F0F4FF]">
+                  <span className="font-mono text-xs text-[#F4EFE6]">
                     {shortAddress(account.address)}
                   </span>
                   {/* Avatar */}
