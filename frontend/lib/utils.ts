@@ -33,12 +33,12 @@ export function repLabel(score: number): string {
 }
 
 export function repColor(score: number): string {
-  if (score >= 9000) return "#F59E0B";
-  if (score >= 7500) return "#00E5FF";
-  if (score >= 6000) return "#8B5CF6";
-  if (score >= 4500) return "#10B981";
+  if (score >= 9000) return "#F2A93B";
+  if (score >= 7500) return "#F2A93B";
+  if (score >= 6000) return "#FF6B3D";
+  if (score >= 4500) return "#57C99B";
   if (score >= 3000) return "#6366F1";
-  return "#8892B0";
+  return "#A89F8D";
 }
 
 
