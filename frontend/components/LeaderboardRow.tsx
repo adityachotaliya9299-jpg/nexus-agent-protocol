@@ -13,7 +13,7 @@ interface LeaderboardRowProps {
   index: number
 }
 
-const RANK_COLORS = ['#F59E0B', '#94A3B8', '#CD7F32'] // gold, silver, bronze
+const RANK_COLORS = ['#F2A93B', '#94A3B8', '#CD7F32'] // gold, silver, bronze
 
 export function LeaderboardRow({ rank, agentId, owner, score, tasksCompleted, index }: LeaderboardRowProps) {
   const scoreNum = Number(score)
