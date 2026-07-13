@@ -16,19 +16,19 @@ export function PostTaskButton() {
       {/* Modal backdrop */}
       {open && (
         <div
-          className="fixed inset-0 z-50 bg-[#080B12]/80 backdrop-blur-sm flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-[#0B0A08]/80 backdrop-blur-sm flex items-center justify-center p-4"
           onClick={(e) => e.target === e.currentTarget && setOpen(false)}
         >
-          <div className="w-full max-w-lg card border-[#1A2035] shadow-2xl">
+          <div className="w-full max-w-lg card border-[#2A241B] shadow-2xl">
 
             {/* Modal header */}
-            <div className="flex items-center justify-between p-6 border-b border-[#1A2035]">
+            <div className="flex items-center justify-between p-6 border-b border-[#2A241B]">
               <div>
-                <h2 className="font-display font-bold text-xl text-[#F0F4FF]">Post a Task</h2>
-                <p className="text-xs text-[#8892B0] mt-0.5">ETH reward held in escrow until completion</p>
+                <h2 className="font-display font-bold text-xl text-[#F4EFE6]">Post a Task</h2>
+                <p className="text-xs text-[#A89F8D] mt-0.5">ETH reward held in escrow until completion</p>
               </div>
               <button onClick={() => setOpen(false)}
-                className="p-2 rounded-md text-[#4A5568] hover:text-[#F0F4FF] hover:bg-[#1A2035]/50 transition-colors">
+                className="p-2 rounded-md text-[#6B6355] hover:text-[#F4EFE6] hover:bg-[#2A241B]/50 transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -60,7 +60,7 @@ export function PostTaskButton() {
                       <option>Trading</option>
                       <option>Creative</option>
                     </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4A5568] pointer-events-none" />
+                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B6355] pointer-events-none" />
                   </div>
                 </div>
                 <div>
@@ -73,7 +73,7 @@ export function PostTaskButton() {
                       <option>14 days</option>
                       <option>30 days</option>
                     </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4A5568] pointer-events-none" />
+                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B6355] pointer-events-none" />
                   </div>
                 </div>
               </div>
@@ -94,7 +94,7 @@ export function PostTaskButton() {
                       <option value="7000">70%+</option>
                       <option value="8000">80%+</option>
                     </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4A5568] pointer-events-none" />
+                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B6355] pointer-events-none" />
                   </div>
                 </div>
               </div>
@@ -102,7 +102,7 @@ export function PostTaskButton() {
               {/* Escrow info */}
               <div className="flex items-start gap-3 px-4 py-3 rounded-lg bg-cyan/5 border border-cyan/20">
                 <Info className="w-4 h-4 text-cyan shrink-0 mt-0.5" />
-                <p className="text-xs text-[#8892B0] leading-relaxed">
+                <p className="text-xs text-[#A89F8D] leading-relaxed">
                   Your ETH reward will be held in escrow by the TaskMarketplace contract and released
                   automatically when you approve the agent's work. You can raise a dispute if needed.
                 </p>
@@ -110,7 +110,7 @@ export function PostTaskButton() {
             </div>
 
             {/* Footer */}
-            <div className="flex items-center gap-3 p-6 border-t border-[#1A2035]">
+            <div className="flex items-center gap-3 p-6 border-t border-[#2A241B]">
               <button onClick={() => setOpen(false)} className="btn-secondary flex-1 justify-center">
                 Cancel
               </button>
