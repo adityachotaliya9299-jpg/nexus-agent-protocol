@@ -1,60 +1,142 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { usePathname } from "next/navigation";
+import { ChevronDown, Menu, X } from "lucide-react";
 import { ConnectButton } from "@/components/wallet/ConnectButton";
+import { Logo } from "@/components/brand/Logo";
 
-const NAV_LINKS = [
+const PRIMARY_LINKS = [
   { href: "/agents", label: "Agents" },
   { href: "/tasks", label: "Marketplace" },
-  { href: "/subscriptions", label: "Subscriptions" },
-  { href: "/dashboard", label: "Dashboard" },
-  { href: '/stake', label: 'Stake' }
+  { href: "/escrow", label: "Escrow" },
+  { href: "/workflows", label: "Workflows" },
 ];
+
+const GOVERN_LINKS = [
+  { href: "/dao", label: "Agent DAOs", hint: "Teams that split revenue trustlessly" },
+  { href: "/grants", label: "Community Grants", hint: "Treasury funding, voted on-chain" },
+];
+
+const MORE_LINKS = [
+  { href: "/discover", label: "Discover", hint: "Search & leaderboards" },
+  { href: "/subscriptions", label: "Subscriptions", hint: "Recurring agent access" },
+  { href: "/results", label: "Results", hint: "Arweave-anchored proofs of work" },
+  { href: "/dashboard/subtasks", label: "Sub-tasks", hint: "Agents hiring agents" },
+  { href: "/stake", label: "Stake", hint: "Back agents with ETH" },
+  { href: "/admin/guard", label: "Protocol Guard", hint: "Circuit breaker (owner)" },
+];
+
+function Dropdown({
+  label,
+  links,
+  active,
+}: {
+  label: string;
+  links: { href: string; label: string; hint: string }[];
+  active: boolean;
+}) {
+  return (
+    <div className="relative group">
+      <button
+        className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+          active ? "text-gold" : "text-text-secondary hover:text-bone"
+        }`}
+      >
+        {label}
+        <ChevronDown size={13} className="transition-transform duration-200 group-hover:rotate-180" />
+      </button>
+      <div className="absolute left-0 top-full pt-2 opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-200 z-50">
+        <div className="w-72 ag-panel p-2 shadow-[0_24px_60px_-12px_rgba(0,0,0,0.7)]">
+          {links.map((l) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              className="block px-4 py-3 rounded-2xl hover:bg-raised transition-colors"
+            >
+              <div className="text-sm font-semibold text-bone">{l.label}</div>
+              <div className="text-xs text-text-muted mt-0.5">{l.hint}</div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export function Navbar() {
   const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+
+  const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[#1A2035] bg-[#080B12]/90 backdrop-blur-md">
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5 flex-shrink-0">
-          <div className="w-8 h-8 rounded-lg bg-cyan/10 border border-cyan/20 flex items-center justify-center">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M8 1L14 4.5V11.5L8 15L2 11.5V4.5L8 1Z" stroke="#00E5FF" strokeWidth="1.5" strokeLinejoin="round" />
-              <path d="M8 5L11 6.75V10.25L8 12L5 10.25V6.75L8 5Z" fill="#00E5FF" fillOpacity="0.3" stroke="#00E5FF" strokeWidth="1" strokeLinejoin="round" />
-            </svg>
-          </div>
-          <div>
-            <div className="font-display font-bold text-sm text-[#F0F4FF] leading-none">NEXUS</div>
-            <div className="font-mono text-[9px] text-[#4A5568] leading-none tracking-widest uppercase">Agent Protocol</div>
-          </div>
+    <header className="sticky top-0 z-40 border-b border-border/70 bg-void/85 backdrop-blur-xl">
+      <div className="max-w-7xl mx-auto px-6 h-[68px] flex items-center justify-between gap-6">
+        <Link href="/" className="flex-shrink-0" onClick={() => setOpen(false)}>
+          <Logo />
         </Link>
 
-        {/* Nav links */}
-        <nav className="hidden md:flex items-center gap-1">
-          {NAV_LINKS.map((link) => {
-            const isActive = pathname === link.href || pathname.startsWith(link.href + "/");
-            return (
+        <nav className="hidden lg:flex items-center gap-0.5">
+          {PRIMARY_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                isActive(link.href)
+                  ? "bg-gold/10 text-gold border border-gold/20"
+                  : "text-text-secondary hover:text-bone hover:bg-raised"
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
+          <Dropdown label="Govern" links={GOVERN_LINKS} active={isActive("/dao") || isActive("/grants")} />
+          <Dropdown label="More" links={MORE_LINKS} active={MORE_LINKS.some((l) => isActive(l.href))} />
+          <Link
+            href="/dashboard"
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+              isActive("/dashboard")
+                ? "bg-gold/10 text-gold border border-gold/20"
+                : "text-text-secondary hover:text-bone hover:bg-raised"
+            }`}
+          >
+            Dashboard
+          </Link>
+        </nav>
+
+        <div className="flex items-center gap-3">
+          <ConnectButton />
+          <button
+            className="lg:hidden text-text-secondary hover:text-bone p-2"
+            onClick={() => setOpen(!open)}
+            aria-label="Toggle menu"
+          >
+            {open ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
+      </div>
+
+      {/* mobile menu */}
+      {open && (
+        <div className="lg:hidden border-t border-border bg-void/95 backdrop-blur-xl px-6 py-4 space-y-1 max-h-[75vh] overflow-y-auto">
+          {[...PRIMARY_LINKS, ...GOVERN_LINKS, ...MORE_LINKS, { href: "/dashboard", label: "Dashboard" }].map(
+            (link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-150 ${
-                  isActive
-                    ? "bg-cyan/10 text-cyan border border-cyan/15"
-                    : "text-[#8892B0] hover:text-[#F0F4FF] hover:bg-[#1A2035]/50"
+                onClick={() => setOpen(false)}
+                className={`block px-4 py-3 rounded-xl text-sm font-medium ${
+                  isActive(link.href) ? "bg-gold/10 text-gold" : "text-text-secondary hover:bg-raised hover:text-bone"
                 }`}
               >
                 {link.label}
               </Link>
-            );
-          })}
-        </nav>
-
-        {/* Wallet */}
-        <ConnectButton />
-      </div>
+            )
+          )}
+        </div>
+      )}
     </header>
   );
 }
