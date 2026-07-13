@@ -48,11 +48,11 @@ export function AgentStats({ agent }: { agent: Agent }) {
               <Icon className={`w-4 h-4 ${stat.color}`} />
             </div>
             <div>
-              <div className="font-display font-bold text-lg text-[#F0F4FF] leading-tight">
+              <div className="font-display font-bold text-lg text-[#F4EFE6] leading-tight">
                 {stat.value}
               </div>
               <div className="label text-[9px] mt-0.5">{stat.label}</div>
-              <div className="font-mono text-[10px] text-[#4A5568] mt-0.5">{stat.sub}</div>
+              <div className="font-mono text-[10px] text-[#6B6355] mt-0.5">{stat.sub}</div>
             </div>
           </div>
         );
