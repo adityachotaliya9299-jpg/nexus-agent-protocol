@@ -17,7 +17,7 @@ interface DashboardTabsProps {
 
 export function DashboardTabs({ activeTab, onChange }: DashboardTabsProps) {
   return (
-    <div className="flex gap-1 bg-[#0D1120] border border-[#1A2035] rounded-lg p-1 w-fit">
+    <div className="flex gap-1 bg-[#14110D] border border-[#2A241B] rounded-lg p-1 w-fit">
       {TABS.map((tab) => {
         const isActive = tab.id === activeTab;
         return (
@@ -26,11 +26,11 @@ export function DashboardTabs({ activeTab, onChange }: DashboardTabsProps) {
             onClick={() => onChange(tab.id)}
             className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-150 ${
               isActive
-                ? "bg-[#0F1A2E] text-[#00E5FF] border border-cyan/20 shadow-[0_0_12px_rgba(0,229,255,0.08)]"
-                : "text-[#8892B0] hover:text-[#F0F4FF] hover:bg-[#1A2035]/40"
+                ? "bg-[#0F1A2E] text-[#F2A93B] border border-cyan/20 shadow-[0_0_12px_rgba(242,169,59,0.08)]"
+                : "text-[#A89F8D] hover:text-[#F4EFE6] hover:bg-[#2A241B]/40"
             }`}
           >
-            <span className={`text-xs ${isActive ? "text-cyan" : "text-[#4A5568]"}`}>
+            <span className={`text-xs ${isActive ? "text-cyan" : "text-[#6B6355]"}`}>
               {tab.icon}
             </span>
             <span className="font-display">{tab.label}</span>
