@@ -49,7 +49,7 @@ export function TaskFilters() {
       <div className="flex flex-col sm:flex-row gap-3">
         {/* Search */}
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4A5568]" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B6355]" />
           <input
             type="text"
             placeholder="Search tasks by title or description..."
@@ -59,7 +59,7 @@ export function TaskFilters() {
           />
           {search && (
             <button onClick={() => setSearch("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4A5568] hover:text-[#8892B0]">
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6B6355] hover:text-[#A89F8D]">
               <X className="w-4 h-4" />
             </button>
           )}
@@ -88,7 +88,7 @@ export function TaskFilters() {
 
       {hasFilters && (
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="flex items-center gap-1.5 text-xs text-[#8892B0]">
+          <span className="flex items-center gap-1.5 text-xs text-[#A89F8D]">
             <SlidersHorizontal className="w-3 h-3" /> Filters:
           </span>
           {status && (
@@ -110,7 +110,7 @@ export function TaskFilters() {
             </button>
           )}
           <button onClick={() => { setSearch(""); setStatus(""); setCategory(""); setMinRep(""); setSort("reward_desc"); }}
-            className="text-xs text-[#4A5568] hover:text-[#8892B0] ml-1 underline">
+            className="text-xs text-[#6B6355] hover:text-[#A89F8D] ml-1 underline">
             Clear all
           </button>
         </div>
