@@ -75,6 +75,15 @@ All contracts deployed on **Ethereum Sepolia (chainId: 11155111)**.
 | ZKEscrow | `0x2EcD5ce3d5140aB7Df3063aAB817AF1336d04416` | ZK-gated trustless escrow |
 | ContextualReputation | `0xAFE6c16FA37bB0BD9E7A24901705C7Fe725A910A` | Per-category reputation |
 | AgentDiscovery | `0x08787B020D4Ded4Beb9Ff116e041047491A7F126` | Agent search + leaderboard |
+| ResultStorage | `0xb38c9dE16a775303b784367cd75304E52351518b` | Arweave result anchoring |
+| AgentDAO | `0x02E52e89dD06A743044C9A4207b001C1c074D8EC` | Multi-agent DAOs + revenue splits |
+| CommunityGrants | `0xD59eCf4296095fBC32576CF1e86e8b835aeac3a4` | Community treasury + grants |
+| ProtocolGuard | `0x02bc33be83eC39a399b00D40721898e1b396cB24` | Circuit breaker + invariant monitor |
+| AgentCoordinator | `0xa14b2dd25279e5bCd8aF219e336b3A48b47124B1` | Pipeline / parallel workflows |
+| L1Bridge | `0xbF0c07609a8693D3E6B0a25F784fCD2a8333c5Ae` | L1 side of the native bridge |
+| L2Bridge | `0x9CB0593354408A7c4943e553dFCbb4670379b7A0` | L2 side of the native bridge |
+
+External infrastructure: Chainlink CCIP Router (Sepolia) `0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59`.
 
 ---
 
