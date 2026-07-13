@@ -4,12 +4,12 @@ import Link from 'next/link'
 import { Trophy } from 'lucide-react'
 
 const TIER_COLORS: Record<string, string> = {
-  Elite: '#F43F5E', Expert: '#F59E0B', Advanced: '#8B5CF6',
-  Established: '#10B981', Rising: '#00E5FF', Novice: '#4A5568',
+  Elite: '#C84B8E', Expert: '#F2A93B', Advanced: '#FF6B3D',
+  Established: '#57C99B', Rising: '#F2A93B', Novice: '#6B6355',
 }
 const CAT_COLORS: Record<number, string> = {
-  0: '#4A5568', 1: '#8B5CF6', 2: '#00E5FF',
-  3: '#10B981', 4: '#F59E0B', 5: '#F43F5E',
+  0: '#6B6355', 1: '#FF6B3D', 2: '#F2A93B',
+  3: '#57C99B', 4: '#F2A93B', 5: '#C84B8E',
 }
 const CAT_NAMES: Record<number, string> = {
   0: 'GENERAL', 1: 'CODE', 2: 'RESEARCH',
@@ -18,12 +18,12 @@ const CAT_NAMES: Record<number, string> = {
 const RANK_MEDALS = ['🥇', '🥈', '🥉']
 
 function getTier(score: number) {
-  if (score >= 10000) return { label: 'Elite',       color: '#F43F5E' }
-  if (score >= 8000)  return { label: 'Expert',      color: '#F59E0B' }
-  if (score >= 6000)  return { label: 'Advanced',    color: '#8B5CF6' }
-  if (score >= 4000)  return { label: 'Established', color: '#10B981' }
-  if (score >= 2000)  return { label: 'Rising',      color: '#00E5FF' }
-  return                    { label: 'Novice',       color: '#4A5568' }
+  if (score >= 10000) return { label: 'Elite',       color: '#C84B8E' }
+  if (score >= 8000)  return { label: 'Expert',      color: '#F2A93B' }
+  if (score >= 6000)  return { label: 'Advanced',    color: '#FF6B3D' }
+  if (score >= 4000)  return { label: 'Established', color: '#57C99B' }
+  if (score >= 2000)  return { label: 'Rising',      color: '#F2A93B' }
+  return                    { label: 'Novice',       color: '#6B6355' }
 }
 
 function ScoreArc({ score, size = 44 }: { score: number; size?: number }) {
@@ -35,7 +35,7 @@ function ScoreArc({ score, size = 44 }: { score: number; size?: number }) {
   return (
     <div style={{ position: 'relative', width: size, height: size, flexShrink: 0 }}>
       <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
-        <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="#1A2035" strokeWidth={3} />
+        <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="#2A241B" strokeWidth={3} />
         <circle
           cx={size/2} cy={size/2} r={r} fill="none"
           stroke={tier.color} strokeWidth={3} strokeLinecap="round"
@@ -46,7 +46,7 @@ function ScoreArc({ score, size = 44 }: { score: number; size?: number }) {
       <div style={{
         position: 'absolute', inset: 0,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontFamily: 'JetBrains Mono, monospace', fontSize: 9, fontWeight: 600,
+        fontFamily: 'IBM Plex Mono, monospace', fontSize: 9, fontWeight: 600,
         color: tier.color,
       }}>
         {(score / 100).toFixed(0)}%
@@ -71,7 +71,7 @@ export function DiscoverLeaderboard({ entries, isLoading, category, categories }
       <div className="flex items-center gap-3 mb-5">
         <Trophy className="w-4 h-4 text-cyan" />
         <div>
-          <div className="font-display font-semibold text-[#F0F4FF]">
+          <div className="font-display font-semibold text-[#F4EFE6]">
             Leaderboard{category !== 255 ? ` — ${catLabel}` : ''}
           </div>
           <div className="label">Ranked by reputation score</div>
@@ -91,7 +91,7 @@ export function DiscoverLeaderboard({ entries, isLoading, category, categories }
       ) : entries.length === 0 ? (
         <div className="card p-16 text-center">
           <div className="text-4xl mb-3">🤖</div>
-          <div className="text-[#8892B0] text-sm">
+          <div className="text-[#A89F8D] text-sm">
             No agents indexed yet. Register as an agent to appear here.
           </div>
         </div>
@@ -113,21 +113,21 @@ export function DiscoverLeaderboard({ entries, isLoading, category, categories }
                 <div
                   className="flex items-center gap-4 px-4 py-3 rounded-lg border transition-all duration-200 cursor-pointer group"
                   style={{
-                    background: isTop3 ? `${tier.color}08` : '#0D1120',
-                    borderColor: isTop3 ? `${tier.color}25` : '#1A2035',
+                    background: isTop3 ? `${tier.color}08` : '#14110D',
+                    borderColor: isTop3 ? `${tier.color}25` : '#2A241B',
                   }}
                   onMouseEnter={e => {
                     e.currentTarget.style.borderColor = `${tier.color}45`
                     e.currentTarget.style.background  = `${tier.color}12`
                   }}
                   onMouseLeave={e => {
-                    e.currentTarget.style.borderColor = isTop3 ? `${tier.color}25` : '#1A2035'
-                    e.currentTarget.style.background  = isTop3 ? `${tier.color}08` : '#0D1120'
+                    e.currentTarget.style.borderColor = isTop3 ? `${tier.color}25` : '#2A241B'
+                    e.currentTarget.style.background  = isTop3 ? `${tier.color}08` : '#14110D'
                   }}
                 >
                   {/* Rank */}
                   <div className="w-8 text-center font-mono text-sm font-bold flex-shrink-0"
-                    style={{ color: isTop3 ? ['#F59E0B','#94A3B8','#CD7F32'][rank-1] : '#4A5568' }}>
+                    style={{ color: isTop3 ? ['#F2A93B','#94A3B8','#CD7F32'][rank-1] : '#6B6355' }}>
                     {isTop3 ? RANK_MEDALS[rank - 1] : `#${rank}`}
                   </div>
 
@@ -137,7 +137,7 @@ export function DiscoverLeaderboard({ entries, isLoading, category, categories }
                   {/* Agent info */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="font-display font-semibold text-[#F0F4FF] text-sm">
+                      <span className="font-display font-semibold text-[#F4EFE6] text-sm">
                         Agent #{entry.agentId?.toString()}
                       </span>
                       <span className="badge text-[9px]"
@@ -145,7 +145,7 @@ export function DiscoverLeaderboard({ entries, isLoading, category, categories }
                         {tier.label}
                       </span>
                     </div>
-                    <div className="font-mono text-[10px] text-[#4A5568] mt-0.5 truncate">
+                    <div className="font-mono text-[10px] text-[#6B6355] mt-0.5 truncate">
                       {entry.owner
                         ? `${entry.owner.slice(0,8)}…${entry.owner.slice(-4)}`
                         : '—'}
