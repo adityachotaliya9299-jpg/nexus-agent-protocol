@@ -44,9 +44,9 @@ export function AgentReputationChart({ agent }: { agent: Agent }) {
         <div>
           <div className="flex items-center gap-2">
             <TrendingUp className="w-4 h-4 text-cyan" />
-            <h3 className="font-display font-semibold text-[#F0F4FF]">Reputation History</h3>
+            <h3 className="font-display font-semibold text-[#F4EFE6]">Reputation History</h3>
           </div>
-          <p className="text-xs text-[#8892B0] mt-0.5">Score over last 12 months</p>
+          <p className="text-xs text-[#A89F8D] mt-0.5">Score over last 12 months</p>
         </div>
         <div className="text-right">
           <div className={`font-mono font-bold text-lg ${scoreColor}`}>
@@ -73,7 +73,7 @@ export function AgentReputationChart({ agent }: { agent: Agent }) {
           <path
             d={pathD}
             fill="none"
-            stroke="#00E5FF"
+            stroke="#F2A93B"
             strokeWidth="0.8"
             vectorEffect="non-scaling-stroke"
           />
@@ -82,13 +82,13 @@ export function AgentReputationChart({ agent }: { agent: Agent }) {
             cx={(history.length - 1) / (history.length - 1) * width}
             cy={height - ((history[history.length - 1] - min) / range) * height}
             r="1.5"
-            fill="#00E5FF"
+            fill="#F2A93B"
             vectorEffect="non-scaling-stroke"
           />
           <defs>
             <linearGradient id="repGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#00E5FF" />
-              <stop offset="100%" stopColor="#00E5FF" stopOpacity="0" />
+              <stop offset="0%" stopColor="#F2A93B" />
+              <stop offset="100%" stopColor="#F2A93B" stopOpacity="0" />
             </linearGradient>
           </defs>
         </svg>
@@ -96,20 +96,20 @@ export function AgentReputationChart({ agent }: { agent: Agent }) {
         {/* X-axis labels */}
         <div className="flex justify-between mt-1">
           {months.slice(0, 12).map((m, i) => (
-            <span key={i} className="font-mono text-[8px] text-[#4A5568]">{m}</span>
+            <span key={i} className="font-mono text-[8px] text-[#6B6355]">{m}</span>
           ))}
         </div>
       </div>
 
       {/* Score milestones */}
-      <div className="grid grid-cols-3 gap-4 mt-4 pt-4 border-t border-[#1A2035]">
+      <div className="grid grid-cols-3 gap-4 mt-4 pt-4 border-t border-[#2A241B]">
         {[
           { label: "Starting Score",  value: "5000" },
           { label: "Peak Score",      value: Math.max(...history).toLocaleString() },
           { label: "Current Score",   value: agent.reputationScore.toLocaleString() },
         ].map(({ label, value }) => (
           <div key={label} className="text-center">
-            <div className="font-mono font-semibold text-sm text-[#F0F4FF]">{value}</div>
+            <div className="font-mono font-semibold text-sm text-[#F4EFE6]">{value}</div>
             <div className="label text-[9px]">{label}</div>
           </div>
         ))}
