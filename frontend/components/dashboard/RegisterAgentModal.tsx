@@ -73,7 +73,7 @@ export function RegisterAgentModal({ onClose, onRegistered }: RegisterAgentModal
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={step === 4 ? onClose : undefined} />
       <div className="relative card w-full max-w-lg overflow-hidden">
         {/* Step indicator */}
-        <div className="flex border-b border-[#1A2035]">
+        <div className="flex border-b border-[#2A241B]">
           {[
             { n: 1, label: "Identity" },
             { n: 2, label: "Capabilities" },
@@ -83,7 +83,7 @@ export function RegisterAgentModal({ onClose, onRegistered }: RegisterAgentModal
             <div
               key={s.n}
               className={`flex-1 py-3 text-center text-xs font-mono font-medium transition-colors ${
-                step >= s.n ? "text-cyan border-b-2 border-cyan" : "text-[#4A5568]"
+                step >= s.n ? "text-cyan border-b-2 border-cyan" : "text-[#6B6355]"
               }`}
             >
               {s.n}. {s.label}
@@ -96,8 +96,8 @@ export function RegisterAgentModal({ onClose, onRegistered }: RegisterAgentModal
           {step === 1 && (
             <div className="space-y-4">
               <div>
-                <h3 className="font-display font-bold text-[#F0F4FF] text-lg">Agent Identity</h3>
-                <p className="text-[#8892B0] text-sm mt-1">Stored on-chain via AgentRegistry.</p>
+                <h3 className="font-display font-bold text-[#F4EFE6] text-lg">Agent Identity</h3>
+                <p className="text-[#A89F8D] text-sm mt-1">Stored on-chain via AgentRegistry.</p>
               </div>
               <div>
                 <label className="label block mb-1.5">Agent Name</label>
@@ -129,8 +129,8 @@ export function RegisterAgentModal({ onClose, onRegistered }: RegisterAgentModal
           {step === 2 && (
             <div className="space-y-4">
               <div>
-                <h3 className="font-display font-bold text-[#F0F4FF] text-lg">Capabilities</h3>
-                <p className="text-[#8892B0] text-sm mt-1">Shapes which tasks you can bid on.</p>
+                <h3 className="font-display font-bold text-[#F4EFE6] text-lg">Capabilities</h3>
+                <p className="text-[#A89F8D] text-sm mt-1">Shapes which tasks you can bid on.</p>
               </div>
               <div className="flex flex-wrap gap-2">
                 {CAPABILITIES.map((cap) => (
@@ -140,7 +140,7 @@ export function RegisterAgentModal({ onClose, onRegistered }: RegisterAgentModal
                     className={`px-3 py-1.5 rounded-md text-sm font-medium border transition-all duration-150 ${
                       selected.includes(cap)
                         ? "bg-cyan/10 text-cyan border-cyan/30"
-                        : "bg-[#080B12] text-[#8892B0] border-[#1A2035] hover:border-[#2A3555]"
+                        : "bg-[#0B0A08] text-[#A89F8D] border-[#2A241B] hover:border-[#3A3226]"
                     }`}
                   >
                     {cap}
@@ -150,10 +150,10 @@ export function RegisterAgentModal({ onClose, onRegistered }: RegisterAgentModal
               <p className="label">{selected.length} selected</p>
 
               {/* Gas estimate */}
-              <div className="p-3 rounded-lg bg-[#080B12] border border-[#1A2035] space-y-1.5">
+              <div className="p-3 rounded-lg bg-[#0B0A08] border border-[#2A241B] space-y-1.5">
                 <div className="flex justify-between">
                   <span className="label">Estimated gas (register)</span>
-                  <span className="font-mono text-xs text-[#F0F4FF]">~0.003 ETH</span>
+                  <span className="font-mono text-xs text-[#F4EFE6]">~0.003 ETH</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="label">Network</span>
@@ -190,8 +190,8 @@ export function RegisterAgentModal({ onClose, onRegistered }: RegisterAgentModal
           {step === 3 && (
             <div className="space-y-5">
               <div>
-                <h3 className="font-display font-bold text-[#F0F4FF] text-lg">Deploy Smart Wallet</h3>
-                <p className="text-[#8892B0] text-sm mt-1">
+                <h3 className="font-display font-bold text-[#F4EFE6] text-lg">Deploy Smart Wallet</h3>
+                <p className="text-[#A89F8D] text-sm mt-1">
                   Your agent identity is registered. Now deploy its ERC-4337 smart wallet so it can receive ETH payments.
                 </p>
               </div>
@@ -199,14 +199,14 @@ export function RegisterAgentModal({ onClose, onRegistered }: RegisterAgentModal
                 <p className="text-emerald-400 text-sm font-medium">✓ AgentRegistry: registered</p>
                 {newAgentId && <p className="label">Agent ID: #{newAgentId}</p>}
               </div>
-              <div className="p-3 rounded-lg bg-[#080B12] border border-[#1A2035] space-y-1.5">
+              <div className="p-3 rounded-lg bg-[#0B0A08] border border-[#2A241B] space-y-1.5">
                 <div className="flex justify-between">
                   <span className="label">Estimated gas (wallet deploy)</span>
-                  <span className="font-mono text-xs text-[#F0F4FF]">~0.004 ETH</span>
+                  <span className="font-mono text-xs text-[#F4EFE6]">~0.004 ETH</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="label">Wallet type</span>
-                  <span className="font-mono text-xs text-[#F0F4FF]">ERC-4337 (CREATE2)</span>
+                  <span className="font-mono text-xs text-[#F4EFE6]">ERC-4337 (CREATE2)</span>
                 </div>
               </div>
               <TxButton
@@ -231,8 +231,8 @@ export function RegisterAgentModal({ onClose, onRegistered }: RegisterAgentModal
                 ✓
               </div>
               <div>
-                <h3 className="font-display font-bold text-[#F0F4FF] text-xl">Agent Live on Sepolia</h3>
-                <p className="text-[#8892B0] text-sm mt-2">
+                <h3 className="font-display font-bold text-[#F4EFE6] text-xl">Agent Live on Sepolia</h3>
+                <p className="text-[#A89F8D] text-sm mt-2">
                   Your agent identity and ERC-4337 wallet are deployed. Initial reputation: 5,000.
                 </p>
               </div>
@@ -240,7 +240,7 @@ export function RegisterAgentModal({ onClose, onRegistered }: RegisterAgentModal
                 {newAgentId && (
                   <div className="flex justify-between">
                     <span className="label">Agent ID</span>
-                    <span className="font-mono text-xs text-[#F0F4FF]">#{newAgentId}</span>
+                    <span className="font-mono text-xs text-[#F4EFE6]">#{newAgentId}</span>
                   </div>
                 )}
                 <div className="flex justify-between">
@@ -249,7 +249,7 @@ export function RegisterAgentModal({ onClose, onRegistered }: RegisterAgentModal
                 </div>
                 <div className="flex justify-between">
                   <span className="label">Network</span>
-                  <span className="font-mono text-xs text-[#F0F4FF]">Sepolia</span>
+                  <span className="font-mono text-xs text-[#F4EFE6]">Sepolia</span>
                 </div>
               </div>
               <button
