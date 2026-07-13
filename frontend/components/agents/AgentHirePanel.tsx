@@ -33,8 +33,8 @@ export function AgentHirePanel({ agent }: { agent: Agent }) {
             onClick={() => setTab(id as "task" | "sub")}
             className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-md text-sm font-medium transition-all ${
               tab === id
-                ? "bg-cyan text-[#080B12] font-semibold shadow-[0_0_15px_rgba(0,229,255,0.3)]"
-                : "text-[#8892B0] hover:text-[#F0F4FF]"
+                ? "bg-cyan text-[#0B0A08] font-semibold shadow-[0_0_15px_rgba(242,169,59,0.3)]"
+                : "text-[#A89F8D] hover:text-[#F4EFE6]"
             }`}
           >
             <Icon className="w-3.5 h-3.5" />
@@ -49,10 +49,10 @@ export function AgentHirePanel({ agent }: { agent: Agent }) {
           <div>
             <div className="label mb-1">Starting Price</div>
             <div className="flex items-baseline gap-1.5">
-              <span className="font-display font-bold text-3xl text-[#F0F4FF]">
+              <span className="font-display font-bold text-3xl text-[#F4EFE6]">
                 {agent.pricePerTask}
               </span>
-              <span className="font-mono text-sm text-[#8892B0]">ETH / task</span>
+              <span className="font-mono text-sm text-[#A89F8D]">ETH / task</span>
             </div>
           </div>
 
@@ -77,15 +77,15 @@ export function AgentHirePanel({ agent }: { agent: Agent }) {
                 <option>14 days</option>
                 <option>30 days</option>
               </select>
-              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4A5568] pointer-events-none" />
+              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B6355] pointer-events-none" />
             </div>
           </div>
 
           {/* Min reputation display */}
-          <div className="flex items-center justify-between px-3 py-2.5 rounded-lg bg-[#080B12] border border-[#1A2035]">
+          <div className="flex items-center justify-between px-3 py-2.5 rounded-lg bg-[#0B0A08] border border-[#2A241B]">
             <div className="flex items-center gap-2">
               <Shield className="w-4 h-4 text-emerald" />
-              <span className="text-xs text-[#8892B0]">Agent reputation</span>
+              <span className="text-xs text-[#A89F8D]">Agent reputation</span>
             </div>
             <span className={`font-mono font-semibold text-sm ${scoreColor}`}>
               {repPct}%
@@ -96,7 +96,7 @@ export function AgentHirePanel({ agent }: { agent: Agent }) {
             Post Task to Agent <ArrowRight className="w-4 h-4" />
           </button>
 
-          <p className="text-[10px] text-[#4A5568] text-center font-mono">
+          <p className="text-[10px] text-[#6B6355] text-center font-mono">
             ETH held in escrow until task completion
           </p>
         </div>
@@ -115,21 +115,21 @@ export function AgentHirePanel({ agent }: { agent: Agent }) {
                   className={`w-full text-left px-4 py-3 rounded-lg border transition-all ${
                     tier === t.id
                       ? "border-cyan/40 bg-cyan/5"
-                      : "border-[#1A2035] bg-[#080B12] hover:border-[#2A3555]"
+                      : "border-[#2A241B] bg-[#0B0A08] hover:border-[#3A3226]"
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       {tier === t.id && <Star className="w-3.5 h-3.5 text-cyan" />}
-                      <span className={`font-display font-semibold text-sm ${tier === t.id ? "text-cyan" : "text-[#F0F4FF]"}`}>
+                      <span className={`font-display font-semibold text-sm ${tier === t.id ? "text-cyan" : "text-[#F4EFE6]"}`}>
                         {t.label}
                       </span>
                     </div>
-                    <span className={`font-mono font-bold text-sm ${tier === t.id ? "text-cyan" : "text-[#8892B0]"}`}>
+                    <span className={`font-mono font-bold text-sm ${tier === t.id ? "text-cyan" : "text-[#A89F8D]"}`}>
                       {t.price} ETH
                     </span>
                   </div>
-                  <div className="font-mono text-[10px] text-[#4A5568] mt-0.5">
+                  <div className="font-mono text-[10px] text-[#6B6355] mt-0.5">
                     per {t.period}
                   </div>
                 </button>
@@ -138,11 +138,11 @@ export function AgentHirePanel({ agent }: { agent: Agent }) {
           </div>
 
           {/* Plan features */}
-          <div className="px-3 py-3 rounded-lg bg-[#080B12] border border-[#1A2035] space-y-2">
+          <div className="px-3 py-3 rounded-lg bg-[#0B0A08] border border-[#2A241B] space-y-2">
             {selectedTier.features.map((f) => (
               <div key={f} className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-cyan shrink-0" />
-                <span className="text-xs text-[#8892B0]">{f}</span>
+                <span className="text-xs text-[#A89F8D]">{f}</span>
               </div>
             ))}
           </div>
@@ -151,7 +151,7 @@ export function AgentHirePanel({ agent }: { agent: Agent }) {
             Subscribe — {selectedTier.price} ETH/mo <ArrowRight className="w-4 h-4" />
           </button>
 
-          <p className="text-[10px] text-[#4A5568] text-center font-mono">
+          <p className="text-[10px] text-[#6B6355] text-center font-mono">
             Cancel anytime · Recurring payment via smart contract
           </p>
         </div>
@@ -167,10 +167,10 @@ export function AgentHirePanel({ agent }: { agent: Agent }) {
           { label: "No disputes (last 90 days)",  ok: agent.reputationScore > 6000 },
         ].map(({ label, ok }) => (
           <div key={label} className="flex items-center gap-2.5">
-            <div className={`w-4 h-4 rounded-full flex items-center justify-center ${ok ? "bg-emerald/20" : "bg-[#1A2035]"}`}>
-              <div className={`w-1.5 h-1.5 rounded-full ${ok ? "bg-emerald" : "bg-[#2A3555]"}`} />
+            <div className={`w-4 h-4 rounded-full flex items-center justify-center ${ok ? "bg-emerald/20" : "bg-[#2A241B]"}`}>
+              <div className={`w-1.5 h-1.5 rounded-full ${ok ? "bg-emerald" : "bg-[#3A3226]"}`} />
             </div>
-            <span className={`text-xs font-mono ${ok ? "text-[#8892B0]" : "text-[#4A5568]"}`}>
+            <span className={`text-xs font-mono ${ok ? "text-[#A89F8D]" : "text-[#6B6355]"}`}>
               {label}
             </span>
           </div>
