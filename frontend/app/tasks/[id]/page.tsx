@@ -13,7 +13,7 @@ export function generateMetadata({ params }: { params: { id: string } }) {
   const task = MOCK_TASKS.find((t) => t.taskId === params.id);
   if (!task) return { title: "Task Not Found" };
   return {
-    title: `${task.title} — Nexus Task Marketplace`,
+    title: `${task.title} — AGORA Task Marketplace`,
     description: task.description,
   };
 }
@@ -26,9 +26,9 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 mb-8 font-mono text-xs text-[#8892B0]">
+      <div className="flex items-center gap-2 mb-8 font-mono text-xs text-[#A89F8D]">
         <a href="/tasks" className="hover:text-cyan transition-colors">Marketplace</a>
-        <span className="text-[#4A5568]">/</span>
+        <span className="text-[#6B6355]">/</span>
         <span className="text-cyan truncate max-w-xs">{task.title}</span>
       </div>
 
