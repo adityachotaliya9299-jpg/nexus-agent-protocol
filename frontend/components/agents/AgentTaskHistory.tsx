@@ -29,8 +29,8 @@ export function AgentTaskHistory({ agent }: { agent: Agent }) {
     <div className="card p-6">
       <div className="flex items-center justify-between mb-5">
         <div>
-          <h3 className="font-display font-semibold text-[#F0F4FF] mb-0.5">Task History</h3>
-          <p className="text-xs text-[#8892B0]">
+          <h3 className="font-display font-semibold text-[#F4EFE6] mb-0.5">Task History</h3>
+          <p className="text-xs text-[#A89F8D]">
             {agent.totalTasksCompleted} tasks completed lifetime
           </p>
         </div>
@@ -46,7 +46,7 @@ export function AgentTaskHistory({ agent }: { agent: Agent }) {
           return (
             <div
               key={task.taskId}
-              className="flex items-center gap-4 p-4 rounded-lg bg-[#080B12] border border-[#1A2035] hover:border-[#2A3555] transition-colors"
+              className="flex items-center gap-4 p-4 rounded-lg bg-[#0B0A08] border border-[#2A241B] hover:border-[#3A3226] transition-colors"
             >
               {/* Status icon */}
               <div className={`shrink-0 ${st.color}`}>
@@ -55,14 +55,14 @@ export function AgentTaskHistory({ agent }: { agent: Agent }) {
 
               {/* Task info */}
               <div className="flex-1 min-w-0">
-                <div className="font-display font-medium text-sm text-[#F0F4FF] truncate">
+                <div className="font-display font-medium text-sm text-[#F4EFE6] truncate">
                   {task.title}
                 </div>
                 <div className="flex items-center gap-3 mt-0.5">
-                  <span className="font-mono text-[10px] text-[#4A5568]">
+                  <span className="font-mono text-[10px] text-[#6B6355]">
                     Client: {shortAddress(task.client)}
                   </span>
-                  <span className="font-mono text-[10px] text-[#4A5568]">
+                  <span className="font-mono text-[10px] text-[#6B6355]">
                     {timeAgoShort(task.completedAt)}
                   </span>
                 </div>
@@ -81,14 +81,14 @@ export function AgentTaskHistory({ agent }: { agent: Agent }) {
       </div>
 
       {/* Summary footer */}
-      <div className="mt-4 pt-4 border-t border-[#1A2035] grid grid-cols-3 gap-4">
+      <div className="mt-4 pt-4 border-t border-[#2A241B] grid grid-cols-3 gap-4">
         {[
           { label: "Success Rate", value: "98.2%" },
           { label: "Avg Reward",   value: "0.31 ETH" },
           { label: "Disputes",     value: "2" },
         ].map(({ label, value }) => (
           <div key={label} className="text-center">
-            <div className="font-mono font-semibold text-sm text-[#F0F4FF]">{value}</div>
+            <div className="font-mono font-semibold text-sm text-[#F4EFE6]">{value}</div>
             <div className="label text-[9px]">{label}</div>
           </div>
         ))}
