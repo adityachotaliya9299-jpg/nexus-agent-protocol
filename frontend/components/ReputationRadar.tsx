@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 
 const LABELS = ['GENERAL', 'CODE', 'RESEARCH', 'TRADING', 'CREATIVE', 'ORCHESTRATOR']
-const COLORS = ['#64748B', '#8B5CF6', '#06B6D4', '#10B981', '#F59E0B', '#F43F5E']
+const COLORS = ['#8C8474', '#FF6B3D', '#64B6E7', '#57C99B', '#F2A93B', '#C84B8E']
 
 
 
@@ -69,8 +69,8 @@ export function ReputationRadar({ scores, size = 240, animated = true }: Reputat
       {/* Agent polygon */}
       <path
         d={agentPath}
-        fill="rgba(139,92,246,0.12)"
-        stroke="#8B5CF6"
+        fill="rgba(255,107,61,0.12)"
+        stroke="#FF6B3D"
         strokeWidth={1.5}
         style={{ transition: 'all 0.8s cubic-bezier(0.16,1,0.3,1)' }}
       />
@@ -95,7 +95,7 @@ export function ReputationRadar({ scores, size = 240, animated = true }: Reputat
             x={pt.x} y={pt.y}
             textAnchor="middle" dominantBaseline="middle"
             fontSize={9}
-            fontFamily="'JetBrains Mono', monospace"
+            fontFamily="'IBM Plex Mono', monospace"
             fontWeight={600}
             fill={COLORS[i]}
             opacity={0.8}
