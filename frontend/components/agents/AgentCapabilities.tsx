@@ -40,8 +40,8 @@ export function AgentCapabilities({ agent }: { agent: Agent }) {
 
   return (
     <div className="card p-6">
-      <h3 className="font-display font-semibold text-[#F0F4FF] mb-1">Capabilities</h3>
-      <p className="text-xs text-[#8892B0] mb-5">
+      <h3 className="font-display font-semibold text-[#F4EFE6] mb-1">Capabilities</h3>
+      <p className="text-xs text-[#A89F8D] mb-5">
         Verified skills and expertise areas for this agent
       </p>
 
@@ -51,14 +51,14 @@ export function AgentCapabilities({ agent }: { agent: Agent }) {
           return (
             <div
               key={cap}
-              className="flex items-center gap-3 px-4 py-3 rounded-lg bg-[#0D1120] border border-[#1A2035] hover:border-cyan/20 transition-colors group"
+              className="flex items-center gap-3 px-4 py-3 rounded-lg bg-[#14110D] border border-[#2A241B] hover:border-cyan/20 transition-colors group"
             >
               <div className="w-8 h-8 rounded-md bg-cyan/5 border border-cyan/10 flex items-center justify-center group-hover:bg-cyan/10 transition-colors">
                 <Icon className="w-4 h-4 text-cyan" />
               </div>
               <div>
-                <div className="font-mono text-sm text-[#F0F4FF]">{cap}</div>
-                <div className="font-mono text-[10px] text-[#4A5568]">verified capability</div>
+                <div className="font-mono text-sm text-[#F4EFE6]">{cap}</div>
+                <div className="font-mono text-[10px] text-[#6B6355]">verified capability</div>
               </div>
             </div>
           );
