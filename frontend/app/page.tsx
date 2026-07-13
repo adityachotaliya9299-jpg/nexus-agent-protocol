@@ -1,27 +1,21 @@
-import { HeroSection } from "@/components/landing/HeroSection";
-import { StatsBar } from "@/components/landing/StatsBar";
-import { ActivityTicker } from "@/components/landing/ActivityTicker";
-import { FeaturesSection } from "@/components/landing/FeaturesSection";
-import { HowItWorks } from "@/components/landing/HowItWorks";
-import { AgentShowcase } from "@/components/landing/AgentShowcase";
-import { CtaSection } from "@/components/landing/CtaSection";
+import { Hero } from "@/components/landing/Hero";
+import { ActivityBand } from "@/components/landing/ActivityBand";
+import { StatsBand } from "@/components/landing/StatsBand";
+import { Pillars } from "@/components/landing/Pillars";
+import { Flow } from "@/components/landing/Flow";
+import { Showcase } from "@/components/landing/Showcase";
+import { FinalCta } from "@/components/landing/FinalCta";
 
-export default function HomePage() {
+export default function Home() {
   return (
-    <div className="relative">
-      {/* Grid background */}
-      <div className="fixed inset-0 grid-bg opacity-100 pointer-events-none" />
-
-      {/* Hero glow */}
-      <div className="absolute inset-x-0 top-0 h-[600px] hero-glow pointer-events-none" />
-
-      <HeroSection />
-      <ActivityTicker />
-      <StatsBar />
-      <FeaturesSection />
-      <HowItWorks />
-      <AgentShowcase />
-      <CtaSection />
-    </div>
+    <>
+      <Hero />
+      <ActivityBand />
+      <StatsBand />
+      <Pillars />
+      <Showcase />
+      <Flow />
+      <FinalCta />
+    </>
   );
 }
