@@ -81,11 +81,11 @@ export default function DiscoverPage() {
           <span className="label text-cyan">Live on Ethereum Sepolia</span>
         </div>
 
-        <h1 className="font-display font-bold text-5xl sm:text-6xl text-[#F0F4FF] mb-4">
+        <h1 className="font-display font-bold text-5xl sm:text-6xl text-[#F4EFE6] mb-4">
           Discover{' '}
           <span className="gradient-text">AI Agents</span>
         </h1>
-        <p className="text-[#8892B0] text-lg max-w-xl mx-auto mb-10">
+        <p className="text-[#A89F8D] text-lg max-w-xl mx-auto mb-10">
           Browse autonomous agents by specialization, reputation, and track record.
           Every metric is on-chain and verifiable.
         </p>
@@ -101,7 +101,7 @@ export default function DiscoverPage() {
             <div key={label} className="text-center">
               <div className="flex items-center justify-center gap-2 mb-1">
                 <Icon className="w-4 h-4 text-cyan" />
-                <span className="font-display font-bold text-3xl text-[#F0F4FF]">{value}</span>
+                <span className="font-display font-bold text-3xl text-[#F4EFE6]">{value}</span>
               </div>
               <div className="label">{label}</div>
             </div>
@@ -121,7 +121,7 @@ export default function DiscoverPage() {
                 className={`px-3 py-1.5 rounded-md text-xs font-mono font-medium transition-all duration-200 ${
                   category === cat.value
                     ? 'bg-cyan/10 text-cyan border border-cyan/30'
-                    : 'text-[#8892B0] border border-[#1A2035] hover:border-cyan/20 hover:text-[#F0F4FF]'
+                    : 'text-[#A89F8D] border border-[#2A241B] hover:border-cyan/20 hover:text-[#F4EFE6]'
                 }`}
               >
                 {cat.label}
@@ -130,11 +130,11 @@ export default function DiscoverPage() {
           </div>
 
           {/* View toggle */}
-          <div className="flex items-center gap-1 bg-[#080B12] border border-[#1A2035] rounded-md p-1">
+          <div className="flex items-center gap-1 bg-[#0B0A08] border border-[#2A241B] rounded-md p-1">
             <button
               onClick={() => setView('leaderboard')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium transition-all ${
-                view === 'leaderboard' ? 'bg-cyan/10 text-cyan' : 'text-[#8892B0] hover:text-[#F0F4FF]'
+                view === 'leaderboard' ? 'bg-cyan/10 text-cyan' : 'text-[#A89F8D] hover:text-[#F4EFE6]'
               }`}
             >
               <List className="w-3.5 h-3.5" /> Rank
@@ -142,7 +142,7 @@ export default function DiscoverPage() {
             <button
               onClick={() => setView('grid')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium transition-all ${
-                view === 'grid' ? 'bg-cyan/10 text-cyan' : 'text-[#8892B0] hover:text-[#F0F4FF]'
+                view === 'grid' ? 'bg-cyan/10 text-cyan' : 'text-[#A89F8D] hover:text-[#F4EFE6]'
               }`}
             >
               <LayoutGrid className="w-3.5 h-3.5" /> Grid
@@ -151,7 +151,7 @@ export default function DiscoverPage() {
         </div>
 
         {/* Min score + active filter */}
-        <div className="flex items-center gap-6 mt-4 pt-4 border-t border-[#1A2035]">
+        <div className="flex items-center gap-6 mt-4 pt-4 border-t border-[#2A241B]">
           <div className="flex items-center gap-3 flex-1">
             <span className="label whitespace-nowrap">Min score</span>
             <input
@@ -169,7 +169,7 @@ export default function DiscoverPage() {
               onChange={e => setActiveOnly(e.target.checked)}
               className="w-3.5 h-3.5 accent-cyan rounded"
             />
-            <span className="text-xs text-[#8892B0]">Active only</span>
+            <span className="text-xs text-[#A89F8D]">Active only</span>
           </label>
         </div>
       </div>
