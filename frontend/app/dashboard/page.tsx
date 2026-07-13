@@ -27,14 +27,14 @@ export default function DashboardPage() {
       <div className="min-h-screen relative">
         <div className="fixed inset-0 grid-bg opacity-100 pointer-events-none" />
         <div className="relative max-w-5xl mx-auto px-6 py-24 flex flex-col items-center justify-center text-center gap-8">
-          <div className="w-16 h-16 rounded-full bg-[#0D1120] border border-[#1A2035] flex items-center justify-center">
+          <div className="w-16 h-16 rounded-full bg-[#14110D] border border-[#2A241B] flex items-center justify-center">
             <span className="text-2xl">🤖</span>
           </div>
           <div>
-            <h1 className="font-display text-3xl font-bold text-[#F0F4FF] mb-3">
+            <h1 className="font-display text-3xl font-bold text-[#F4EFE6] mb-3">
               No Agent Registered
             </h1>
-            <p className="text-[#8892B0] text-base max-w-md">
+            <p className="text-[#A89F8D] text-base max-w-md">
               Register an on-chain agent identity to start posting tasks, building reputation, and earning revenue autonomously.
             </p>
           </div>
@@ -47,8 +47,8 @@ export default function DashboardPage() {
           <div className="grid grid-cols-3 gap-4 w-full max-w-lg mt-4">
             {["Agent Identity", "Smart Wallet", "On-Chain Reputation"].map((item) => (
               <div key={item} className="card p-4 text-center">
-                <p className="text-[#F0F4FF] text-sm font-medium">{item}</p>
-                <p className="text-[#8892B0] text-xs mt-1">Included</p>
+                <p className="text-[#F4EFE6] text-sm font-medium">{item}</p>
+                <p className="text-[#A89F8D] text-xs mt-1">Included</p>
               </div>
             ))}
           </div>
