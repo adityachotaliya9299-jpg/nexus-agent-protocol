@@ -20,17 +20,19 @@ export const CONTRACTS = {
   ZKEscrow:             "0x2EcD5ce3d5140aB7Df3063aAB817AF1336d04416" as `0x${string}`,
   ContextualReputation: "0xAFE6c16FA37bB0BD9E7A24901705C7Fe725A910A" as `0x${string}`,
   AgentDiscovery:       "0x08787B020D4Ded4Beb9Ff116e041047491A7F126" as `0x${string}`,
-  L1Bridge:             "0x539C3a8E6Df66B4cA743e05d6B49c04E2490Ec2a" as `0x${string}`,
-  L2Bridge:             "0x7acD2Fca97F2d5b4C85CF56B2c6e49C73b5B640F" as `0x${string}`,
-  AgentCoordinator:  "0xa14b2dd25279e5bCd8aF219e336b3A48b47124B1" as `0x${string}`,  
+  L1Bridge:             "0xbF0c07609a8693D3E6B0a25F784fCD2a8333c5Ae" as `0x${string}`,
+  L2Bridge:             "0x9CB0593354408A7c4943e553dFCbb4670379b7A0" as `0x${string}`,
+  AgentCoordinator:     "0xa14b2dd25279e5bCd8aF219e336b3A48b47124B1" as `0x${string}`,
 
-  // NexusTreasury:     "" as `0x${string}`,  // forge script DeployGovernance.s.sol
-  // NexusGovernor:     "" as `0x${string}`,  // forge script DeployGovernance.s.sol
-  // ResultStorage:     "" as `0x${string}`,  // forge script DeployBatch.s.sol
-  // AgentDAO:          "" as `0x${string}`,  // forge script DeployBatch.s.sol
-  // CommunityGrants:   "" as `0x${string}`,  // forge script DeployBatch.s.sol
-  // ProtocolGuard:     "" as `0x${string}`,  // forge script DeployProtocolGuard.s.sol
+  // ── Governance / storage / security ───────────────────────────
+  ResultStorage:        "0xb38c9dE16a775303b784367cd75304E52351518b" as `0x${string}`,
+  AgentDAO:             "0x02E52e89dD06A743044C9A4207b001C1c074D8EC" as `0x${string}`,
+  CommunityGrants:      "0xD59eCf4296095fBC32576CF1e86e8b835aeac3a4" as `0x${string}`,
+  ProtocolGuard:        "0x02bc33be83eC39a399b00D40721898e1b396cB24" as `0x${string}`,
 } as const;
+
+/** Chainlink CCIP router on Sepolia (external infrastructure, not ours). */
+export const CCIP_ROUTER = "0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59" as `0x${string}`;
 
 // Convenience alias used by new UI components
 export const NEXUS_CONTRACTS = CONTRACTS;
@@ -49,24 +51,24 @@ export const CATEGORIES = ['GENERAL','CODE','RESEARCH','TRADING','CREATIVE','ORC
 export type Category = typeof CATEGORIES[number];
 
 export const CATEGORY_COLORS: Record<string, string> = {
-  GENERAL:      '#64748B',
-  CODE:         '#8B5CF6',
-  RESEARCH:     '#06B6D4',
-  TRADING:      '#10B981',
-  CREATIVE:     '#F59E0B',
-  ORCHESTRATOR: '#F43F5E',
+  GENERAL:      '#8C8474',
+  CODE:         '#FF6B3D',
+  RESEARCH:     '#64B6E7',
+  TRADING:      '#57C99B',
+  CREATIVE:     '#F2A93B',
+  ORCHESTRATOR: '#C84B8E',
 };
 
 export const TIER_LABELS = ['Novice','Rising','Established','Advanced','Expert','Elite'] as const;
-export const TIER_COLORS = ['#64748B','#06B6D4','#10B981','#8B5CF6','#F59E0B','#F43F5E'] as const;
+export const TIER_COLORS = ['#8C8474','#64B6E7','#57C99B','#FF6B3D','#F2A93B','#C84B8E'] as const;
 
 export function getTier(score: number) {
-  if (score >= 10000) return { label: 'Elite',       color: '#F43F5E', index: 5 };
-  if (score >= 8000)  return { label: 'Expert',      color: '#F59E0B', index: 4 };
-  if (score >= 6000)  return { label: 'Advanced',    color: '#8B5CF6', index: 3 };
-  if (score >= 4000)  return { label: 'Established', color: '#10B981', index: 2 };
-  if (score >= 2000)  return { label: 'Rising',      color: '#06B6D4', index: 1 };
-  return                    { label: 'Novice',       color: '#64748B', index: 0 };
+  if (score >= 10000) return { label: 'Elite',       color: '#C84B8E', index: 5 };
+  if (score >= 8000)  return { label: 'Expert',      color: '#F2A93B', index: 4 };
+  if (score >= 6000)  return { label: 'Advanced',    color: '#FF6B3D', index: 3 };
+  if (score >= 4000)  return { label: 'Established', color: '#57C99B', index: 2 };
+  if (score >= 2000)  return { label: 'Rising',      color: '#64B6E7', index: 1 };
+  return                    { label: 'Novice',       color: '#8C8474', index: 0 };
 }
 
 export function shortenAddr(addr: string) {
@@ -541,3 +543,108 @@ export const TICKER_ITEMS = [
   { type: "agent",   text: "AlphaTrader-Pro crossed 200 completed tasks milestone",  value: null },
   { type: "rep",     text: "CreativeCore-β received positive rating from client",    value: "▲ +30bp" },
 ];
+// ================================================================
+// ABIs — Governance / storage / coordination / security
+// ================================================================
+
+export const COMMUNITY_GRANTS_ABI = [
+  { type: "event", name: "FeeDeposited", inputs: [{ name: "from", type: "address", indexed: true }, { name: "amount", type: "uint256", indexed: false }, { name: "source", type: "string", indexed: false }] },
+  { type: "event", name: "GrantProposed", inputs: [{ name: "grantId", type: "bytes32", indexed: true }, { name: "title", type: "string", indexed: false }, { name: "amount", type: "uint256", indexed: false }, { name: "recipient", type: "address", indexed: false }] },
+  { type: "event", name: "GrantVoteCast", inputs: [{ name: "grantId", type: "bytes32", indexed: true }, { name: "agentId", type: "uint256", indexed: true }, { name: "support", type: "bool", indexed: false }, { name: "weight", type: "uint256", indexed: false }] },
+  { type: "event", name: "GrantApproved", inputs: [{ name: "grantId", type: "bytes32", indexed: true }, { name: "amount", type: "uint256", indexed: false }] },
+  { type: "event", name: "GrantExecuted", inputs: [{ name: "grantId", type: "bytes32", indexed: true }, { name: "recipient", type: "address", indexed: false }, { name: "amount", type: "uint256", indexed: false }] },
+  { type: "event", name: "GrantRejected", inputs: [{ name: "grantId", type: "bytes32", indexed: true }] },
+  // Read
+  { type: "function", name: "getGrant", stateMutability: "view", inputs: [{ name: "grantId", type: "bytes32" }], outputs: [{ name: "", type: "tuple", components: [{ name: "grantId", type: "bytes32" }, { name: "title", type: "string" }, { name: "description", type: "string" }, { name: "recipient", type: "address" }, { name: "amount", type: "uint256" }, { name: "grantType", type: "uint8" }, { name: "status", type: "uint8" }, { name: "proposedBy", type: "uint256" }, { name: "forVotes", type: "uint256" }, { name: "againstVotes", type: "uint256" }, { name: "votingEndsAt", type: "uint256" }, { name: "proposedAt", type: "uint256" }, { name: "executedAt", type: "uint256" }] }] },
+  { type: "function", name: "balance", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
+  { type: "function", name: "totalDeposited", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
+  { type: "function", name: "totalGranted", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
+  { type: "function", name: "totalGrants", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
+  { type: "function", name: "getActiveGrants", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "bytes32[]" }] },
+  // Write
+  { type: "function", name: "deposit", stateMutability: "payable", inputs: [{ name: "source", type: "string" }], outputs: [] },
+  { type: "function", name: "proposeGrant", stateMutability: "nonpayable", inputs: [{ name: "title", type: "string" }, { name: "description", type: "string" }, { name: "recipient", type: "address" }, { name: "amount", type: "uint256" }, { name: "grantType", type: "uint8" }, { name: "proposerAgentId", type: "uint256" }], outputs: [{ name: "grantId", type: "bytes32" }] },
+  { type: "function", name: "voteOnGrant", stateMutability: "nonpayable", inputs: [{ name: "grantId", type: "bytes32" }, { name: "agentId", type: "uint256" }, { name: "support", type: "bool" }], outputs: [] },
+  { type: "function", name: "finalizeGrant", stateMutability: "nonpayable", inputs: [{ name: "grantId", type: "bytes32" }], outputs: [] },
+  { type: "function", name: "executeGrant", stateMutability: "nonpayable", inputs: [{ name: "grantId", type: "bytes32" }], outputs: [] },
+] as const;
+
+export const AGENT_DAO_ABI = [
+  { type: "event", name: "DAOCreated", inputs: [{ name: "daoId", type: "bytes32", indexed: true }, { name: "name", type: "string", indexed: false }, { name: "creator", type: "address", indexed: true }] },
+  { type: "event", name: "MemberAdded", inputs: [{ name: "daoId", type: "bytes32", indexed: true }, { name: "agentId", type: "uint256", indexed: true }, { name: "splitBps", type: "uint256", indexed: false }] },
+  { type: "event", name: "TaskProposed", inputs: [{ name: "daoId", type: "bytes32", indexed: true }, { name: "proposalId", type: "bytes32", indexed: true }, { name: "taskId", type: "bytes32", indexed: false }] },
+  { type: "event", name: "VoteCast", inputs: [{ name: "proposalId", type: "bytes32", indexed: true }, { name: "agentId", type: "uint256", indexed: true }, { name: "support", type: "bool", indexed: false }] },
+  { type: "event", name: "ProposalExecuted", inputs: [{ name: "proposalId", type: "bytes32", indexed: true }, { name: "taskId", type: "bytes32", indexed: false }] },
+  { type: "event", name: "RevenueDistributed", inputs: [{ name: "daoId", type: "bytes32", indexed: true }, { name: "taskId", type: "bytes32", indexed: false }, { name: "totalAmount", type: "uint256", indexed: false }] },
+  // Read
+  { type: "function", name: "getDAO", stateMutability: "view", inputs: [{ name: "daoId", type: "bytes32" }], outputs: [{ name: "", type: "tuple", components: [{ name: "daoId", type: "bytes32" }, { name: "name", type: "string" }, { name: "treasury", type: "address" }, { name: "totalMembers", type: "uint256" }, { name: "totalTasksCompleted", type: "uint256" }, { name: "totalEarned", type: "uint256" }, { name: "createdAt", type: "uint256" }, { name: "isActive", type: "bool" }] }] },
+  { type: "function", name: "getMember", stateMutability: "view", inputs: [{ name: "daoId", type: "bytes32" }, { name: "agentId", type: "uint256" }], outputs: [{ name: "", type: "tuple", components: [{ name: "agentId", type: "uint256" }, { name: "owner", type: "address" }, { name: "splitBps", type: "uint256" }, { name: "joinedAt", type: "uint256" }, { name: "isActive", type: "bool" }] }] },
+  { type: "function", name: "getProposal", stateMutability: "view", inputs: [{ name: "proposalId", type: "bytes32" }], outputs: [{ name: "", type: "tuple", components: [{ name: "proposalId", type: "bytes32" }, { name: "daoId", type: "bytes32" }, { name: "taskId", type: "bytes32" }, { name: "proposedBy", type: "uint256" }, { name: "forVotes", type: "uint256" }, { name: "againstVotes", type: "uint256" }, { name: "votingEndsAt", type: "uint256" }, { name: "status", type: "uint8" }] }] },
+  { type: "function", name: "getDAOMembers", stateMutability: "view", inputs: [{ name: "daoId", type: "bytes32" }], outputs: [{ name: "agentIds", type: "uint256[]" }] },
+  { type: "function", name: "isMember", stateMutability: "view", inputs: [{ name: "daoId", type: "bytes32" }, { name: "agentId", type: "uint256" }], outputs: [{ name: "", type: "bool" }] },
+  { type: "function", name: "totalDAOs", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
+  // Write
+  { type: "function", name: "createDAO", stateMutability: "nonpayable", inputs: [{ name: "name", type: "string" }, { name: "memberAgentIds", type: "uint256[]" }, { name: "splitBps", type: "uint256[]" }], outputs: [{ name: "daoId", type: "bytes32" }] },
+  { type: "function", name: "proposeTask", stateMutability: "nonpayable", inputs: [{ name: "daoId", type: "bytes32" }, { name: "taskId", type: "bytes32" }, { name: "proposerAgentId", type: "uint256" }], outputs: [{ name: "proposalId", type: "bytes32" }] },
+  { type: "function", name: "vote", stateMutability: "nonpayable", inputs: [{ name: "proposalId", type: "bytes32" }, { name: "agentId", type: "uint256" }, { name: "support", type: "bool" }], outputs: [] },
+  { type: "function", name: "executeProposal", stateMutability: "nonpayable", inputs: [{ name: "proposalId", type: "bytes32" }], outputs: [] },
+  { type: "function", name: "distributeRevenue", stateMutability: "payable", inputs: [{ name: "daoId", type: "bytes32" }, { name: "taskId", type: "bytes32" }], outputs: [] },
+] as const;
+
+export const RESULT_STORAGE_ABI = [
+  { type: "event", name: "ResultAnchored", inputs: [{ name: "taskId", type: "bytes32", indexed: true }, { name: "agentId", type: "uint256", indexed: true }, { name: "arweaveTxId", type: "string", indexed: false }, { name: "contentHash", type: "bytes32", indexed: false }] },
+  { type: "event", name: "ResultVerified", inputs: [{ name: "taskId", type: "bytes32", indexed: true }, { name: "contentHash", type: "bytes32", indexed: false }] },
+  // Read
+  { type: "function", name: "getResult", stateMutability: "view", inputs: [{ name: "taskId", type: "bytes32" }], outputs: [{ name: "", type: "tuple", components: [{ name: "taskId", type: "bytes32" }, { name: "agentId", type: "uint256" }, { name: "arweaveTxId", type: "string" }, { name: "contentHash", type: "bytes32" }, { name: "contentSize", type: "uint256" }, { name: "contentType", type: "string" }, { name: "storedAt", type: "uint256" }, { name: "verified", type: "bool" }] }] },
+  { type: "function", name: "getAgentResults", stateMutability: "view", inputs: [{ name: "agentId", type: "uint256" }], outputs: [{ name: "taskIds", type: "bytes32[]" }] },
+  { type: "function", name: "isAnchored", stateMutability: "view", inputs: [{ name: "taskId", type: "bytes32" }], outputs: [{ name: "", type: "bool" }] },
+  { type: "function", name: "totalAnchored", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
+  // Write
+  { type: "function", name: "anchorResult", stateMutability: "nonpayable", inputs: [{ name: "taskId", type: "bytes32" }, { name: "agentId", type: "uint256" }, { name: "arweaveTxId", type: "string" }, { name: "contentHash", type: "bytes32" }, { name: "contentSize", type: "uint256" }, { name: "contentType", type: "string" }], outputs: [] },
+  { type: "function", name: "verifyResult", stateMutability: "nonpayable", inputs: [{ name: "taskId", type: "bytes32" }, { name: "contentHash", type: "bytes32" }], outputs: [] },
+] as const;
+
+export const AGENT_COORDINATOR_ABI = [
+  { type: "event", name: "WorkflowCreated", inputs: [{ name: "workflowId", type: "bytes32", indexed: true }, { name: "workflowType", type: "uint8", indexed: false }, { name: "totalStages", type: "uint256", indexed: false }] },
+  { type: "event", name: "StageStarted", inputs: [{ name: "workflowId", type: "bytes32", indexed: true }, { name: "stageIndex", type: "uint256", indexed: false }, { name: "agentId", type: "uint256", indexed: false }] },
+  { type: "event", name: "StageCompleted", inputs: [{ name: "workflowId", type: "bytes32", indexed: true }, { name: "stageIndex", type: "uint256", indexed: false }, { name: "agentId", type: "uint256", indexed: false }, { name: "outputURI", type: "string", indexed: false }] },
+  { type: "event", name: "WorkflowCompleted", inputs: [{ name: "workflowId", type: "bytes32", indexed: true }, { name: "totalPaid", type: "uint256", indexed: false }] },
+  { type: "event", name: "WorkflowFailed", inputs: [{ name: "workflowId", type: "bytes32", indexed: true }, { name: "stageIndex", type: "uint256", indexed: false }] },
+  // Read
+  { type: "function", name: "getWorkflow", stateMutability: "view", inputs: [{ name: "workflowId", type: "bytes32" }], outputs: [{ name: "", type: "tuple", components: [{ name: "workflowId", type: "bytes32" }, { name: "parentTaskId", type: "bytes32" }, { name: "client", type: "address" }, { name: "workflowType", type: "uint8" }, { name: "status", type: "uint8" }, { name: "totalStages", type: "uint256" }, { name: "completedStages", type: "uint256" }, { name: "totalBudget", type: "uint256" }, { name: "createdAt", type: "uint256" }, { name: "completedAt", type: "uint256" }, { name: "aggregatorAgentId", type: "uint256" }] }] },
+  { type: "function", name: "getStage", stateMutability: "view", inputs: [{ name: "workflowId", type: "bytes32" }, { name: "stageIndex", type: "uint256" }], outputs: [{ name: "", type: "tuple", components: [{ name: "stageIndex", type: "uint256" }, { name: "assignedAgentId", type: "uint256" }, { name: "inputURI", type: "string" }, { name: "outputURI", type: "string" }, { name: "reward", type: "uint256" }, { name: "deadline", type: "uint256" }, { name: "status", type: "uint8" }, { name: "proofId", type: "bytes32" }] }] },
+  { type: "function", name: "getNetwork", stateMutability: "view", inputs: [{ name: "networkId", type: "bytes32" }], outputs: [{ name: "", type: "tuple", components: [{ name: "networkId", type: "bytes32" }, { name: "name", type: "string" }, { name: "totalJobs", type: "uint256" }, { name: "successfulJobs", type: "uint256" }, { name: "createdAt", type: "uint256" }, { name: "isActive", type: "bool" }] }] },
+  { type: "function", name: "totalWorkflows", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
+  { type: "function", name: "totalNetworks", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
+  // Write
+  { type: "function", name: "createPipeline", stateMutability: "payable", inputs: [{ name: "parentTaskId", type: "bytes32" }, { name: "agentIds", type: "uint256[]" }, { name: "stageBudgets", type: "uint256[]" }, { name: "stageDeadlines", type: "uint256[]" }, { name: "inputURIs", type: "string[]" }], outputs: [{ name: "workflowId", type: "bytes32" }] },
+  { type: "function", name: "createParallel", stateMutability: "payable", inputs: [{ name: "parentTaskId", type: "bytes32" }, { name: "agentIds", type: "uint256[]" }, { name: "stageBudgets", type: "uint256[]" }, { name: "stageDeadlines", type: "uint256[]" }, { name: "aggregatorAgentId", type: "uint256" }, { name: "aggregatorBudget", type: "uint256" }], outputs: [{ name: "workflowId", type: "bytes32" }] },
+  { type: "function", name: "submitStageResult", stateMutability: "nonpayable", inputs: [{ name: "workflowId", type: "bytes32" }, { name: "stageIndex", type: "uint256" }, { name: "outputURI", type: "string" }], outputs: [] },
+  { type: "function", name: "failStage", stateMutability: "nonpayable", inputs: [{ name: "workflowId", type: "bytes32" }, { name: "stageIndex", type: "uint256" }], outputs: [] },
+  { type: "function", name: "cancelWorkflow", stateMutability: "nonpayable", inputs: [{ name: "workflowId", type: "bytes32" }], outputs: [] },
+  { type: "function", name: "createNetwork", stateMutability: "nonpayable", inputs: [{ name: "name", type: "string" }, { name: "agentIds", type: "uint256[]" }, { name: "roles", type: "uint256[]" }], outputs: [{ name: "networkId", type: "bytes32" }] },
+  { type: "function", name: "hireNetwork", stateMutability: "payable", inputs: [{ name: "networkId", type: "bytes32" }, { name: "parentTaskId", type: "bytes32" }, { name: "stageBudgets", type: "uint256[]" }, { name: "stageDeadlines", type: "uint256[]" }], outputs: [{ name: "workflowId", type: "bytes32" }] },
+] as const;
+
+export const PROTOCOL_GUARD_ABI = [
+  { type: "event", name: "ContractPaused", inputs: [{ name: "target", type: "address", indexed: true }, { name: "by", type: "address", indexed: true }, { name: "reason", type: "string", indexed: false }, { name: "expiresAt", type: "uint256", indexed: false }] },
+  { type: "event", name: "ContractUnpaused", inputs: [{ name: "target", type: "address", indexed: true }, { name: "by", type: "address", indexed: true }] },
+  { type: "event", name: "InvariantViolated", inputs: [{ name: "invariantId", type: "bytes32", indexed: true }, { name: "target", type: "address", indexed: false }, { name: "timestamp", type: "uint256", indexed: false }] },
+  // Read
+  { type: "function", name: "owner", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "address" }] },
+  { type: "function", name: "isPaused", stateMutability: "view", inputs: [{ name: "target", type: "address" }], outputs: [{ name: "", type: "bool" }] },
+  { type: "function", name: "getContractStatus", stateMutability: "view", inputs: [{ name: "target", type: "address" }], outputs: [{ name: "", type: "tuple", components: [{ name: "target", type: "address" }, { name: "isPaused", type: "bool" }, { name: "pausedAt", type: "uint256" }, { name: "pauseExpiresAt", type: "uint256" }, { name: "pausedBy", type: "address" }, { name: "pauseReason", type: "string" }, { name: "totalPauses", type: "uint256" }] }] },
+  { type: "function", name: "getInvariant", stateMutability: "view", inputs: [{ name: "invariantId", type: "bytes32" }], outputs: [{ name: "", type: "tuple", components: [{ name: "invariantId", type: "bytes32" }, { name: "description", type: "string" }, { name: "target", type: "address" }, { name: "selector", type: "bytes4" }, { name: "autoPauseOnFail", type: "bool" }, { name: "isActive", type: "bool" }, { name: "lastCheckedAt", type: "uint256" }, { name: "violationCount", type: "uint256" }] }] },
+  { type: "function", name: "totalInvariants", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
+  { type: "function", name: "isGuardian", stateMutability: "view", inputs: [{ name: "addr", type: "address" }], outputs: [{ name: "", type: "bool" }] },
+  { type: "function", name: "guardianCount", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
+  { type: "function", name: "getRateLimit", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "tuple", components: [{ name: "windowSeconds", type: "uint256" }, { name: "maxOutflowWei", type: "uint256" }, { name: "currentOutflow", type: "uint256" }, { name: "windowStartedAt", type: "uint256" }] }] },
+  // Write
+  { type: "function", name: "pause", stateMutability: "nonpayable", inputs: [{ name: "target", type: "address" }, { name: "reason", type: "string" }, { name: "duration", type: "uint256" }], outputs: [] },
+  { type: "function", name: "unpause", stateMutability: "nonpayable", inputs: [{ name: "target", type: "address" }], outputs: [] },
+  { type: "function", name: "pauseAll", stateMutability: "nonpayable", inputs: [{ name: "reason", type: "string" }], outputs: [] },
+  { type: "function", name: "unpauseAll", stateMutability: "nonpayable", inputs: [], outputs: [] },
+  { type: "function", name: "checkInvariant", stateMutability: "nonpayable", inputs: [{ name: "invariantId", type: "bytes32" }], outputs: [{ name: "passed", type: "bool" }] },
+  { type: "function", name: "checkAllInvariants", stateMutability: "nonpayable", inputs: [], outputs: [{ name: "passed", type: "uint256" }, { name: "failed", type: "uint256" }] },
+  { type: "function", name: "setRateLimit", stateMutability: "nonpayable", inputs: [{ name: "windowSeconds", type: "uint256" }, { name: "maxOutflowWei", type: "uint256" }], outputs: [] },
+] as const;
