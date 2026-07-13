@@ -85,7 +85,7 @@ const STATUS_STYLES: Record<string, string> = {
   active: "badge-active",
   submitted: "badge badge-violet",
   bidding: "badge badge-pending",
-  completed: "badge bg-[#1A2035] text-[#8892B0] border border-[#2A3555]",
+  completed: "badge bg-[#2A241B] text-[#A89F8D] border border-[#3A3226]",
   disputed: "badge bg-red-500/10 text-red-400 border border-red-500/20",
 };
 
@@ -117,23 +117,23 @@ export function ActiveTasksPanel({ view = "full" }: ActiveTasksPanelProps) {
     <div className="card p-6 space-y-5">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h2 className="font-display font-semibold text-[#F0F4FF] text-lg">
+          <h2 className="font-display font-semibold text-[#F4EFE6] text-lg">
             {view === "overview" ? "Recent Tasks" : "All Tasks"}
           </h2>
-          <p className="text-[#8892B0] text-sm mt-0.5">
+          <p className="text-[#A89F8D] text-sm mt-0.5">
             Tasks as worker and as client
           </p>
         </div>
         {view === "full" && (
-          <div className="flex gap-1 bg-[#080B12] border border-[#1A2035] rounded-md p-0.5 flex-wrap">
+          <div className="flex gap-1 bg-[#0B0A08] border border-[#2A241B] rounded-md p-0.5 flex-wrap">
             {(["all", "active", "bidding", "completed", "disputed"] as TaskFilter[]).map((f) => (
               <button
                 key={f}
                 onClick={() => setFilter(f)}
                 className={`px-3 py-1 rounded text-xs font-mono capitalize transition-all duration-150 ${
                   filter === f
-                    ? "bg-[#1A2035] text-[#F0F4FF]"
-                    : "text-[#8892B0] hover:text-[#F0F4FF]"
+                    ? "bg-[#2A241B] text-[#F4EFE6]"
+                    : "text-[#A89F8D] hover:text-[#F4EFE6]"
                 }`}
               >
                 {f}
@@ -146,14 +146,14 @@ export function ActiveTasksPanel({ view = "full" }: ActiveTasksPanelProps) {
       {/* Task list */}
       <div className="space-y-2">
         {displayTasks.length === 0 ? (
-          <div className="py-10 text-center text-[#8892B0] text-sm">
+          <div className="py-10 text-center text-[#A89F8D] text-sm">
             No tasks in this category
           </div>
         ) : (
           displayTasks.map((task) => (
             <div
               key={task.id}
-              className="flex items-center gap-4 p-3.5 rounded-lg bg-[#080B12] border border-[#1A2035] hover:border-cyan/20 transition-colors group cursor-pointer"
+              className="flex items-center gap-4 p-3.5 rounded-lg bg-[#0B0A08] border border-[#2A241B] hover:border-cyan/20 transition-colors group cursor-pointer"
             >
               {/* Role indicator */}
               <div
@@ -165,7 +165,7 @@ export function ActiveTasksPanel({ view = "full" }: ActiveTasksPanelProps) {
               {/* Title + meta */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-start gap-2 flex-wrap">
-                  <p className="text-sm font-medium text-[#F0F4FF] group-hover:text-cyan transition-colors truncate max-w-sm">
+                  <p className="text-sm font-medium text-[#F4EFE6] group-hover:text-cyan transition-colors truncate max-w-sm">
                     {task.title}
                   </p>
                   <span className={`${STATUS_STYLES[task.status]} text-[10px] flex-shrink-0`}>
@@ -190,7 +190,7 @@ export function ActiveTasksPanel({ view = "full" }: ActiveTasksPanelProps) {
 
               {/* Reward */}
               <div className="text-right flex-shrink-0">
-                <div className="font-mono text-sm font-semibold text-[#F0F4FF]">
+                <div className="font-mono text-sm font-semibold text-[#F4EFE6]">
                   {task.reward}
                 </div>
                 <div className="label text-[10px] capitalize">{task.role}</div>
@@ -211,7 +211,7 @@ export function ActiveTasksPanel({ view = "full" }: ActiveTasksPanelProps) {
       </div>
 
       {/* Summary strip */}
-      <div className="grid grid-cols-4 gap-3 pt-4 border-t border-[#1A2035]">
+      <div className="grid grid-cols-4 gap-3 pt-4 border-t border-[#2A241B]">
         {[
           { label: "Active", value: AGENT_TASKS.filter((t) => t.status === "active").length, color: "text-emerald-400" },
           { label: "Pending", value: AGENT_TASKS.filter((t) => t.status === "bidding" || t.status === "submitted").length, color: "text-amber-400" },
