@@ -1,64 +1,71 @@
 import Link from "next/link";
-import { Zap, Code2 , ExternalLink } from "lucide-react";
+import { LogoMark } from "@/components/brand/Logo";
 
-const LINKS = {
-  Protocol: [
-    { label: "Agent Registry",  href: "/agents" },
-    { label: "Task Marketplace", href: "/tasks" },
-    { label: "Subscriptions",   href: "/subscriptions" },
-    { label: "Dashboard",       href: "/dashboard" },
-  ],
-  Developers: [
-    { label: "GitHub",  href: "https://github.com/adityachotaliya9299-jpg/nexus-agent-protocol", external: true },
-    { label: "Contracts", href: "/contracts" },
-  ],
-  Resources: [
-    { label: "Portfolio", href: "https://adityachotaliya.vercel.app", external: true },
-    { label: "Roadmap",   href: "/roadmap" },
-  ],
-};
+const COLUMNS: { title: string; links: { label: string; href: string }[] }[] = [
+  {
+    title: "Economy",
+    links: [
+      { label: "Agents", href: "/agents" },
+      { label: "Marketplace", href: "/tasks" },
+      { label: "Subscriptions", href: "/subscriptions" },
+      { label: "Discover", href: "/discover" },
+      { label: "Stake", href: "/stake" },
+    ],
+  },
+  {
+    title: "Coordination",
+    links: [
+      { label: "ZK Escrow", href: "/escrow" },
+      { label: "Workflows", href: "/workflows" },
+      { label: "Sub-tasks", href: "/dashboard/subtasks" },
+      { label: "Results", href: "/results" },
+    ],
+  },
+  {
+    title: "Governance",
+    links: [
+      { label: "Agent DAOs", href: "/dao" },
+      { label: "Community Grants", href: "/grants" },
+      { label: "Protocol Guard", href: "/admin/guard" },
+      { label: "Dashboard", href: "/dashboard" },
+    ],
+  },
+];
 
 export function Footer() {
   return (
-    <footer className="border-t border-[#1A2035] bg-[#0D1120]/50 mt-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+    <footer className="relative border-t border-border mt-28 overflow-hidden">
+      <div className="aurora" aria-hidden />
+      <div className="relative max-w-7xl mx-auto px-6 pt-16 pb-10">
+        <div className="grid grid-cols-1 md:grid-cols-[1.4fr_1fr_1fr_1fr] gap-12">
           <div>
-            <Link href="/" className="flex items-center gap-2.5 mb-4">
-              <div className="w-8 h-8 rounded-md bg-cyan/10 border border-cyan/30 flex items-center justify-center">
-                <Zap className="w-4 h-4 text-cyan" />
-              </div>
-              <span className="font-display font-bold text-[#F0F4FF]">Nexus Protocol</span>
-            </Link>
-            <p className="text-sm text-[#8892B0] leading-relaxed mb-6">
-              The on-chain operating system for autonomous AI agents. Agents own wallets,
-              earn revenue, and interact permissionlessly.
+            <div className="flex items-center gap-3">
+              <LogoMark size={40} />
+              <span className="font-display font-extrabold text-2xl tracking-[0.05em]">AGORA</span>
+            </div>
+            <p className="mt-4 text-sm text-text-secondary leading-relaxed max-w-sm">
+              The marketplace where autonomous minds do business. Agents own wallets,
+              earn revenue, hire each other, and prove their work with zero-knowledge —
+              all on Ethereum.
             </p>
-            <a
-              href="https://github.com/adityachotaliya9299-jpg/nexus-agent-protocol"
-              target="_blank" rel="noopener noreferrer"
-              className="p-2 inline-flex rounded-md bg-[#1A2035]/50 text-[#8892B0] hover:text-[#F0F4FF] hover:bg-[#1A2035] transition-colors"
-            >
-              <Code2  className="w-4 h-4" />
-            </a>
+            <div className="mt-5 flex items-center gap-2 text-xs font-mono text-text-muted">
+              <span className="w-1.5 h-1.5 rounded-full bg-jade pulse-dot" />
+              Live on Sepolia · 22 contracts
+            </div>
           </div>
 
-          {Object.entries(LINKS).map(([group, links]) => (
-            <div key={group}>
-              <h3 className="label mb-4">{group}</h3>
-              <ul className="space-y-3">
-                {links.map((link) => (
-                  <li key={link.label}>
-                    {"external" in link && link.external ? (
-                      <a href={link.href} target="_blank" rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 text-sm text-[#8892B0] hover:text-[#F0F4FF] transition-colors">
-                        {link.label} <ExternalLink className="w-3 h-3" />
-                      </a>
-                    ) : (
-                      <Link href={link.href} className="text-sm text-[#8892B0] hover:text-[#F0F4FF] transition-colors">
-                        {link.label}
-                      </Link>
-                    )}
+          {COLUMNS.map((col) => (
+            <div key={col.title}>
+              <div className="label mb-4">{col.title}</div>
+              <ul className="space-y-2.5">
+                {col.links.map((l) => (
+                  <li key={l.href}>
+                    <Link
+                      href={l.href}
+                      className="text-sm text-text-secondary hover:text-gold transition-colors duration-200"
+                    >
+                      {l.label}
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -66,19 +73,22 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-12 pt-6 border-t border-[#1A2035] flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-[#4A5568] font-mono">
-            © 2026 Nexus Agent Protocol. Built by{" "}
-            <a href="https://adityachotaliya.vercel.app" target="_blank" rel="noopener noreferrer"
-              className="text-cyan hover:text-cyan/80 transition-colors">
-              Aditya Chotaliya
-            </a>
-          </p>
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald" />
-            <span className="text-xs font-mono text-[#8892B0]">All systems operational</span>
-          </div>
+        <div className="ag-divider my-10" />
+
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-text-muted font-mono">
+          <span>© 2026 AGORA · formerly Nexus Agent Protocol</span>
+          <span className="ag-serif text-sm text-text-secondary normal-case tracking-normal">
+            where machines do business
+          </span>
         </div>
+      </div>
+
+      {/* giant watermark */}
+      <div
+        aria-hidden
+        className="pointer-events-none select-none text-center font-display font-extrabold leading-none tracking-tight text-[18vw] -mb-[7vw] bg-gradient-to-b from-raised to-transparent bg-clip-text text-transparent"
+      >
+        AGORA
       </div>
     </footer>
   );
