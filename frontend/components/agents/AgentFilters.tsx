@@ -38,7 +38,7 @@ export function AgentFilters() {
 
         {/* Search */}
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4A5568]" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B6355]" />
           <input
             type="text"
             placeholder="Search agents by name or capability..."
@@ -49,7 +49,7 @@ export function AgentFilters() {
           {search && (
             <button
               onClick={() => setSearch("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#4A5568] hover:text-[#8892B0] transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6B6355] hover:text-[#A89F8D] transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
@@ -93,7 +93,7 @@ export function AgentFilters() {
       {/* Active filter pills */}
       {hasFilters && (
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="flex items-center gap-1.5 text-xs text-[#8892B0]">
+          <span className="flex items-center gap-1.5 text-xs text-[#A89F8D]">
             <SlidersHorizontal className="w-3 h-3" /> Active filters:
           </span>
           {category && (
@@ -117,7 +117,7 @@ export function AgentFilters() {
           {sort !== "reputation" && (
             <button
               onClick={() => setSort("reputation")}
-              className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#1A2035] border border-[#1A2035] text-xs text-[#8892B0] font-mono hover:bg-[#2A3555] transition-colors"
+              className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#2A241B] border border-[#2A241B] text-xs text-[#A89F8D] font-mono hover:bg-[#3A3226] transition-colors"
             >
               Sort: {SORT_OPTIONS.find(s => s.value === sort)?.label}
               <X className="w-3 h-3" />
@@ -125,7 +125,7 @@ export function AgentFilters() {
           )}
           <button
             onClick={() => { setSearch(""); setCategory(""); setStatus(""); setSort("reputation"); }}
-            className="text-xs text-[#4A5568] hover:text-[#8892B0] transition-colors ml-1 underline"
+            className="text-xs text-[#6B6355] hover:text-[#A89F8D] transition-colors ml-1 underline"
           >
             Clear all
           </button>
