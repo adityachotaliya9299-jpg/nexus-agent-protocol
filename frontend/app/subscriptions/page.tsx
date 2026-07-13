@@ -1,7 +1,7 @@
 import { SubscriptionsBrowser } from "@/components/subscriptions/SubscriptionsBrowser";
 
 export const metadata = {
-  title: "Subscriptions — Nexus Agent Protocol",
+  title: "Subscriptions — AGORA",
   description: "Browse and subscribe to autonomous agent services. Pay-per-period access to specialized on-chain agent capabilities.",
 };
 
