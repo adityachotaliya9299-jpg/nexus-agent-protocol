@@ -3,8 +3,8 @@
 import Link from 'next/link'
 
 const CAT_COLORS: Record<number, string> = {
-  0: '#4A5568', 1: '#8B5CF6', 2: '#00E5FF',
-  3: '#10B981', 4: '#F59E0B', 5: '#F43F5E',
+  0: '#6B6355', 1: '#FF6B3D', 2: '#F2A93B',
+  3: '#57C99B', 4: '#F2A93B', 5: '#C84B8E',
 }
 const CAT_NAMES: Record<number, string> = {
   0: 'GENERAL', 1: 'CODE', 2: 'RESEARCH',
@@ -12,12 +12,12 @@ const CAT_NAMES: Record<number, string> = {
 }
 
 function getTier(score: number) {
-  if (score >= 10000) return { label: 'Elite',       color: '#F43F5E' }
-  if (score >= 8000)  return { label: 'Expert',      color: '#F59E0B' }
-  if (score >= 6000)  return { label: 'Advanced',    color: '#8B5CF6' }
-  if (score >= 4000)  return { label: 'Established', color: '#10B981' }
-  if (score >= 2000)  return { label: 'Rising',      color: '#00E5FF' }
-  return                    { label: 'Novice',       color: '#4A5568' }
+  if (score >= 10000) return { label: 'Elite',       color: '#C84B8E' }
+  if (score >= 8000)  return { label: 'Expert',      color: '#F2A93B' }
+  if (score >= 6000)  return { label: 'Advanced',    color: '#FF6B3D' }
+  if (score >= 4000)  return { label: 'Established', color: '#57C99B' }
+  if (score >= 2000)  return { label: 'Rising',      color: '#F2A93B' }
+  return                    { label: 'Novice',       color: '#6B6355' }
 }
 
 function ScoreRing({ score, size = 72 }: { score: number; size?: number }) {
@@ -29,7 +29,7 @@ function ScoreRing({ score, size = 72 }: { score: number; size?: number }) {
   return (
     <div style={{ position: 'relative', width: size, height: size, flexShrink: 0 }}>
       <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
-        <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="#1A2035" strokeWidth={5} />
+        <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="#2A241B" strokeWidth={5} />
         <circle
           cx={size/2} cy={size/2} r={r} fill="none"
           stroke={tier.color} strokeWidth={5} strokeLinecap="round"
@@ -41,10 +41,10 @@ function ScoreRing({ score, size = 72 }: { score: number; size?: number }) {
         position: 'absolute', inset: 0, display: 'flex',
         flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
       }}>
-        <span style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 13, fontWeight: 700, color: tier.color, lineHeight: 1 }}>
+        <span style={{ fontFamily: 'IBM Plex Mono,monospace', fontSize: 13, fontWeight: 700, color: tier.color, lineHeight: 1 }}>
           {score.toLocaleString()}
         </span>
-        <span style={{ fontFamily: 'JetBrains Mono,monospace', fontSize: 8, color: '#4A5568', letterSpacing: '0.06em', marginTop: 2 }}>
+        <span style={{ fontFamily: 'IBM Plex Mono,monospace', fontSize: 8, color: '#6B6355', letterSpacing: '0.06em', marginTop: 2 }}>
           {tier.label.toUpperCase()}
         </span>
       </div>
@@ -72,7 +72,7 @@ export function DiscoverGrid({ agents, isLoading }: DiscoverGridProps) {
     return (
       <div className="card p-16 text-center">
         <div className="text-4xl mb-3">🔍</div>
-        <div className="text-[#8892B0] text-sm">No agents match your filters.</div>
+        <div className="text-[#A89F8D] text-sm">No agents match your filters.</div>
       </div>
     )
   }
@@ -83,7 +83,7 @@ export function DiscoverGrid({ agents, isLoading }: DiscoverGridProps) {
         const score   = Number(agent.globalRepScore ?? agent.contextualScore ?? 0)
         const tier    = getTier(score)
         const catIdx  = Number(agent.category ?? 0)
-        const catColor = CAT_COLORS[catIdx] ?? '#4A5568'
+        const catColor = CAT_COLORS[catIdx] ?? '#6B6355'
         const catName  = CAT_NAMES[catIdx]  ?? 'GENERAL'
 
         return (
@@ -106,14 +106,14 @@ export function DiscoverGrid({ agents, isLoading }: DiscoverGridProps) {
 
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap mb-1">
-                  <span className="font-display font-semibold text-[#F0F4FF] text-sm">
+                  <span className="font-display font-semibold text-[#F4EFE6] text-sm">
                     Agent #{agent.agentId?.toString()}
                   </span>
                   <span className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                    style={{ background: agent.isActive ? '#10B981' : '#4A5568', boxShadow: agent.isActive ? '0 0 5px #10B981' : 'none' }} />
+                    style={{ background: agent.isActive ? '#57C99B' : '#6B6355', boxShadow: agent.isActive ? '0 0 5px #57C99B' : 'none' }} />
                 </div>
 
-                <div className="font-mono text-[10px] text-[#4A5568] mb-3 truncate">
+                <div className="font-mono text-[10px] text-[#6B6355] mb-3 truncate">
                   {agent.owner ? `${agent.owner.slice(0,8)}…${agent.owner.slice(-4)}` : '—'}
                 </div>
 
