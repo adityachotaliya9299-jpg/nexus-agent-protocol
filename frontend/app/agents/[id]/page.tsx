@@ -18,19 +18,19 @@ import {
 
 const CATEGORIES = ['GENERAL','CODE','RESEARCH','TRADING','CREATIVE','ORCHESTRATOR']
 const CAT_COLORS: Record<string, string> = {
-  GENERAL:'#4A5568', CODE:'#8B5CF6', RESEARCH:'#00E5FF',
-  TRADING:'#10B981', CREATIVE:'#F59E0B', ORCHESTRATOR:'#F43F5E',
+  GENERAL:'#6B6355', CODE:'#FF6B3D', RESEARCH:'#F2A93B',
+  TRADING:'#57C99B', CREATIVE:'#F2A93B', ORCHESTRATOR:'#C84B8E',
 }
 const SKILL_TIERS  = ['–','BRONZE','SILVER','GOLD','PLATINUM','DIAMOND']
-const SKILL_COLORS = ['#475569','#CD7F32','#94A3B8','#F59E0B','#00E5FF','#F43F5E']
+const SKILL_COLORS = ['#475569','#CD7F32','#94A3B8','#F2A93B','#F2A93B','#C84B8E']
 
 function getTier(score: number) {
-  if (score >= 10000) return { label: 'Elite',       color: '#F43F5E' }
-  if (score >= 8000)  return { label: 'Expert',      color: '#F59E0B' }
-  if (score >= 6000)  return { label: 'Advanced',    color: '#8B5CF6' }
-  if (score >= 4000)  return { label: 'Established', color: '#10B981' }
-  if (score >= 2000)  return { label: 'Rising',      color: '#00E5FF' }
-  return                    { label: 'Novice',       color: '#4A5568' }
+  if (score >= 10000) return { label: 'Elite',       color: '#C84B8E' }
+  if (score >= 8000)  return { label: 'Expert',      color: '#F2A93B' }
+  if (score >= 6000)  return { label: 'Advanced',    color: '#FF6B3D' }
+  if (score >= 4000)  return { label: 'Established', color: '#57C99B' }
+  if (score >= 2000)  return { label: 'Rising',      color: '#F2A93B' }
+  return                    { label: 'Novice',       color: '#6B6355' }
 }
 
 function shortenAddr(addr: string) {
@@ -53,7 +53,7 @@ function ScoreRing({ score, size = 120 }: { score: number; size?: number }) {
   return (
     <div style={{ position:'relative', width:size, height:size, flexShrink:0 }}>
       <svg width={size} height={size} style={{ transform:'rotate(-90deg)' }}>
-        <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="#1A2035" strokeWidth={8} />
+        <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="#2A241B" strokeWidth={8} />
         <circle
           cx={size/2} cy={size/2} r={r} fill="none"
           stroke={tier.color} strokeWidth={8} strokeLinecap="round"
@@ -62,10 +62,10 @@ function ScoreRing({ score, size = 120 }: { score: number; size?: number }) {
         />
       </svg>
       <div style={{ position:'absolute', inset:0, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center' }}>
-        <span style={{ fontFamily:'JetBrains Mono,monospace', fontSize:20, fontWeight:700, color:tier.color, lineHeight:1 }}>
+        <span style={{ fontFamily:'IBM Plex Mono,monospace', fontSize:20, fontWeight:700, color:tier.color, lineHeight:1 }}>
           {score.toLocaleString()}
         </span>
-        <span style={{ fontFamily:'JetBrains Mono,monospace', fontSize:9, color:'#4A5568', letterSpacing:'0.08em', marginTop:4 }}>
+        <span style={{ fontFamily:'IBM Plex Mono,monospace', fontSize:9, color:'#6B6355', letterSpacing:'0.08em', marginTop:4 }}>
           {tier.label.toUpperCase()}
         </span>
       </div>
@@ -134,7 +134,7 @@ export default function AgentProfilePage() {
         owner:               (onChainAgent as any).owner,
         agentWallet:         (onChainAgent as any).agentWallet,
         name:                mockAgent?.name ?? `Agent #${id}`,
-        description:         mockAgent?.description ?? 'Autonomous AI agent on Nexus Protocol.',
+        description:         mockAgent?.description ?? 'Autonomous AI agent on AGORA.',
         capabilities:        mockAgent?.capabilities ?? [],
         category:            Number((onChainAgent as any).category),
         status:              Number((onChainAgent as any).status),
@@ -172,15 +172,15 @@ export default function AgentProfilePage() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-4">
         <div className="text-5xl">🤖</div>
-        <h2 className="font-display font-bold text-2xl text-[#F0F4FF]">Agent #{id} not found</h2>
-        <p className="text-[#8892B0]">This agent is not registered on Nexus.</p>
+        <h2 className="font-display font-bold text-2xl text-[#F4EFE6]">Agent #{id} not found</h2>
+        <p className="text-[#A89F8D]">This agent is not registered on AGORA.</p>
         <Link href="/discover" className="text-cyan hover:underline text-sm">← Back to discovery</Link>
       </div>
     )
   }
 
   const catName   = CATEGORIES[agent.category] ?? 'GENERAL'
-  const catColor  = CAT_COLORS[catName] ?? '#4A5568'
+  const catColor  = CAT_COLORS[catName] ?? '#6B6355'
   const tier      = getTier(agent.reputationScore)
   const isActive  = agent.status === 1
   const info      = stakeInfo as any
@@ -196,7 +196,7 @@ export default function AgentProfilePage() {
 
       {/* Back + mock warning */}
       <div className="flex items-center gap-4 mb-8">
-        <Link href="/discover" className="text-[#8892B0] hover:text-[#F0F4FF] text-sm transition-colors">
+        <Link href="/discover" className="text-[#A89F8D] hover:text-[#F4EFE6] text-sm transition-colors">
           ← Back to discovery
         </Link>
         {!agent.isOnChain && (
@@ -205,7 +205,7 @@ export default function AgentProfilePage() {
       </div>
 
       {/* ── Hero ──────────────────────────────────────────────── */}
-      <div className="relative mb-10 overflow-hidden rounded-xl border border-[#1A2035] bg-[#0D1120] p-8">
+      <div className="relative mb-10 overflow-hidden rounded-xl border border-[#2A241B] bg-[#14110D] p-8">
         {/* Top accent bar */}
         <div style={{ position:'absolute', top:0, left:0, right:0, height:3,
           background:`linear-gradient(90deg, transparent, ${tier.color}, transparent)` }} />
@@ -217,8 +217,8 @@ export default function AgentProfilePage() {
 
           <div className="flex-1">
             <div className="flex items-center gap-3 flex-wrap mb-2">
-              <h1 className="font-display font-bold text-3xl text-[#F0F4FF]">{agent.name}</h1>
-              <span className="w-2 h-2 rounded-full" style={{ background: isActive ? '#10B981' : '#4A5568', boxShadow: isActive ? '0 0 6px #10B981' : 'none' }} />
+              <h1 className="font-display font-bold text-3xl text-[#F4EFE6]">{agent.name}</h1>
+              <span className="w-2 h-2 rounded-full" style={{ background: isActive ? '#57C99B' : '#6B6355', boxShadow: isActive ? '0 0 6px #57C99B' : 'none' }} />
             </div>
 
             <div className="address mb-4">{agent.owner}</div>
@@ -238,14 +238,14 @@ export default function AgentProfilePage() {
 
             {/* Description */}
             {agent.description && (
-              <p className="text-[#8892B0] text-sm mb-5 max-w-xl leading-relaxed">{agent.description}</p>
+              <p className="text-[#A89F8D] text-sm mb-5 max-w-xl leading-relaxed">{agent.description}</p>
             )}
 
             {/* Capabilities */}
             {agent.capabilities && agent.capabilities.length > 0 && (
               <div className="flex flex-wrap gap-1.5 mb-5">
                 {agent.capabilities.map(cap => (
-                  <span key={cap} className="px-2 py-0.5 rounded text-[10px] font-mono text-[#8892B0] border border-[#1A2035] bg-[#080B12]">
+                  <span key={cap} className="px-2 py-0.5 rounded text-[10px] font-mono text-[#A89F8D] border border-[#2A241B] bg-[#0B0A08]">
                     {cap}
                   </span>
                 ))}
@@ -256,13 +256,13 @@ export default function AgentProfilePage() {
             <div className="flex gap-8 flex-wrap">
               {[
                 { label: 'Tasks Completed', value: agent.totalTasksCompleted.toString() },
-                { label: 'Total Earned',    value: typeof agent.totalEarned === 'bigint' ? formatEth(agent.totalEarned) : `${agent.totalEarned} ETH`, color: '#10B981' },
-                { label: 'Staked',          value: formatEth(totalS),  color: '#8B5CF6' },
-                { label: 'Slashes',         value: (info?.slashCount ?? 0n).toString(), color: Number(info?.slashCount ?? 0n) > 0 ? '#F43F5E' : undefined },
+                { label: 'Total Earned',    value: typeof agent.totalEarned === 'bigint' ? formatEth(agent.totalEarned) : `${agent.totalEarned} ETH`, color: '#57C99B' },
+                { label: 'Staked',          value: formatEth(totalS),  color: '#FF6B3D' },
+                { label: 'Slashes',         value: (info?.slashCount ?? 0n).toString(), color: Number(info?.slashCount ?? 0n) > 0 ? '#C84B8E' : undefined },
               ].map(s => (
                 <div key={s.label}>
                   <div className="label mb-1">{s.label}</div>
-                  <div className="font-display font-bold text-lg" style={{ color: s.color ?? '#F0F4FF' }}>{s.value}</div>
+                  <div className="font-display font-bold text-lg" style={{ color: s.color ?? '#F4EFE6' }}>{s.value}</div>
                 </div>
               ))}
             </div>
@@ -275,18 +275,18 @@ export default function AgentProfilePage() {
 
         {/* Specialization radar */}
         <div className="card p-6">
-          <h3 className="font-display font-semibold text-[#F0F4FF] mb-1">Specialization</h3>
+          <h3 className="font-display font-semibold text-[#F4EFE6] mb-1">Specialization</h3>
           <p className="label mb-5">Performance by category</p>
           <div className="flex justify-center mb-4">
             <ReputationRadar scores={catScores} size={220} />
           </div>
           <div className="grid grid-cols-2 gap-2">
             {CATEGORIES.map((cat, i) => (
-              <div key={cat} className="flex justify-between items-center px-3 py-2 rounded-md bg-[#080B12]">
+              <div key={cat} className="flex justify-between items-center px-3 py-2 rounded-md bg-[#0B0A08]">
                 <span className="font-mono text-[10px] font-semibold" style={{ color: Object.values(CAT_COLORS)[i] }}>
                   {cat.slice(0,5)}
                 </span>
-                <span className="font-mono text-xs text-[#F0F4FF] font-semibold">
+                <span className="font-mono text-xs text-[#F4EFE6] font-semibold">
                   {(catScores[i] ?? 0).toLocaleString()}
                 </span>
               </div>
@@ -296,13 +296,13 @@ export default function AgentProfilePage() {
 
         {/* Stake panel */}
         <div className="card p-6">
-          <h3 className="font-display font-semibold text-[#F0F4FF] mb-1">Stake</h3>
+          <h3 className="font-display font-semibold text-[#F4EFE6] mb-1">Stake</h3>
           <p className="label mb-5">Collateral and risk</p>
 
           {totalS === 0n ? (
             <div className="flex flex-col items-center justify-center py-10 text-center">
               <div className="text-3xl mb-3">🔒</div>
-              <p className="text-[#8892B0] text-sm">No stake on-chain yet.</p>
+              <p className="text-[#A89F8D] text-sm">No stake on-chain yet.</p>
               {agent.isOnChain && (
                 <Link href="/dashboard/stake" className="btn-primary mt-4 text-xs">
                   Stake ETH →
@@ -311,17 +311,17 @@ export default function AgentProfilePage() {
             </div>
           ) : (
             <div className="space-y-4">
-              <StakeBar label="Own Stake"       value={ownS}    total={totalS} color="#00E5FF" />
-              <StakeBar label="Delegated Stake" value={delegS}  total={totalS} color="#8B5CF6" />
-              <StakeBar label="Locked"          value={lockedS} total={totalS} color="#F59E0B" />
-              <div className="border-t border-[#1A2035] pt-4 space-y-2">
+              <StakeBar label="Own Stake"       value={ownS}    total={totalS} color="#F2A93B" />
+              <StakeBar label="Delegated Stake" value={delegS}  total={totalS} color="#FF6B3D" />
+              <StakeBar label="Locked"          value={lockedS} total={totalS} color="#F2A93B" />
+              <div className="border-t border-[#2A241B] pt-4 space-y-2">
                 {[
-                  { label:'Total Staked',    val:totalS,                    color:'#00E5FF' },
-                  { label:'Effective Stake', val:info?.effectiveStake ?? 0n, color:'#8B5CF6' },
-                  { label:'Total Slashed',   val:info?.totalSlashed ?? 0n,   color:'#F43F5E' },
+                  { label:'Total Staked',    val:totalS,                    color:'#F2A93B' },
+                  { label:'Effective Stake', val:info?.effectiveStake ?? 0n, color:'#FF6B3D' },
+                  { label:'Total Slashed',   val:info?.totalSlashed ?? 0n,   color:'#C84B8E' },
                 ].map(({ label, val, color }) => (
                   <div key={label} className="flex justify-between">
-                    <span className="text-[#8892B0] text-sm">{label}</span>
+                    <span className="text-[#A89F8D] text-sm">{label}</span>
                     <span className="font-mono text-sm font-semibold" style={{ color }}>{formatEth(val)}</span>
                   </div>
                 ))}
@@ -332,7 +332,7 @@ export default function AgentProfilePage() {
 
         {/* Skill badges */}
         <div className="card p-6">
-          <h3 className="font-display font-semibold text-[#F0F4FF] mb-1">Skills</h3>
+          <h3 className="font-display font-semibold text-[#F4EFE6] mb-1">Skills</h3>
           <p className="label mb-5">ERC-1155 earned badges</p>
           <div className="grid grid-cols-3 gap-3">
             {CATEGORIES.map((cat, i) => {
@@ -342,11 +342,11 @@ export default function AgentProfilePage() {
               return (
                 <div key={cat}
                   className="flex flex-col items-center gap-1 p-3 rounded-lg border transition-all duration-200 hover:scale-105"
-                  style={{ background: tierIdx > 0 ? `${tColor}10` : '#080B12', borderColor: tierIdx > 0 ? `${tColor}25` : '#1A2035' }}
+                  style={{ background: tierIdx > 0 ? `${tColor}10` : '#0B0A08', borderColor: tierIdx > 0 ? `${tColor}25` : '#2A241B' }}
                 >
                   <div className="text-xl">{['⬡','🔶','⬡','🏆','💎','👑'][tierIdx]}</div>
                   <span className="font-mono text-[9px] font-bold" style={{ color: catCol }}>{cat.slice(0,5)}</span>
-                  <span className="font-mono text-[8px]" style={{ color: tierIdx > 0 ? tColor : '#4A5568' }}>
+                  <span className="font-mono text-[8px]" style={{ color: tierIdx > 0 ? tColor : '#6B6355' }}>
                     {SKILL_TIERS[tierIdx]}
                   </span>
                 </div>
@@ -357,15 +357,15 @@ export default function AgentProfilePage() {
 
         {/* Identity */}
         <div className="card p-6">
-          <h3 className="font-display font-semibold text-[#F0F4FF] mb-1">Identity</h3>
+          <h3 className="font-display font-semibold text-[#F4EFE6] mb-1">Identity</h3>
           <p className="label mb-5">On-chain profile</p>
 
           {/* Mini NFT card */}
           <div className="rounded-lg border p-5 text-center mb-5"
-            style={{ background:`linear-gradient(135deg, ${tier.color}10, rgba(0,229,255,0.05))`, borderColor:`${tier.color}25` }}>
-            <div className="label text-cyan mb-3">NEXUS AGENT IDENTITY</div>
+            style={{ background:`linear-gradient(135deg, ${tier.color}10, rgba(242,169,59,0.05))`, borderColor:`${tier.color}25` }}>
+            <div className="label text-cyan mb-3">AGORA AGENT IDENTITY</div>
             <ScoreRing score={agent.reputationScore} size={80} />
-            <div className="font-mono text-xs text-[#8892B0] mt-3">#{id} · {catName}</div>
+            <div className="font-mono text-xs text-[#A89F8D] mt-3">#{id} · {catName}</div>
           </div>
 
           <div className="space-y-3">
@@ -376,14 +376,14 @@ export default function AgentProfilePage() {
               { label:'Last Active', value: agent.lastActiveAt > 0 ? new Date(agent.lastActiveAt * 1000).toLocaleDateString() : '—' },
             ].map(row => (
               <div key={row.label} className="flex justify-between items-center">
-                <span className="text-[#8892B0] text-sm">{row.label}</span>
+                <span className="text-[#A89F8D] text-sm">{row.label}</span>
                 {row.link ? (
                   <a href={row.link} target="_blank" rel="noreferrer"
                     className="flex items-center gap-1 font-mono text-xs text-cyan hover:underline">
                     {row.value} <ExternalLink className="w-3 h-3" />
                   </a>
                 ) : (
-                  <span className="font-mono text-xs text-[#8892B0]">{row.value}</span>
+                  <span className="font-mono text-xs text-[#A89F8D]">{row.value}</span>
                 )}
               </div>
             ))}
