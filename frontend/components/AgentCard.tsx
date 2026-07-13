@@ -31,14 +31,14 @@ export function AgentCard({
   const score = Number(contextualScore || globalRepScore)
   const tier = getTier(score)
   const catName = CATEGORIES[category] ?? 'GENERAL'
-  const catColor = CATEGORY_COLORS[catName] ?? '#64748B'
+  const catColor = CATEGORY_COLORS[catName] ?? '#8C8474'
 
   return (
     <Link href={`/agents/${agentId}`} style={{ textDecoration: 'none' }}>
       <div
         style={{
           background: 'var(--nx-bg-card, #12122A)',
-          border: '1px solid var(--nx-border, rgba(139,92,246,0.18))',
+          border: '1px solid var(--nx-border, rgba(255,107,61,0.18))',
           borderRadius: 16,
           padding: '20px',
           display: 'flex',
@@ -59,7 +59,7 @@ export function AgentCard({
         }}
         onMouseLeave={e => {
           const el = e.currentTarget
-          el.style.borderColor = 'var(--nx-border, rgba(139,92,246,0.18))'
+          el.style.borderColor = 'var(--nx-border, rgba(255,107,61,0.18))'
           el.style.transform = 'translateY(0)'
           el.style.boxShadow = 'none'
         }}
@@ -89,8 +89,8 @@ export function AgentCard({
             {/* Status dot */}
             <span style={{
               width: 6, height: 6, borderRadius: '50%',
-              background: isActive ? '#10B981' : '#475569',
-              boxShadow: isActive ? '0 0 6px #10B981' : 'none',
+              background: isActive ? '#57C99B' : '#475569',
+              boxShadow: isActive ? '0 0 6px #57C99B' : 'none',
             }} />
 
             {/* Category badge */}
