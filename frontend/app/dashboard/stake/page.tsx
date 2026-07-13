@@ -7,12 +7,12 @@ import { Shield, TrendingUp, Lock, AlertTriangle, CheckCircle, Loader2, External
 import { CONTRACTS, AGENT_REGISTRY_ABI, AGENT_STAKING_ABI } from '@/lib/contracts'
 
 function getTier(score: number) {
-  if (score >= 10000) return { label: 'Elite',       color: '#F43F5E' }
-  if (score >= 8000)  return { label: 'Expert',      color: '#F59E0B' }
-  if (score >= 6000)  return { label: 'Advanced',    color: '#8B5CF6' }
-  if (score >= 4000)  return { label: 'Established', color: '#10B981' }
-  if (score >= 2000)  return { label: 'Rising',      color: '#00E5FF' }
-  return                    { label: 'Novice',       color: '#4A5568' }
+  if (score >= 10000) return { label: 'Elite',       color: '#C84B8E' }
+  if (score >= 8000)  return { label: 'Expert',      color: '#F2A93B' }
+  if (score >= 6000)  return { label: 'Advanced',    color: '#FF6B3D' }
+  if (score >= 4000)  return { label: 'Established', color: '#57C99B' }
+  if (score >= 2000)  return { label: 'Rising',      color: '#F2A93B' }
+  return                    { label: 'Novice',       color: '#6B6355' }
 }
 
 function StakeBar({ label, value, total, color }: { label: string; value: bigint; total: bigint; color: string }) {
@@ -120,8 +120,8 @@ export default function StakePage() {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
         <Shield className="w-12 h-12 text-cyan mx-auto mb-4 opacity-50" />
-        <h2 className="font-display font-bold text-2xl text-[#F0F4FF] mb-2">Connect Wallet</h2>
-        <p className="text-[#8892B0]">Connect your wallet to manage your agent stake.</p>
+        <h2 className="font-display font-bold text-2xl text-[#F4EFE6] mb-2">Connect Wallet</h2>
+        <p className="text-[#A89F8D]">Connect your wallet to manage your agent stake.</p>
       </div>
     )
   }
@@ -133,15 +133,15 @@ export default function StakePage() {
       <div className="mb-10 animate-fade-up">
         <div className="flex items-center gap-2 mb-3">
           <span className="label">Dashboard</span>
-          <span className="font-mono text-xs text-[#4A5568]">/</span>
+          <span className="font-mono text-xs text-[#6B6355]">/</span>
           <span className="font-mono text-xs text-cyan">Stake</span>
         </div>
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
-            <h1 className="font-display font-bold text-4xl text-[#F0F4FF] mb-2">
+            <h1 className="font-display font-bold text-4xl text-[#F4EFE6] mb-2">
               Agent Stake
             </h1>
-            <p className="text-[#8892B0]">
+            <p className="text-[#A89F8D]">
               Stake ETH as collateral. Higher stake unlocks high-value tasks and multiplied reputation.
             </p>
           </div>
@@ -149,10 +149,10 @@ export default function StakePage() {
             <div className="flex items-center gap-3 card px-4 py-3">
               <div className="w-2 h-2 rounded-full bg-cyan pulse-dot" />
               <div>
-                <div className="font-mono text-xs text-[#8892B0]">Agent</div>
-                <div className="font-display font-bold text-[#F0F4FF]">#{agentId.toString()}</div>
+                <div className="font-mono text-xs text-[#A89F8D]">Agent</div>
+                <div className="font-display font-bold text-[#F4EFE6]">#{agentId.toString()}</div>
               </div>
-              <div className="w-px h-8 bg-[#1A2035]" />
+              <div className="w-px h-8 bg-[#2A241B]" />
               <div>
                 <div className="label">Rep Score</div>
                 <div className="font-mono font-bold text-sm" style={{ color: tier.color }}>
@@ -176,10 +176,10 @@ export default function StakePage() {
           {/* Summary cards */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 animate-fade-up animation-delay-100">
             {[
-              { label: 'Total Staked',    value: `${Number(formatEther(totalS)).toFixed(4)} ETH`,    color: '#00E5FF', icon: TrendingUp },
-              { label: 'Effective Stake', value: `${Number(formatEther(effectiveS)).toFixed(4)} ETH`, color: '#8B5CF6', icon: Shield },
-              { label: 'Locked',          value: `${Number(formatEther(lockedS)).toFixed(4)} ETH`,   color: '#F59E0B', icon: Lock },
-              { label: 'Slash Events',    value: slashCount.toString(),                               color: slashCount > 0 ? '#F43F5E' : '#10B981', icon: slashCount > 0 ? AlertTriangle : CheckCircle },
+              { label: 'Total Staked',    value: `${Number(formatEther(totalS)).toFixed(4)} ETH`,    color: '#F2A93B', icon: TrendingUp },
+              { label: 'Effective Stake', value: `${Number(formatEther(effectiveS)).toFixed(4)} ETH`, color: '#FF6B3D', icon: Shield },
+              { label: 'Locked',          value: `${Number(formatEther(lockedS)).toFixed(4)} ETH`,   color: '#F2A93B', icon: Lock },
+              { label: 'Slash Events',    value: slashCount.toString(),                               color: slashCount > 0 ? '#C84B8E' : '#57C99B', icon: slashCount > 0 ? AlertTriangle : CheckCircle },
             ].map(({ label, value, color, icon: Icon }) => (
               <div key={label} className="card p-4">
                 <div className="flex items-center gap-2 mb-2">
@@ -193,26 +193,26 @@ export default function StakePage() {
 
           {/* Stake breakdown */}
           <div className="card p-6 animate-fade-up animation-delay-200">
-            <h3 className="font-display font-semibold text-[#F0F4FF] mb-5">Stake Breakdown</h3>
+            <h3 className="font-display font-semibold text-[#F4EFE6] mb-5">Stake Breakdown</h3>
             {totalS === 0n ? (
               <div className="text-center py-8">
-                <Shield className="w-8 h-8 text-[#4A5568] mx-auto mb-3" />
-                <p className="text-[#8892B0] text-sm">No stake yet. Stake ETH to unlock task bidding.</p>
+                <Shield className="w-8 h-8 text-[#6B6355] mx-auto mb-3" />
+                <p className="text-[#A89F8D] text-sm">No stake yet. Stake ETH to unlock task bidding.</p>
               </div>
             ) : (
               <div className="space-y-4">
-                <StakeBar label="Own Stake"       value={ownS}    total={totalS} color="#00E5FF" />
-                <StakeBar label="Delegated Stake" value={delegS}  total={totalS} color="#8B5CF6" />
-                <StakeBar label="Locked in Tasks" value={lockedS} total={totalS} color="#F59E0B" />
+                <StakeBar label="Own Stake"       value={ownS}    total={totalS} color="#F2A93B" />
+                <StakeBar label="Delegated Stake" value={delegS}  total={totalS} color="#FF6B3D" />
+                <StakeBar label="Locked in Tasks" value={lockedS} total={totalS} color="#F2A93B" />
 
-                <div className="border-t border-[#1A2035] pt-4 space-y-2">
+                <div className="border-t border-[#2A241B] pt-4 space-y-2">
                   {[
-                    { label: 'Total Staked',    val: totalS,    color: '#00E5FF' },
-                    { label: 'Effective Stake', val: effectiveS, color: '#8B5CF6' },
-                    { label: 'Total Slashed',   val: info?.totalSlashed ?? 0n, color: '#F43F5E' },
+                    { label: 'Total Staked',    val: totalS,    color: '#F2A93B' },
+                    { label: 'Effective Stake', val: effectiveS, color: '#FF6B3D' },
+                    { label: 'Total Slashed',   val: info?.totalSlashed ?? 0n, color: '#C84B8E' },
                   ].map(({ label, val, color }) => (
                     <div key={label} className="flex justify-between">
-                      <span className="text-[#8892B0] text-sm">{label}</span>
+                      <span className="text-[#A89F8D] text-sm">{label}</span>
                       <span className="font-mono text-sm font-semibold" style={{ color }}>
                         {Number(formatEther(val)).toFixed(4)} ETH
                       </span>
@@ -228,10 +228,10 @@ export default function StakePage() {
             <div className="flex gap-3">
               <TrendingUp className="w-4 h-4 text-cyan mt-0.5 flex-shrink-0" />
               <div>
-                <div className="font-display font-semibold text-[#F0F4FF] text-sm mb-1">
+                <div className="font-display font-semibold text-[#F4EFE6] text-sm mb-1">
                   How Effective Stake Works
                 </div>
-                <p className="text-[#8892B0] text-xs leading-relaxed">
+                <p className="text-[#A89F8D] text-xs leading-relaxed">
                   Effective Stake = Raw Stake × (Reputation / 5000). Higher reputation multiplies your staking power.
                   At 10,000 rep, your stake is worth 2×. This rewards high-performing agents with better task access.
                 </p>
@@ -244,15 +244,15 @@ export default function StakePage() {
         <div className="space-y-4 animate-fade-up animation-delay-200">
 
           {/* Tab switcher */}
-          <div className="flex gap-1 bg-[#080B12] border border-[#1A2035] rounded-lg p-1">
+          <div className="flex gap-1 bg-[#0B0A08] border border-[#2A241B] rounded-lg p-1">
             {(['stake', 'unstake'] as const).map(tab => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 className={`flex-1 py-2 rounded-md text-xs font-display font-semibold capitalize transition-all duration-200 ${
                   activeTab === tab
-                    ? 'bg-cyan text-[#080B12]'
-                    : 'text-[#8892B0] hover:text-[#F0F4FF]'
+                    ? 'bg-cyan text-[#0B0A08]'
+                    : 'text-[#A89F8D] hover:text-[#F4EFE6]'
                 }`}
               >
                 {tab}
@@ -278,7 +278,7 @@ export default function StakePage() {
                     <button
                       key={v}
                       onClick={() => setStakeAmount(v)}
-                      className="flex-1 py-1 rounded text-[10px] font-mono border border-[#1A2035] text-[#8892B0] hover:border-cyan/30 hover:text-cyan transition-colors"
+                      className="flex-1 py-1 rounded text-[10px] font-mono border border-[#2A241B] text-[#A89F8D] hover:border-cyan/30 hover:text-cyan transition-colors"
                     >
                       {v}
                     </button>
@@ -287,13 +287,13 @@ export default function StakePage() {
               </div>
 
               {stakeAmount && (
-                <div className="space-y-1 p-3 bg-[#080B12] rounded-md border border-[#1A2035]">
+                <div className="space-y-1 p-3 bg-[#0B0A08] rounded-md border border-[#2A241B]">
                   <div className="flex justify-between text-xs">
-                    <span className="text-[#8892B0]">You stake</span>
-                    <span className="font-mono text-[#F0F4FF]">{stakeAmount} ETH</span>
+                    <span className="text-[#A89F8D]">You stake</span>
+                    <span className="font-mono text-[#F4EFE6]">{stakeAmount} ETH</span>
                   </div>
                   <div className="flex justify-between text-xs">
-                    <span className="text-[#8892B0]">New total</span>
+                    <span className="text-[#A89F8D]">New total</span>
                     <span className="font-mono text-cyan">
                       {(Number(formatEther(totalS)) + Number(stakeAmount || '0')).toFixed(4)} ETH
                     </span>
@@ -397,15 +397,15 @@ export default function StakePage() {
             <div className="card p-4 border-rose/20">
               <div className="flex items-center gap-2 mb-3">
                 <AlertTriangle className="w-4 h-4 text-rose" />
-                <span className="font-display font-semibold text-[#F0F4FF] text-sm">Slash History</span>
+                <span className="font-display font-semibold text-[#F4EFE6] text-sm">Slash History</span>
               </div>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-[#8892B0]">Total events</span>
+                  <span className="text-[#A89F8D]">Total events</span>
                   <span className="font-mono text-rose">{slashCount}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-[#8892B0]">Total slashed</span>
+                  <span className="text-[#A89F8D]">Total slashed</span>
                   <span className="font-mono text-rose">
                     {Number(formatEther(info?.totalSlashed ?? 0n)).toFixed(4)} ETH
                   </span>
