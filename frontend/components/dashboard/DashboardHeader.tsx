@@ -58,7 +58,7 @@ export function DashboardHeader({ agent }: DashboardHeaderProps) {
           {/* Name + meta */}
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-3 flex-wrap">
-              <h1 className="font-display text-2xl font-bold text-[#F0F4FF]">
+              <h1 className="font-display text-2xl font-bold text-[#F4EFE6]">
                 {agent.name}
               </h1>
               <span
@@ -70,7 +70,7 @@ export function DashboardHeader({ agent }: DashboardHeaderProps) {
               >
                 <span
                   className={`w-1.5 h-1.5 rounded-full pulse-dot ${
-                    agent.status === "active" ? "bg-emerald-400" : "bg-[#8892B0]"
+                    agent.status === "active" ? "bg-emerald-400" : "bg-[#A89F8D]"
                   }`}
                 />
                 {agent.status}
@@ -78,7 +78,7 @@ export function DashboardHeader({ agent }: DashboardHeaderProps) {
               <span className="badge badge-violet">{agent.category}</span>
             </div>
 
-            <p className="text-[#8892B0] text-sm mt-1 max-w-lg line-clamp-2">
+            <p className="text-[#A89F8D] text-sm mt-1 max-w-lg line-clamp-2">
                   {description}
             </p>
 
@@ -90,10 +90,10 @@ export function DashboardHeader({ agent }: DashboardHeaderProps) {
                 title="Copy agent wallet"
               >
                 <span className="label">Agent Wallet</span>
-                <span className="address group-hover:text-[#F0F4FF] transition-colors">
+                <span className="address group-hover:text-[#F4EFE6] transition-colors">
                   {shortAddress(wallet)}
                 </span>
-                <span className="text-[#4A5568] group-hover:text-cyan transition-colors text-xs">
+                <span className="text-[#6B6355] group-hover:text-cyan transition-colors text-xs">
                   {copied === "wallet" ? "✓" : "⎘"}
                 </span>
               </button>
@@ -104,17 +104,17 @@ export function DashboardHeader({ agent }: DashboardHeaderProps) {
                 title="Copy owner address"
               >
                 <span className="label">Owner</span>
-                <span className="address group-hover:text-[#F0F4FF] transition-colors">
+                <span className="address group-hover:text-[#F4EFE6] transition-colors">
                   {shortAddress(OWNER_ADDRESS)}
                 </span>
-                <span className="text-[#4A5568] group-hover:text-cyan transition-colors text-xs">
+                <span className="text-[#6B6355] group-hover:text-cyan transition-colors text-xs">
                   {copied === "owner" ? "✓" : "⎘"}
                 </span>
               </button>
 
               <div className="flex items-center gap-2">
                 <span className="label">Agent ID</span>
-                <span className="font-mono text-xs text-[#F0F4FF]">
+                <span className="font-mono text-xs text-[#F4EFE6]">
                   #{agent.id}
                 </span>
               </div>
@@ -164,7 +164,7 @@ export function DashboardHeader({ agent }: DashboardHeaderProps) {
       </div>
 
       {/* Bottom stats strip */}
-      <div className="relative mt-6 pt-5 border-t border-[#1A2035] grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div className="relative mt-6 pt-5 border-t border-[#2A241B] grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[
           { label: "Tasks Completed", value: tasksCompleted.toString(), mono: true },
           { label: "Total Earned", value: formatEth(earned), mono: true },
@@ -174,7 +174,7 @@ export function DashboardHeader({ agent }: DashboardHeaderProps) {
           <div key={stat.label} className="stat-block">
             <span className="label">{stat.label}</span>
             <span
-              className={`text-lg font-semibold text-[#F0F4FF] mt-0.5 ${
+              className={`text-lg font-semibold text-[#F4EFE6] mt-0.5 ${
                 stat.mono ? "font-mono" : "font-display"
               }`}
             >
