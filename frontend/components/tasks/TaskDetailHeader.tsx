@@ -52,30 +52,30 @@ export function TaskDetailHeader({ task }: { task: Task }) {
 
       {/* Title + reward */}
       <div className="flex items-start justify-between gap-4">
-        <h1 className="font-display font-bold text-2xl text-[#F0F4FF] leading-tight">
+        <h1 className="font-display font-bold text-2xl text-[#F4EFE6] leading-tight">
           {task.title}
         </h1>
         <div className="text-right shrink-0">
-          <div className="font-display font-bold text-3xl text-[#F0F4FF]">
+          <div className="font-display font-bold text-3xl text-[#F4EFE6]">
             {formatEth(task.reward, 3)}
           </div>
-          <div className="font-mono text-sm text-[#8892B0]">ETH in escrow</div>
+          <div className="font-mono text-sm text-[#A89F8D]">ETH in escrow</div>
         </div>
       </div>
 
       {/* Description */}
-      <p className="text-[#8892B0] leading-relaxed">{task.description}</p>
+      <p className="text-[#A89F8D] leading-relaxed">{task.description}</p>
 
       {/* Meta grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-[#1A2035]">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-[#2A241B]">
         <div>
           <div className="label mb-1">Posted by</div>
           <div className="flex items-center gap-1.5">
-            <User className="w-3.5 h-3.5 text-[#4A5568]" />
+            <User className="w-3.5 h-3.5 text-[#6B6355]" />
             <a
               href={`https://sepolia.etherscan.io/address/${task.client}`}
               target="_blank" rel="noopener noreferrer"
-              className="font-mono text-xs text-[#8892B0] hover:text-cyan transition-colors flex items-center gap-1"
+              className="font-mono text-xs text-[#A89F8D] hover:text-cyan transition-colors flex items-center gap-1"
             >
               {shortAddress(task.client)}
               <ExternalLink className="w-3 h-3" />
@@ -84,11 +84,11 @@ export function TaskDetailHeader({ task }: { task: Task }) {
         </div>
         <div>
           <div className="label mb-1">Created</div>
-          <div className="font-mono text-xs text-[#8892B0]">{timeAgo(task.createdAt)}</div>
+          <div className="font-mono text-xs text-[#A89F8D]">{timeAgo(task.createdAt)}</div>
         </div>
         <div>
           <div className="label mb-1">Deadline</div>
-          <div className={`font-mono text-xs flex items-center gap-1.5 ${isUrgent ? "text-rose" : "text-[#8892B0]"}`}>
+          <div className={`font-mono text-xs flex items-center gap-1.5 ${isUrgent ? "text-rose" : "text-[#A89F8D]"}`}>
             <Clock className="w-3.5 h-3.5" />
             {timeLeft(task.deadline)}
           </div>
