@@ -49,18 +49,18 @@ export function EarningsPanel() {
     <div className="card p-6 space-y-5">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="font-display font-semibold text-[#F0F4FF] text-lg">Earnings</h2>
-          <p className="text-[#8892B0] text-sm mt-0.5">ETH received across all revenue streams</p>
+          <h2 className="font-display font-semibold text-[#F4EFE6] text-lg">Earnings</h2>
+          <p className="text-[#A89F8D] text-sm mt-0.5">ETH received across all revenue streams</p>
         </div>
-        <div className="flex gap-1 bg-[#080B12] border border-[#1A2035] rounded-md p-0.5">
+        <div className="flex gap-1 bg-[#0B0A08] border border-[#2A241B] rounded-md p-0.5">
           {(["7d", "30d", "90d", "all"] as Period[]).map((p) => (
             <button
               key={p}
               onClick={() => setPeriod(p)}
               className={`px-3 py-1 rounded text-xs font-mono transition-all duration-150 ${
                 period === p
-                  ? "bg-[#1A2035] text-[#F0F4FF]"
-                  : "text-[#8892B0] hover:text-[#F0F4FF]"
+                  ? "bg-[#2A241B] text-[#F4EFE6]"
+                  : "text-[#A89F8D] hover:text-[#F4EFE6]"
               }`}
             >
               {p}
@@ -71,9 +71,9 @@ export function EarningsPanel() {
 
       {/* Total */}
       <div>
-        <div className="font-display text-4xl font-bold text-[#F0F4FF] tabular-nums">
+        <div className="font-display text-4xl font-bold text-[#F4EFE6] tabular-nums">
           {data.total.toFixed(2)}
-          <span className="text-lg text-[#8892B0] ml-1 font-normal">ETH</span>
+          <span className="text-lg text-[#A89F8D] ml-1 font-normal">ETH</span>
         </div>
         <div className="label mt-1">Total in period</div>
       </div>
@@ -91,11 +91,11 @@ export function EarningsPanel() {
                     height: `${Math.max(heightPct, 4)}%`,
                     background:
                       val === maxVal
-                        ? "linear-gradient(180deg, #00E5FF, #00B8CC)"
-                        : "linear-gradient(180deg, #1E3A5F, #1A2035)",
+                        ? "linear-gradient(180deg, #F2A93B, #00B8CC)"
+                        : "linear-gradient(180deg, #1E3A5F, #2A241B)",
                   }}
                 >
-                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 opacity-0 group-hover:opacity-100 transition-opacity bg-[#1A2035] border border-[#2A3555] rounded px-2 py-1 text-xs font-mono text-[#F0F4FF] whitespace-nowrap pointer-events-none z-10">
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 opacity-0 group-hover:opacity-100 transition-opacity bg-[#2A241B] border border-[#3A3226] rounded px-2 py-1 text-xs font-mono text-[#F4EFE6] whitespace-nowrap pointer-events-none z-10">
                     {val.toFixed(3)} ETH
                   </div>
                 </div>
@@ -107,11 +107,11 @@ export function EarningsPanel() {
       </div>
 
       {/* Breakdown */}
-      <div className="grid grid-cols-3 gap-3 pt-4 border-t border-[#1A2035]">
+      <div className="grid grid-cols-3 gap-3 pt-4 border-t border-[#2A241B]">
         {[
-          { label: "Task Payments", value: data.tasks, color: "#00E5FF" },
-          { label: "Subscriptions", value: data.subscriptions, color: "#8B5CF6" },
-          { label: "Platform Fees", value: -data.fees, color: "#F59E0B", negate: true },
+          { label: "Task Payments", value: data.tasks, color: "#F2A93B" },
+          { label: "Subscriptions", value: data.subscriptions, color: "#FF6B3D" },
+          { label: "Platform Fees", value: -data.fees, color: "#F2A93B", negate: true },
         ].map((item) => (
           <div key={item.label} className="stat-block">
             <span className="label">{item.label}</span>
@@ -126,7 +126,7 @@ export function EarningsPanel() {
       </div>
 
       {/* Withdraw CTA */}
-      <div className="flex items-center justify-between pt-3 border-t border-[#1A2035]">
+      <div className="flex items-center justify-between pt-3 border-t border-[#2A241B]">
         <div>
           <span className="label">Available to Withdraw</span>
           <div className="font-mono text-lg font-semibold text-emerald-400 mt-0.5 tabular-nums">
