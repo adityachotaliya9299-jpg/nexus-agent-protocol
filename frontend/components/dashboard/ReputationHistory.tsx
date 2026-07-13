@@ -15,8 +15,8 @@ const REP_EVENTS = [
 ];
 
 const TYPE_STYLES = {
-  init: { color: "#8892B0", bg: "bg-[#2A3555]/30", label: "INIT" },
-  up: { color: "#10B981", bg: "bg-emerald-500/10", label: "▲" },
+  init: { color: "#A89F8D", bg: "bg-[#3A3226]/30", label: "INIT" },
+  up: { color: "#57C99B", bg: "bg-emerald-500/10", label: "▲" },
   down: { color: "#F87171", bg: "bg-red-500/10", label: "▼" },
 };
 
@@ -53,7 +53,7 @@ export function ReputationHistory({ compact = false }: ReputationHistoryProps) {
   return (
     <div className="card p-6 space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="font-display font-semibold text-[#F0F4FF] text-lg">
+        <h2 className="font-display font-semibold text-[#F4EFE6] text-lg">
           Reputation
         </h2>
         {!compact && (
@@ -95,7 +95,7 @@ export function ReputationHistory({ compact = false }: ReputationHistoryProps) {
               x2={W}
               y1={H * (1 - frac)}
               y2={H * (1 - frac)}
-              stroke="#1A2035"
+              stroke="#2A241B"
               strokeWidth="1"
             />
           ))}
@@ -111,7 +111,7 @@ export function ReputationHistory({ compact = false }: ReputationHistoryProps) {
           <polyline
             points={points}
             fill="none"
-            stroke="#00E5FF"
+            stroke="#F2A93B"
             strokeWidth="2"
             strokeLinejoin="round"
             strokeLinecap="round"
@@ -129,12 +129,12 @@ export function ReputationHistory({ compact = false }: ReputationHistoryProps) {
                 r={i === REP_EVENTS.length - 1 ? 4 : 2.5}
                 fill={
                   i === REP_EVENTS.length - 1
-                    ? "#00E5FF"
+                    ? "#F2A93B"
                     : e.type === "down"
                     ? "#F87171"
                     : "#1A3A5C"
                 }
-                stroke="#00E5FF"
+                stroke="#F2A93B"
                 strokeWidth={i === REP_EVENTS.length - 1 ? 2 : 1}
               />
             );
@@ -142,8 +142,8 @@ export function ReputationHistory({ compact = false }: ReputationHistoryProps) {
 
           <defs>
             <linearGradient id="rep-gradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#00E5FF" />
-              <stop offset="100%" stopColor="#00E5FF" stopOpacity="0" />
+              <stop offset="0%" stopColor="#F2A93B" />
+              <stop offset="100%" stopColor="#F2A93B" stopOpacity="0" />
             </linearGradient>
           </defs>
         </svg>
@@ -159,7 +159,7 @@ export function ReputationHistory({ compact = false }: ReputationHistoryProps) {
               return (
                 <div
                   key={i}
-                  className="flex items-center gap-3 p-2.5 rounded-md bg-[#080B12] border border-[#1A2035]"
+                  className="flex items-center gap-3 p-2.5 rounded-md bg-[#0B0A08] border border-[#2A241B]"
                 >
                   <span
                     className={`text-xs font-mono font-bold w-6 text-center ${
@@ -167,13 +167,13 @@ export function ReputationHistory({ compact = false }: ReputationHistoryProps) {
                         ? "text-emerald-400"
                         : event.type === "down"
                         ? "text-red-400"
-                        : "text-[#8892B0]"
+                        : "text-[#A89F8D]"
                     }`}
                   >
                     {style.label}
                   </span>
                   <div className="flex-1">
-                    <span className="text-sm text-[#F0F4FF]">{event.reason}</span>
+                    <span className="text-sm text-[#F4EFE6]">{event.reason}</span>
                   </div>
                   <div className="text-right">
                     {event.delta !== 0 && (
@@ -205,12 +205,12 @@ export function ReputationHistory({ compact = false }: ReputationHistoryProps) {
               <div key={i} className="flex items-center gap-2.5">
                 <span
                   className={`text-xs font-mono ${
-                    event.type === "up" ? "text-emerald-400" : event.type === "down" ? "text-red-400" : "text-[#8892B0]"
+                    event.type === "up" ? "text-emerald-400" : event.type === "down" ? "text-red-400" : "text-[#A89F8D]"
                   }`}
                 >
                   {style.label}
                 </span>
-                <span className="text-xs text-[#8892B0] flex-1">{event.reason}</span>
+                <span className="text-xs text-[#A89F8D] flex-1">{event.reason}</span>
                 {event.delta !== 0 && (
                   <span className={`font-mono text-xs font-semibold ${event.delta > 0 ? "text-emerald-400" : "text-red-400"}`}>
                     {event.delta > 0 ? "+" : ""}{event.delta}
