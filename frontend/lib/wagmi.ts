@@ -4,7 +4,7 @@ import { sepolia } from "wagmi/chains";
 const projectId = process.env.NEXT_PUBLIC_WC_PROJECT_ID ?? "nexus-agent-protocol";
 
 export const wagmiConfig = getDefaultConfig({
-  appName: "Nexus Agent Protocol",
+  appName: "AGORA — The Autonomous Agent Economy",
   projectId,
   chains: [sepolia],
   ssr: true,
