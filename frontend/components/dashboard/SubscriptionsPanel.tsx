@@ -5,10 +5,10 @@ import { useState } from "react";
 type PlanTier = "BASIC" | "STANDARD" | "PREMIUM" | "ENTERPRISE";
 
 const TIER_STYLES: Record<PlanTier, { color: string; bg: string; border: string }> = {
-  BASIC: { color: "#8892B0", bg: "bg-[#1A2035]/40", border: "border-[#2A3555]" },
-  STANDARD: { color: "#00E5FF", bg: "bg-cyan/5", border: "border-cyan/15" },
-  PREMIUM: { color: "#8B5CF6", bg: "bg-violet/5", border: "border-violet/15" },
-  ENTERPRISE: { color: "#F59E0B", bg: "bg-amber-500/5", border: "border-amber-500/15" },
+  BASIC: { color: "#A89F8D", bg: "bg-[#2A241B]/40", border: "border-[#3A3226]" },
+  STANDARD: { color: "#F2A93B", bg: "bg-cyan/5", border: "border-cyan/15" },
+  PREMIUM: { color: "#FF6B3D", bg: "bg-violet/5", border: "border-violet/15" },
+  ENTERPRISE: { color: "#F2A93B", bg: "bg-amber-500/5", border: "border-amber-500/15" },
 };
 
 // Plans this agent is offering
@@ -72,13 +72,13 @@ export function SubscriptionsPanel() {
   return (
     <div className="space-y-6">
       {/* Section toggle */}
-      <div className="flex gap-1 bg-[#0D1120] border border-[#1A2035] rounded-lg p-1 w-fit">
+      <div className="flex gap-1 bg-[#14110D] border border-[#2A241B] rounded-lg p-1 w-fit">
         <button
           onClick={() => setActiveSection("offered")}
           className={`px-5 py-2 rounded-md text-sm font-medium font-display transition-all duration-150 ${
             activeSection === "offered"
               ? "bg-[#0F1A2E] text-cyan border border-cyan/20"
-              : "text-[#8892B0] hover:text-[#F0F4FF]"
+              : "text-[#A89F8D] hover:text-[#F4EFE6]"
           }`}
         >
           Plans I Offer
@@ -88,7 +88,7 @@ export function SubscriptionsPanel() {
           className={`px-5 py-2 rounded-md text-sm font-medium font-display transition-all duration-150 ${
             activeSection === "subscribed"
               ? "bg-[#0F1A2E] text-cyan border border-cyan/20"
-              : "text-[#8892B0] hover:text-[#F0F4FF]"
+              : "text-[#A89F8D] hover:text-[#F4EFE6]"
           }`}
         >
           My Subscriptions
@@ -122,11 +122,11 @@ export function SubscriptionsPanel() {
                         </span>
                         <span
                           className={`w-1.5 h-1.5 rounded-full ${
-                            plan.active ? "bg-emerald-400 pulse-dot" : "bg-[#4A5568]"
+                            plan.active ? "bg-emerald-400 pulse-dot" : "bg-[#6B6355]"
                           }`}
                         />
                       </div>
-                      <h3 className="font-display font-semibold text-[#F0F4FF]">
+                      <h3 className="font-display font-semibold text-[#F4EFE6]">
                         {plan.name}
                       </h3>
                     </div>
@@ -141,13 +141,13 @@ export function SubscriptionsPanel() {
                     </div>
                   </div>
 
-                  <p className="text-sm text-[#8892B0]">{plan.description}</p>
+                  <p className="text-sm text-[#A89F8D]">{plan.description}</p>
 
                   {/* Subscriber fill */}
                   <div>
                     <div className="flex justify-between mb-1.5">
                       <span className="label">Subscribers</span>
-                      <span className="font-mono text-xs text-[#F0F4FF]">
+                      <span className="font-mono text-xs text-[#F4EFE6]">
                         {plan.subscribers} / {plan.maxSubs}
                       </span>
                     </div>
@@ -181,14 +181,14 @@ export function SubscriptionsPanel() {
             {/* Create new plan card */}
             <button
               onClick={() => setShowCreatePlan(true)}
-              className="card border border-dashed border-[#2A3555] p-5 flex flex-col items-center justify-center gap-3 hover:border-cyan/20 hover:bg-[#0F1628] transition-all duration-200 min-h-[200px]"
+              className="card border border-dashed border-[#3A3226] p-5 flex flex-col items-center justify-center gap-3 hover:border-cyan/20 hover:bg-[#1A1610] transition-all duration-200 min-h-[200px]"
             >
-              <div className="w-10 h-10 rounded-full bg-[#1A2035] border border-[#2A3555] flex items-center justify-center text-[#8892B0] text-xl">
+              <div className="w-10 h-10 rounded-full bg-[#2A241B] border border-[#3A3226] flex items-center justify-center text-[#A89F8D] text-xl">
                 +
               </div>
               <div className="text-center">
-                <p className="text-sm font-medium text-[#8892B0]">Create New Plan</p>
-                <p className="text-xs text-[#4A5568] mt-0.5">Set up recurring agent services</p>
+                <p className="text-sm font-medium text-[#A89F8D]">Create New Plan</p>
+                <p className="text-xs text-[#6B6355] mt-0.5">Set up recurring agent services</p>
               </div>
             </button>
           </div>
@@ -202,7 +202,7 @@ export function SubscriptionsPanel() {
             ].map((stat) => (
               <div key={stat.label} className="stat-block">
                 <span className="label">{stat.label}</span>
-                <span className="font-mono text-lg font-semibold text-[#F0F4FF] mt-0.5">
+                <span className="font-mono text-lg font-semibold text-[#F4EFE6] mt-0.5">
                   {stat.value}
                 </span>
               </div>
@@ -217,7 +217,7 @@ export function SubscriptionsPanel() {
               <div
                 key={i}
                 className={`card p-4 border ${
-                  sub.status === "active" ? style.border : "border-[#1A2035]"
+                  sub.status === "active" ? style.border : "border-[#2A241B]"
                 } flex items-center gap-4`}
               >
                 <div
@@ -232,7 +232,7 @@ export function SubscriptionsPanel() {
 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="font-display font-medium text-[#F0F4FF] text-sm">
+                    <span className="font-display font-medium text-[#F4EFE6] text-sm">
                       {sub.agentName}
                     </span>
                     <span
@@ -301,7 +301,7 @@ export function SubscriptionsPanel() {
             onClick={() => setShowCreatePlan(false)}
           />
           <div className="relative card p-6 w-full max-w-md space-y-4">
-            <h3 className="font-display font-bold text-[#F0F4FF] text-lg">Create Subscription Plan</h3>
+            <h3 className="font-display font-bold text-[#F4EFE6] text-lg">Create Subscription Plan</h3>
             <div>
               <label className="label block mb-1.5">Plan Name</label>
               <input className="input" placeholder="e.g. Weekly DeFi Audit" />
