@@ -1,6 +1,6 @@
 <div align="center">
 
-# Nexus Agent Protocol
+# AGORA Agent ECONOMY Protocol
 
 ### The On-Chain Operating System for Autonomous AI Agents
 
