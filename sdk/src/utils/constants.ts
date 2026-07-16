@@ -18,7 +18,19 @@ export const NEXUS_SEPOLIA_CONTRACTS: NexusContracts = {
   AgentSkillNFT:       "0x8f45Bd7d2FFa5fB1c17612D4CcE89c1d9d4746A4",
   AgentComposability:  "0x4628ba31A9264e7eA204b62849e17AF5E10b1f55",
   ZKEscrow:            "0x2EcD5ce3d5140aB7Df3063aAB817AF1336d04416",
+  ContextualReputation:"0xAFE6c16FA37bB0BD9E7A24901705C7Fe725A910A",
+  AgentDiscovery:      "0x08787B020D4Ded4Beb9Ff116e041047491A7F126",
+  ResultStorage:       "0xb38c9dE16a775303b784367cd75304E52351518b",
+  AgentDAO:            "0x02E52e89dD06A743044C9A4207b001C1c074D8EC",
+  CommunityGrants:     "0xD59eCf4296095fBC32576CF1e86e8b835aeac3a4",
+  ProtocolGuard:       "0x02bc33be83eC39a399b00D40721898e1b396cB24",
+  L1Bridge:            "0xbF0c07609a8693D3E6B0a25F784fCD2a8333c5Ae",
+  L2Bridge:            "0x9CB0593354408A7c4943e553dFCbb4670379b7A0",
+  AgentCoordinator:    "0xa14b2dd25279e5bCd8aF219e336b3A48b47124B1",
 };
+
+/** Chainlink CCIP router on Sepolia (external infrastructure). */
+export const CCIP_ROUTER = "0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59";
 
 export const SEPOLIA_CHAIN_ID = 11155111;
 
@@ -535,3 +547,23 @@ export const UINT_TO_SKILL_TIER: Record<number, string> = {
   0: "NONE", 1: "BRONZE", 2: "SILVER",
   3: "GOLD", 4: "PLATINUM", 5: "DIAMOND",
 };
+// AgentDAO — minimal surface the SDK needs
+export const AGENT_DAO_ABI = [
+  { type: "function", name: "createDAO", stateMutability: "nonpayable", inputs: [{ name: "name", type: "string" }, { name: "memberAgentIds", type: "uint256[]" }, { name: "splitBps", type: "uint256[]" }], outputs: [{ name: "daoId", type: "bytes32" }] },
+  { type: "function", name: "proposeTask", stateMutability: "nonpayable", inputs: [{ name: "daoId", type: "bytes32" }, { name: "taskId", type: "bytes32" }, { name: "proposerAgentId", type: "uint256" }], outputs: [{ name: "proposalId", type: "bytes32" }] },
+  { type: "function", name: "vote", stateMutability: "nonpayable", inputs: [{ name: "proposalId", type: "bytes32" }, { name: "agentId", type: "uint256" }, { name: "support", type: "bool" }], outputs: [] },
+  { type: "function", name: "getDAO", stateMutability: "view", inputs: [{ name: "daoId", type: "bytes32" }], outputs: [{ name: "", type: "tuple", components: [{ name: "daoId", type: "bytes32" }, { name: "name", type: "string" }, { name: "treasury", type: "address" }, { name: "totalMembers", type: "uint256" }, { name: "totalTasksCompleted", type: "uint256" }, { name: "totalEarned", type: "uint256" }, { name: "createdAt", type: "uint256" }, { name: "isActive", type: "bool" }] }] },
+  { type: "function", name: "getDAOMembers", stateMutability: "view", inputs: [{ name: "daoId", type: "bytes32" }], outputs: [{ name: "agentIds", type: "uint256[]" }] },
+  { type: "function", name: "totalDAOs", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
+] as const;
+
+// CommunityGrants — minimal surface the SDK needs
+export const COMMUNITY_GRANTS_ABI = [
+  { type: "function", name: "proposeGrant", stateMutability: "nonpayable", inputs: [{ name: "title", type: "string" }, { name: "description", type: "string" }, { name: "recipient", type: "address" }, { name: "amount", type: "uint256" }, { name: "grantType", type: "uint8" }, { name: "proposerAgentId", type: "uint256" }], outputs: [{ name: "grantId", type: "bytes32" }] },
+  { type: "function", name: "voteOnGrant", stateMutability: "nonpayable", inputs: [{ name: "grantId", type: "bytes32" }, { name: "agentId", type: "uint256" }, { name: "support", type: "bool" }], outputs: [] },
+  { type: "function", name: "getGrant", stateMutability: "view", inputs: [{ name: "grantId", type: "bytes32" }], outputs: [{ name: "", type: "tuple", components: [{ name: "grantId", type: "bytes32" }, { name: "title", type: "string" }, { name: "description", type: "string" }, { name: "recipient", type: "address" }, { name: "amount", type: "uint256" }, { name: "grantType", type: "uint8" }, { name: "status", type: "uint8" }, { name: "proposedBy", type: "uint256" }, { name: "forVotes", type: "uint256" }, { name: "againstVotes", type: "uint256" }, { name: "votingEndsAt", type: "uint256" }, { name: "proposedAt", type: "uint256" }, { name: "executedAt", type: "uint256" }] }] },
+  { type: "function", name: "balance", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
+  { type: "function", name: "getActiveGrants", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "bytes32[]" }] },
+] as const;
+
+export const GRANT_TYPES = ["DEVELOPMENT", "ECOSYSTEM", "RESEARCH", "OPERATIONS", "BOUNTY"] as const;
