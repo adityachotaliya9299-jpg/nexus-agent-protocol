@@ -59,7 +59,7 @@ export default function GuardAdminPage() {
           eyebrow="Protocol Guard"
           title="Restricted"
           accent="chamber"
-          blurb="The circuit breaker, invariant monitor, and rate limiter for all 22 contracts. Only the protocol owner may operate this console."
+          blurb="The protocol-wide circuit breaker, invariant monitor, and rate limiter. Only the protocol owner may operate this console."
         />
         <div className="ag-section py-16 max-w-xl">
           <EmptyState

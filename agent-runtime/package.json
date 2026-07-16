@@ -4,20 +4,21 @@
   "description": "Autonomous agent runtime for Nexus Agent Protocol — watches chain, bids on tasks, submits work",
   "main": "dist/index.js",
   "scripts": {
-    "start":   "node dist/index.js",
-    "dev":     "ts-node --transpile-only src/index.ts",
-    "build":   "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node --transpile-only src/index.ts",
+    "build": "tsc",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@langchain/groq":  "^1.3.1",
-    "@langchain/core":  "^1.1.30",
-    "dotenv":           "^16.4.0",
-    "viem":             "^2.21.0"
+    "@langchain/core": "^1.1.30",
+    "@langchain/groq": "^1.3.1",
+    "arweave": "^1.15.7",
+    "dotenv": "^16.4.0",
+    "viem": "^2.21.0"
   },
   "devDependencies": {
-    "@types/node":  "^22.0.0",
-    "typescript":   "^5.6.0",
-    "ts-node":      "^10.9.0"
+    "@types/node": "^22.0.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.6.0"
   }
 }
