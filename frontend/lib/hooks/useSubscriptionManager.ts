@@ -1,8 +1,7 @@
   import { useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
   import { CONTRACTS, SUBSCRIPTION_MANAGER_ABI } from "@/lib/contracts";
 
-  // ── Reads ────────────────────────────────────────────────────
-
+  // reads
   /** Get a subscription plan by planId */
   export function useSubscriptionPlan(planId: `0x${string}` | undefined) {
     return useReadContract({
@@ -34,8 +33,7 @@
     });
   }
 
-  // ── Writes ───────────────────────────────────────────────────
-
+  // writes
   /** Create a new subscription plan (called by agent owner) */
   export function useCreatePlan() {
     const { writeContract, data: hash, isPending, error } = useWriteContract();
