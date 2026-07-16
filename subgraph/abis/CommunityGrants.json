@@ -1,0 +1,7 @@
+[
+  { "type": "event", "name": "GrantProposed", "inputs": [{ "name": "grantId", "type": "bytes32", "indexed": true }, { "name": "title", "type": "string", "indexed": false }, { "name": "amount", "type": "uint256", "indexed": false }, { "name": "recipient", "type": "address", "indexed": false }], "anonymous": false },
+  { "type": "event", "name": "GrantVoteCast", "inputs": [{ "name": "grantId", "type": "bytes32", "indexed": true }, { "name": "agentId", "type": "uint256", "indexed": true }, { "name": "support", "type": "bool", "indexed": false }, { "name": "weight", "type": "uint256", "indexed": false }], "anonymous": false },
+  { "type": "event", "name": "GrantApproved", "inputs": [{ "name": "grantId", "type": "bytes32", "indexed": true }, { "name": "amount", "type": "uint256", "indexed": false }], "anonymous": false },
+  { "type": "event", "name": "GrantExecuted", "inputs": [{ "name": "grantId", "type": "bytes32", "indexed": true }, { "name": "recipient", "type": "address", "indexed": false }, { "name": "amount", "type": "uint256", "indexed": false }], "anonymous": false },
+  { "type": "event", "name": "GrantRejected", "inputs": [{ "name": "grantId", "type": "bytes32", "indexed": true }], "anonymous": false }
+]
