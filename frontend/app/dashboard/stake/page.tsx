@@ -170,7 +170,7 @@ export default function StakePage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-        {/* ── Left: Stake overview ─────────────────────────── */}
+        {/* Left: Stake overview */}
         <div className="lg:col-span-2 space-y-5">
 
           {/* Summary cards */}
@@ -240,7 +240,7 @@ export default function StakePage() {
           </div>
         </div>
 
-        {/* ── Right: Stake / Unstake actions ─────────────── */}
+        {/* Right: Stake / Unstake actions */}
         <div className="space-y-4 animate-fade-up animation-delay-200">
 
           {/* Tab switcher */}
