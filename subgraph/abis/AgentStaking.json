@@ -1,0 +1,5 @@
+[
+  { "type": "event", "name": "Staked", "inputs": [{ "name": "agentId", "type": "uint256", "indexed": true }, { "name": "staker", "type": "address", "indexed": true }, { "name": "amount", "type": "uint256", "indexed": false }], "anonymous": false },
+  { "type": "event", "name": "Slashed", "inputs": [{ "name": "agentId", "type": "uint256", "indexed": true }, { "name": "slashBps", "type": "uint256", "indexed": false }, { "name": "totalSlashed", "type": "uint256", "indexed": false }], "anonymous": false },
+  { "type": "event", "name": "UnstakeRequested", "inputs": [{ "name": "agentId", "type": "uint256", "indexed": true }, { "name": "amount", "type": "uint256", "indexed": false }], "anonymous": false }
+]
