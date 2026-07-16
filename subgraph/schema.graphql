@@ -115,3 +115,78 @@ type ProtocolStats @entity(immutable: false) {
   totalSubscriptionRevenue: BigInt!
   lastUpdatedBlock: BigInt!
 }
+# ── phase-2 contracts (staking, escrow, composability, governance) ──
+
+type StakeEvent @entity(immutable: true) {
+  id: ID!                         # txHash-logIndex
+  agentId: BigInt!
+  staker: Bytes
+  kind: String!                   # STAKED | SLASHED | UNSTAKE_REQUESTED
+  amount: BigInt!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+}
+
+type EscrowCreated @entity(immutable: false) {
+  id: ID!                         # escrowId hex
+  escrowId: Bytes!
+  taskId: Bytes!
+  client: Bytes!
+  agentWallet: Bytes
+  amount: BigInt!
+  deadline: BigInt!
+  status: Int!                    # 0=OPEN 1=RELEASED 2=REFUNDED
+  hasCommitment: Boolean!
+  createdAt: BigInt!
+  settledAt: BigInt
+  transactionHash: Bytes!
+}
+
+type SubTaskCreated @entity(immutable: false) {
+  id: ID!                         # subTaskId hex
+  subTaskId: Bytes!
+  parentTaskId: Bytes!
+  parentAgentId: BigInt!
+  subAgentId: BigInt
+  reward: BigInt!
+  deadline: BigInt!
+  status: Int!                    # 0=OPEN 1=ASSIGNED 2=COMPLETED
+  payment: BigInt
+  createdAt: BigInt!
+  transactionHash: Bytes!
+}
+
+type CategoryScore @entity(immutable: false) {
+  id: ID!                         # agentId-category
+  agentId: BigInt!
+  category: Int!
+  score: BigInt!
+  tasksCompleted: BigInt!
+  updatedAt: BigInt!
+}
+
+type GrantProposed @entity(immutable: false) {
+  id: ID!                         # grantId hex
+  grantId: Bytes!
+  title: String!
+  recipient: Bytes!
+  amount: BigInt!
+  status: Int!                    # 0=PROPOSED/VOTING 2=APPROVED 3=EXECUTED 4=REJECTED
+  forVotes: BigInt!
+  againstVotes: BigInt!
+  proposedAt: BigInt!
+  transactionHash: Bytes!
+}
+
+type WorkflowCreated @entity(immutable: false) {
+  id: ID!                         # workflowId hex
+  workflowId: Bytes!
+  workflowType: Int!              # 0=PIPELINE 1=PARALLEL
+  totalStages: BigInt!
+  completedStages: BigInt!
+  status: Int!                    # 0=ACTIVE 1=COMPLETED 2=FAILED
+  totalPaid: BigInt
+  createdAt: BigInt!
+  transactionHash: Bytes!
+}
