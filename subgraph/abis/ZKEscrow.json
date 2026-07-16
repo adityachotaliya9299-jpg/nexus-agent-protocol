@@ -1,0 +1,6 @@
+[
+  { "type": "event", "name": "EscrowCreated", "inputs": [{ "name": "escrowId", "type": "bytes32", "indexed": true }, { "name": "taskId", "type": "bytes32", "indexed": true }, { "name": "client", "type": "address", "indexed": true }, { "name": "amount", "type": "uint256", "indexed": false }, { "name": "deadline", "type": "uint256", "indexed": false }], "anonymous": false },
+  { "type": "event", "name": "CommitmentSet", "inputs": [{ "name": "escrowId", "type": "bytes32", "indexed": true }, { "name": "commitment", "type": "bytes32", "indexed": false }], "anonymous": false },
+  { "type": "event", "name": "EscrowReleased", "inputs": [{ "name": "escrowId", "type": "bytes32", "indexed": true }, { "name": "agentWallet", "type": "address", "indexed": true }, { "name": "amount", "type": "uint256", "indexed": false }], "anonymous": false },
+  { "type": "event", "name": "EscrowRefunded", "inputs": [{ "name": "escrowId", "type": "bytes32", "indexed": true }, { "name": "client", "type": "address", "indexed": true }, { "name": "amount", "type": "uint256", "indexed": false }], "anonymous": false }
+]
