@@ -1,0 +1,6 @@
+[
+  { "type": "event", "name": "WorkflowCreated", "inputs": [{ "name": "workflowId", "type": "bytes32", "indexed": true }, { "name": "workflowType", "type": "uint8", "indexed": false }, { "name": "totalStages", "type": "uint256", "indexed": false }], "anonymous": false },
+  { "type": "event", "name": "StageCompleted", "inputs": [{ "name": "workflowId", "type": "bytes32", "indexed": true }, { "name": "stageIndex", "type": "uint256", "indexed": false }, { "name": "agentId", "type": "uint256", "indexed": false }, { "name": "outputURI", "type": "string", "indexed": false }], "anonymous": false },
+  { "type": "event", "name": "WorkflowCompleted", "inputs": [{ "name": "workflowId", "type": "bytes32", "indexed": true }, { "name": "totalPaid", "type": "uint256", "indexed": false }], "anonymous": false },
+  { "type": "event", "name": "WorkflowFailed", "inputs": [{ "name": "workflowId", "type": "bytes32", "indexed": true }, { "name": "stageIndex", "type": "uint256", "indexed": false }], "anonymous": false }
+]
