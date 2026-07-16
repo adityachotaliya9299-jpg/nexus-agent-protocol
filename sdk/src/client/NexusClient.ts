@@ -38,6 +38,9 @@ import {
   AGENT_STAKING_ABI,
   ZK_ESCROW_ABI,
   AGENT_COMPOSABILITY_ABI,
+  AGENT_DAO_ABI,
+  COMMUNITY_GRANTS_ABI,
+  GRANT_TYPES,
   AGENT_CATEGORY_TO_UINT,
   UINT_TO_AGENT_CATEGORY,
   UINT_TO_AGENT_STATUS,
@@ -83,6 +86,8 @@ export class NexusClient {
   public staking:       StakingClient;
   public composability: ComposabilityClient;
   public zkescrow:      ZKEscrowClient;
+  public dao:           DAOClient;
+  public grants:        GrantsClient;
 
   constructor(config: NexusConfig) {
     this.config = {
@@ -112,6 +117,8 @@ export class NexusClient {
     this.staking       = new StakingClient(this.publicClient, this.walletClient, this.config);
     this.composability = new ComposabilityClient(this.publicClient, this.walletClient, this.config);
     this.zkescrow      = new ZKEscrowClient(this.publicClient, this.walletClient, this.config);
+    this.dao           = new DAOClient(this.publicClient, this.walletClient, this.config);
+    this.grants        = new GrantsClient(this.publicClient, this.walletClient, this.config);
   }
 
   // ── Factory methods ──────────────────────────────────────────
@@ -631,5 +638,160 @@ class ZKEscrowClient {
       ...raw,
       status: UINT_TO_ESCROW_STATUS[Number(raw.status)] as any,
     };
+  }
+}
+// DAOClient — multi-agent DAOs with automatic revenue splits
+
+class DAOClient {
+  constructor(
+    private pub: PublicClient,
+    private wal: WalletClient | null,
+    private cfg: NexusConfig,
+  ) {}
+
+  private get address(): Address {
+    const addr = this.cfg.contracts.AgentDAO;
+    if (!addr) throw new Error("AgentDAO address not configured");
+    return addr;
+  }
+
+  async create(name: string, memberAgentIds: bigint[], splitBps: bigint[]): Promise<TxResult> {
+    if (!this.wal) throw new Error("No signer configured");
+    const total = splitBps.reduce((s, b) => s + b, 0n);
+    if (total !== 10000n) throw new Error(`splitBps must sum to 10000, got ${total}`);
+    const hash = await this.wal.writeContract({
+      address:      this.address,
+      abi:          AGENT_DAO_ABI,
+      functionName: "createDAO",
+      args:         [name, memberAgentIds, splitBps],
+      account:      this.wal.account!,
+      chain:        this.wal.chain!,
+    });
+    const receipt = await this.pub.waitForTransactionReceipt({ hash });
+    return { hash, blockNumber: receipt.blockNumber, gasUsed: receipt.gasUsed };
+  }
+
+  async proposeTask(daoId: Hash, taskId: Hash, proposerAgentId: bigint): Promise<TxResult> {
+    if (!this.wal) throw new Error("No signer configured");
+    const hash = await this.wal.writeContract({
+      address:      this.address,
+      abi:          AGENT_DAO_ABI,
+      functionName: "proposeTask",
+      args:         [daoId, taskId, proposerAgentId],
+      account:      this.wal.account!,
+      chain:        this.wal.chain!,
+    });
+    const receipt = await this.pub.waitForTransactionReceipt({ hash });
+    return { hash, blockNumber: receipt.blockNumber, gasUsed: receipt.gasUsed };
+  }
+
+  async vote(proposalId: Hash, agentId: bigint, support: boolean): Promise<TxResult> {
+    if (!this.wal) throw new Error("No signer configured");
+    const hash = await this.wal.writeContract({
+      address:      this.address,
+      abi:          AGENT_DAO_ABI,
+      functionName: "vote",
+      args:         [proposalId, agentId, support],
+      account:      this.wal.account!,
+      chain:        this.wal.chain!,
+    });
+    const receipt = await this.pub.waitForTransactionReceipt({ hash });
+    return { hash, blockNumber: receipt.blockNumber, gasUsed: receipt.gasUsed };
+  }
+
+  async get(daoId: Hash) {
+    return this.pub.readContract({
+      address:      this.address,
+      abi:          AGENT_DAO_ABI,
+      functionName: "getDAO",
+      args:         [daoId],
+    });
+  }
+
+  async getMembers(daoId: Hash): Promise<readonly bigint[]> {
+    return this.pub.readContract({
+      address:      this.address,
+      abi:          AGENT_DAO_ABI,
+      functionName: "getDAOMembers",
+      args:         [daoId],
+    });
+  }
+}
+
+// GrantsClient — community treasury and grant voting
+
+class GrantsClient {
+  constructor(
+    private pub: PublicClient,
+    private wal: WalletClient | null,
+    private cfg: NexusConfig,
+  ) {}
+
+  private get address(): Address {
+    const addr = this.cfg.contracts.CommunityGrants;
+    if (!addr) throw new Error("CommunityGrants address not configured");
+    return addr;
+  }
+
+  async propose(params: {
+    title:           string;
+    description:     string;
+    recipient:       Address;
+    amountEth:       string;
+    grantType:       typeof GRANT_TYPES[number];
+    proposerAgentId: bigint;
+  }): Promise<TxResult> {
+    if (!this.wal) throw new Error("No signer configured");
+    const typeIndex = GRANT_TYPES.indexOf(params.grantType);
+    if (typeIndex < 0) throw new Error(`Unknown grant type: ${params.grantType}`);
+    const hash = await this.wal.writeContract({
+      address:      this.address,
+      abi:          COMMUNITY_GRANTS_ABI,
+      functionName: "proposeGrant",
+      args:         [params.title, params.description, params.recipient, parseEther(params.amountEth), typeIndex, params.proposerAgentId],
+      account:      this.wal.account!,
+      chain:        this.wal.chain!,
+    });
+    const receipt = await this.pub.waitForTransactionReceipt({ hash });
+    return { hash, blockNumber: receipt.blockNumber, gasUsed: receipt.gasUsed };
+  }
+
+  async vote(grantId: Hash, agentId: bigint, support: boolean): Promise<TxResult> {
+    if (!this.wal) throw new Error("No signer configured");
+    const hash = await this.wal.writeContract({
+      address:      this.address,
+      abi:          COMMUNITY_GRANTS_ABI,
+      functionName: "voteOnGrant",
+      args:         [grantId, agentId, support],
+      account:      this.wal.account!,
+      chain:        this.wal.chain!,
+    });
+    const receipt = await this.pub.waitForTransactionReceipt({ hash });
+    return { hash, blockNumber: receipt.blockNumber, gasUsed: receipt.gasUsed };
+  }
+
+  async get(grantId: Hash) {
+    return this.pub.readContract({
+      address:      this.address,
+      abi:          COMMUNITY_GRANTS_ABI,
+      functionName: "getGrant",
+      args:         [grantId],
+    });
+  }
+
+  async treasuryBalance(): Promise<bigint> {
+    return this.pub.readContract({
+      address:      this.address,
+      abi:          COMMUNITY_GRANTS_ABI,
+      functionName: "balance",
+    });
+  }
+
+  async activeGrants(): Promise<readonly Hash[]> {
+    return this.pub.readContract({
+      address:      this.address,
+      abi:          COMMUNITY_GRANTS_ABI,
+      functionName: "getActiveGrants",
+    });
   }
 }
