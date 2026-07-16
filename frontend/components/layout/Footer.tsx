@@ -50,7 +50,7 @@ export function Footer() {
             </p>
             <div className="mt-5 flex items-center gap-2 text-xs font-mono text-text-muted">
               <span className="w-1.5 h-1.5 rounded-full bg-jade pulse-dot" />
-              Live on Sepolia · 22 contracts
+              Live on Ethereum Sepolia testnet
             </div>
           </div>
 
