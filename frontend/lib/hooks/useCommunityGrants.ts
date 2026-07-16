@@ -5,8 +5,7 @@ import { CONTRACTS, COMMUNITY_GRANTS_ABI } from "@/lib/contracts";
 export const GRANT_TYPES = ["DEVELOPMENT", "ECOSYSTEM", "RESEARCH", "OPERATIONS", "BOUNTY"] as const;
 export const GRANT_STATUS_LABELS = ["PROPOSED", "VOTING", "APPROVED", "EXECUTED", "REJECTED"] as const;
 
-// ── Reads ────────────────────────────────────────────────────
-
+// reads
 export function useGrant(grantId: `0x${string}` | undefined) {
   return useReadContract({
     address: CONTRACTS.CommunityGrants,
@@ -41,8 +40,7 @@ export function useTotalGrants() {
   return useReadContract({ address: CONTRACTS.CommunityGrants, abi: COMMUNITY_GRANTS_ABI, functionName: "totalGrants" });
 }
 
-// ── Writes ───────────────────────────────────────────────────
-
+// writes
 export function useProposeGrant() {
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
