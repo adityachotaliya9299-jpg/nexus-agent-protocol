@@ -2,8 +2,7 @@ import { useReadContract, useWriteContract, useWaitForTransactionReceipt, useBal
 import { pad } from "viem";
 import { CONTRACTS, AGENT_WALLET_FACTORY_ABI } from "@/lib/contracts";
 
-// ── Reads ────────────────────────────────────────────────────
-
+// reads
 /** Get deterministic wallet address for an agentId (before deployment) */
 export function useWalletAddress(agentId: number | undefined) {
   const { address: owner } = useAccount();
@@ -40,8 +39,7 @@ export function useAgentWalletBalance(walletAddress: `0x${string}` | undefined) 
   });
 }
 
-// ── Writes ───────────────────────────────────────────────────
-
+// writes
 /** Deploy the ERC-4337 smart wallet for an agentId */
 export function useDeployWallet() {
   const { writeContract, data: hash, isPending, error } = useWriteContract();
