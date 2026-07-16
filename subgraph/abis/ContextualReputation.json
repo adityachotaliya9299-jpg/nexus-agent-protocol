@@ -1,0 +1,4 @@
+[
+  { "type": "event", "name": "CategoryScoreUpdated", "inputs": [{ "name": "agentId", "type": "uint256", "indexed": true }, { "name": "category", "type": "uint256", "indexed": true }, { "name": "oldScore", "type": "uint256", "indexed": false }, { "name": "newScore", "type": "uint256", "indexed": false }, { "name": "tasksCompleted", "type": "uint256", "indexed": false }], "anonymous": false },
+  { "type": "event", "name": "RatingSubmitted", "inputs": [{ "name": "agentId", "type": "uint256", "indexed": true }, { "name": "category", "type": "uint256", "indexed": true }, { "name": "rating", "type": "uint256", "indexed": false }, { "name": "rater", "type": "address", "indexed": true }], "anonymous": false }
+]
