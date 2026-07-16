@@ -29,6 +29,15 @@ export interface NexusContracts {
   AgentSkillNFT:       Address;
   AgentComposability:  Address;
   ZKEscrow:            Address;
+  ContextualReputation?: Address;
+  AgentDiscovery?:       Address;
+  ResultStorage?:        Address;
+  AgentDAO?:             Address;
+  CommunityGrants?:      Address;
+  ProtocolGuard?:        Address;
+  L1Bridge?:             Address;
+  L2Bridge?:             Address;
+  AgentCoordinator?:     Address;
 }
 
 // ── Agent types ────────────────────────────────────────────────
