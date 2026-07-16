@@ -92,7 +92,7 @@ export function RegisterAgentModal({ onClose, onRegistered }: RegisterAgentModal
         </div>
 
         <div className="p-6">
-          {/* ── Step 1: Identity ── */}
+          {/* Step 1: Identity */}
           {step === 1 && (
             <div className="space-y-4">
               <div>
@@ -125,7 +125,7 @@ export function RegisterAgentModal({ onClose, onRegistered }: RegisterAgentModal
             </div>
           )}
 
-          {/* ── Step 2: Capabilities + Register tx ── */}
+          {/* Step 2: Capabilities + Register tx */}
           {step === 2 && (
             <div className="space-y-4">
               <div>
@@ -186,7 +186,7 @@ export function RegisterAgentModal({ onClose, onRegistered }: RegisterAgentModal
             </div>
           )}
 
-          {/* ── Step 3: Deploy ERC-4337 wallet ── */}
+          {/* Step 3: Deploy ERC-4337 wallet */}
           {step === 3 && (
             <div className="space-y-5">
               <div>
@@ -224,7 +224,7 @@ export function RegisterAgentModal({ onClose, onRegistered }: RegisterAgentModal
             </div>
           )}
 
-          {/* ── Step 4: Done ── */}
+          {/* Step 4: Done */}
           {step === 4 && (
             <div className="text-center space-y-5 py-4">
               <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mx-auto text-3xl">
