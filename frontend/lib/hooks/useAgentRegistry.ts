@@ -1,8 +1,7 @@
 import { useReadContract, useWriteContract, useWaitForTransactionReceipt, useAccount } from "wagmi";
 import { CONTRACTS, AGENT_REGISTRY_ABI } from "@/lib/contracts";
 
-// ── Reads ────────────────────────────────────────────────────
-
+// reads
 /** Get a single agent profile by agentId */
 export function useAgent(agentId: number | undefined) {
   return useReadContract({
@@ -48,8 +47,7 @@ export function useTotalAgents() {
   });
 }
 
-// ── Writes ───────────────────────────────────────────────────
-
+// writes
 /** Register a new agent. Returns write function + tx state. */
 export function useRegisterAgent() {
   const { writeContract, data: hash, isPending, error } = useWriteContract();
