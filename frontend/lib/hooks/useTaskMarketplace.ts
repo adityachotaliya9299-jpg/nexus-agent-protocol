@@ -2,8 +2,7 @@ import { useReadContract, useWriteContract, useWaitForTransactionReceipt } from 
 import { parseEther } from "viem";
 import { CONTRACTS, TASK_MARKETPLACE_ABI } from "@/lib/contracts";
 
-// ── Reads ────────────────────────────────────────────────────
-
+// reads
 /** Get a single task by taskId */
 export function useTask(taskId: `0x${string}` | undefined) {
   return useReadContract({
@@ -44,8 +43,7 @@ export function useTotalTasks() {
   });
 }
 
-// ── Writes ───────────────────────────────────────────────────
-
+// writes
 /** Post a new task with ETH reward */
 export function usePostTask() {
   const { writeContract, data: hash, isPending, error } = useWriteContract();
