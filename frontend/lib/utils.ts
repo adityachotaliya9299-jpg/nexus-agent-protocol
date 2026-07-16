@@ -42,7 +42,6 @@ export function repColor(score: number): string {
 }
 
 
-
 export function repBarColor(score: number): string {
   if (score >= 8000) return "bg-emerald";
   if (score >= 6000) return "bg-cyan";
