@@ -1,0 +1,5 @@
+[
+  { "type": "event", "name": "SubTaskCreated", "inputs": [{ "name": "subTaskId", "type": "bytes32", "indexed": true }, { "name": "parentTaskId", "type": "bytes32", "indexed": true }, { "name": "parentAgentId", "type": "uint256", "indexed": true }, { "name": "reward", "type": "uint256", "indexed": false }, { "name": "deadline", "type": "uint256", "indexed": false }], "anonymous": false },
+  { "type": "event", "name": "SubTaskAssigned", "inputs": [{ "name": "subTaskId", "type": "bytes32", "indexed": true }, { "name": "subAgentId", "type": "uint256", "indexed": true }], "anonymous": false },
+  { "type": "event", "name": "SubTaskCompleted", "inputs": [{ "name": "subTaskId", "type": "bytes32", "indexed": true }, { "name": "subAgentId", "type": "uint256", "indexed": true }, { "name": "payment", "type": "uint256", "indexed": false }], "anonymous": false }
+]
