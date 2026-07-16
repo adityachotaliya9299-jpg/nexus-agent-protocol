@@ -310,6 +310,79 @@ export function createNexusTools(client: NexusClient): NexusTool[] {
     // ── ZK Escrow tools ──────────────────────────────────────────
 
     {
+      name: "nexus_create_escrow",
+      description:
+        "Create a ZK-gated escrow for a task. Locks ETH that releases automatically to the agent's wallet once they submit a valid zero-knowledge proof of the committed result — no client approval needed.",
+      schema: {
+        taskId:        { type: "string", description: "The marketplace task bytes32 ID", required: true },
+        agentWallet:   { type: "string", description: "The agent wallet address that will receive payment", required: true },
+        rewardEth:     { type: "string", description: "ETH amount to lock in escrow (e.g. '0.1')", required: true },
+        deadlineHours: { type: "number", description: "Hours until the escrow can be refunded to the client", required: true },
+      },
+      call: async ({ taskId, agentWallet, rewardEth, deadlineHours }) => {
+        const deadline = BigInt(Math.floor(Date.now() / 1000) + deadlineHours * 3600);
+        const result = await client.zkescrow.create({
+          taskId:      taskId as Hash,
+          agentWallet: agentWallet as Address,
+          deadline,
+          reward:      parseEther(rewardEth),
+        });
+        return JSON.stringify({
+          success: true,
+          txHash:  result.hash,
+          message: `Escrow created in block ${result.blockNumber}. Set the commitment next.`,
+        });
+      },
+    },
+
+    {
+      name: "nexus_set_commitment",
+      description:
+        "Set the result commitment on an escrow. The commitment is keccak256(resultHash, salt) — compute it from the expected result hash and a random salt, then share the salt with the agent off-chain.",
+      schema: {
+        escrowId:   { type: "string", description: "The escrow bytes32 ID", required: true },
+        resultHash: { type: "string", description: "keccak256 hash of the expected result (bytes32 hex)", required: true },
+        salt:       { type: "string", description: "Random bytes32 salt (share with the agent off-chain)", required: true },
+      },
+      call: async ({ escrowId, resultHash, salt }) => {
+        const commitment = client.zkescrow.computeCommitment(resultHash as Hash, salt as Hash);
+        const result = await client.zkescrow.setCommitment(escrowId as Hash, commitment);
+        return JSON.stringify({
+          success: true,
+          txHash:  result.hash,
+          commitment,
+          message: `Commitment set in block ${result.blockNumber}. Share the salt with the agent.`,
+        });
+      },
+    },
+
+    {
+      name: "nexus_release_with_proof",
+      description:
+        "Release an escrow by submitting a Groth16 zero-knowledge proof of the committed result. Payment transfers to the agent wallet instantly if the proof verifies. Generate the proof off-chain with scripts/zk/generate-proof.js.",
+      schema: {
+        escrowId:   { type: "string", description: "The escrow bytes32 ID", required: true },
+        resultHash: { type: "string", description: "keccak256 hash of the actual result (bytes32 hex)", required: true },
+        salt:       { type: "string", description: "The salt shared by the client (bytes32 hex)", required: true },
+        proofJson:  { type: "string", description: "JSON string with pA, pB, pC, pubSignals from the proof generator", required: true },
+      },
+      call: async ({ escrowId, resultHash, salt, proofJson }) => {
+        const proof = JSON.parse(proofJson);
+        const result = await client.zkescrow.releaseWithProof(
+          escrowId as Hash,
+          resultHash as Hash,
+          salt as Hash,
+          proof,
+        );
+        return JSON.stringify({
+          success: true,
+          txHash:  result.hash,
+          message: `Proof verified — escrow released in block ${result.blockNumber}.`,
+        });
+      },
+    },
+
+    {
       name: "nexus_get_escrow",
       description:
         "Get details of a ZK-gated escrow including status, amount, and commitment hash.",
@@ -326,6 +399,56 @@ export function createNexusTools(client: NexusClient): NexusTool[] {
           agentWallet: esc.agentWallet,
           deadline:    new Date(Number(esc.deadline) * 1000).toISOString(),
           hasCommitment: esc.commitment !== "0x0000000000000000000000000000000000000000000000000000000000000000",
+        });
+      },
+    },
+
+    {
+      name: "nexus_create_dao",
+      description:
+        "Form a DAO of registered agents with an automatic revenue split. Splits are in basis points and must sum to 10000 (e.g. two agents at 6000/4000 = 60%/40%). Revenue from DAO tasks distributes trustlessly.",
+      schema: {
+        name:           { type: "string", description: "Human-readable DAO name", required: true },
+        memberAgentIds: { type: "string", description: "Comma-separated agent IDs, e.g. '1,4,7'", required: true },
+        splitBps:       { type: "string", description: "Comma-separated basis points matching the members, must sum to 10000, e.g. '5000,3000,2000'", required: true },
+      },
+      call: async ({ name, memberAgentIds, splitBps }) => {
+        const ids = memberAgentIds.split(",").map((s: string) => BigInt(s.trim()));
+        const bps = splitBps.split(",").map((s: string) => BigInt(s.trim()));
+        const result = await client.dao.create(name, ids, bps);
+        return JSON.stringify({
+          success: true,
+          txHash:  result.hash,
+          message: `DAO "${name}" created in block ${result.blockNumber} with ${ids.length} members.`,
+        });
+      },
+    },
+
+    {
+      name: "nexus_propose_grant",
+      description:
+        "Propose a grant from the community treasury. Grant types: DEVELOPMENT, ECOSYSTEM, RESEARCH, OPERATIONS, BOUNTY. Registered agents then vote, weighted by reputation.",
+      schema: {
+        title:           { type: "string", description: "Short grant title", required: true },
+        description:     { type: "string", description: "What the grant funds and why", required: true },
+        recipient:       { type: "string", description: "Address that receives the funds if approved", required: true },
+        amountEth:       { type: "string", description: "ETH amount requested (e.g. '0.5')", required: true },
+        grantType:       { type: "string", description: "One of DEVELOPMENT, ECOSYSTEM, RESEARCH, OPERATIONS, BOUNTY", required: true },
+        proposerAgentId: { type: "string", description: "Your agent's numeric ID", required: true },
+      },
+      call: async ({ title, description, recipient, amountEth, grantType, proposerAgentId }) => {
+        const result = await client.grants.propose({
+          title,
+          description,
+          recipient:       recipient as Address,
+          amountEth,
+          grantType,
+          proposerAgentId: BigInt(proposerAgentId),
+        });
+        return JSON.stringify({
+          success: true,
+          txHash:  result.hash,
+          message: `Grant "${title}" proposed in block ${result.blockNumber}. Voting is now open.`,
         });
       },
     },
