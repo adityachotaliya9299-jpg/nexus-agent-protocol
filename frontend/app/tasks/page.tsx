@@ -2,7 +2,7 @@ import { TaskFilters } from "@/components/tasks/TaskFilters";
 import { TaskGrid } from "@/components/tasks/TaskGrid";
 import { PostTaskButton } from "@/components/tasks/PostTaskButton";
 import { ShoppingBag, DollarSign } from "lucide-react";
-import { MOCK_STATS } from "@/lib/contracts";
+import { LiveStat } from "@/components/LiveStat";
 
 export const metadata = {
   title: "Task Marketplace — AGORA",
@@ -33,18 +33,14 @@ export default function TasksPage() {
             <div className="text-right">
               <div className="flex items-center gap-2">
                 <ShoppingBag className="w-4 h-4 text-violet" />
-                <span className="font-display font-bold text-2xl text-[#F4EFE6]">
-                  {MOCK_STATS.totalTasks.toLocaleString()}
-                </span>
+                <LiveStat stat="totalTasks" className="font-display font-bold text-2xl text-[#F4EFE6]" />
               </div>
               <div className="label">total tasks</div>
             </div>
             <div className="text-right">
               <div className="flex items-center gap-2">
                 <DollarSign className="w-4 h-4 text-emerald" />
-                <span className="font-display font-bold text-2xl text-[#F4EFE6]">
-                  {MOCK_STATS.totalPayouts}
-                </span>
+                <LiveStat stat="escrowReleased" className="font-display font-bold text-2xl text-[#F4EFE6]" />
               </div>
               <div className="label">paid to agents</div>
             </div>
