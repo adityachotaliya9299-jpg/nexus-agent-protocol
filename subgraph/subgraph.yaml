@@ -127,3 +127,156 @@ dataSources:
         - event: SubscriptionCancelled(indexed bytes32,indexed address)
           handler: handleSubscriptionCancelled
       file: ./src/subscription-manager.ts
+  - kind: ethereum
+    name: AgentStaking
+    network: sepolia
+    source:
+      address: "0x30852aE83c52a6140A64F63d62d5AeA284d3e723"
+      abi: AgentStaking
+      startBlock: 11134169
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - StakeEvent
+      abis:
+        - name: AgentStaking
+          file: ./abis/AgentStaking.json
+      eventHandlers:
+        - event: Staked(indexed uint256,indexed address,uint256)
+          handler: handleStaked
+        - event: Slashed(indexed uint256,uint256,uint256)
+          handler: handleSlashed
+        - event: UnstakeRequested(indexed uint256,uint256)
+          handler: handleUnstakeRequested
+      file: ./src/agent-staking.ts
+
+  - kind: ethereum
+    name: ZKEscrow
+    network: sepolia
+    source:
+      address: "0x2EcD5ce3d5140aB7Df3063aAB817AF1336d04416"
+      abi: ZKEscrow
+      startBlock: 11134169
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - EscrowCreated
+      abis:
+        - name: ZKEscrow
+          file: ./abis/ZKEscrow.json
+      eventHandlers:
+        - event: EscrowCreated(indexed bytes32,indexed bytes32,indexed address,uint256,uint256)
+          handler: handleEscrowCreated
+        - event: CommitmentSet(indexed bytes32,bytes32)
+          handler: handleCommitmentSet
+        - event: EscrowReleased(indexed bytes32,indexed address,uint256)
+          handler: handleEscrowReleased
+        - event: EscrowRefunded(indexed bytes32,indexed address,uint256)
+          handler: handleEscrowRefunded
+      file: ./src/zk-escrow.ts
+
+  - kind: ethereum
+    name: AgentComposability
+    network: sepolia
+    source:
+      address: "0x4628ba31A9264e7eA204b62849e17AF5E10b1f55"
+      abi: AgentComposability
+      startBlock: 11134169
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - SubTaskCreated
+      abis:
+        - name: AgentComposability
+          file: ./abis/AgentComposability.json
+      eventHandlers:
+        - event: SubTaskCreated(indexed bytes32,indexed bytes32,indexed uint256,uint256,uint256)
+          handler: handleSubTaskCreated
+        - event: SubTaskAssigned(indexed bytes32,indexed uint256)
+          handler: handleSubTaskAssigned
+        - event: SubTaskCompleted(indexed bytes32,indexed uint256,uint256)
+          handler: handleSubTaskCompleted
+      file: ./src/composability.ts
+
+  - kind: ethereum
+    name: ContextualReputation
+    network: sepolia
+    source:
+      address: "0xAFE6c16FA37bB0BD9E7A24901705C7Fe725A910A"
+      abi: ContextualReputation
+      startBlock: 11134169
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - CategoryScore
+      abis:
+        - name: ContextualReputation
+          file: ./abis/ContextualReputation.json
+      eventHandlers:
+        - event: CategoryScoreUpdated(indexed uint256,indexed uint256,uint256,uint256,uint256)
+          handler: handleCategoryScoreUpdated
+      file: ./src/contextual-reputation.ts
+
+  - kind: ethereum
+    name: CommunityGrants
+    network: sepolia
+    source:
+      address: "0xD59eCf4296095fBC32576CF1e86e8b835aeac3a4"
+      abi: CommunityGrants
+      startBlock: 11134169
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - GrantProposed
+      abis:
+        - name: CommunityGrants
+          file: ./abis/CommunityGrants.json
+      eventHandlers:
+        - event: GrantProposed(indexed bytes32,string,uint256,address)
+          handler: handleGrantProposed
+        - event: GrantVoteCast(indexed bytes32,indexed uint256,bool,uint256)
+          handler: handleGrantVoteCast
+        - event: GrantApproved(indexed bytes32,uint256)
+          handler: handleGrantApproved
+        - event: GrantExecuted(indexed bytes32,address,uint256)
+          handler: handleGrantExecuted
+        - event: GrantRejected(indexed bytes32)
+          handler: handleGrantRejected
+      file: ./src/community-grants.ts
+
+  - kind: ethereum
+    name: AgentCoordinator
+    network: sepolia
+    source:
+      address: "0xa14b2dd25279e5bCd8aF219e336b3A48b47124B1"
+      abi: AgentCoordinator
+      startBlock: 11134169
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - WorkflowCreated
+      abis:
+        - name: AgentCoordinator
+          file: ./abis/AgentCoordinator.json
+      eventHandlers:
+        - event: WorkflowCreated(indexed bytes32,uint8,uint256)
+          handler: handleWorkflowCreated
+        - event: StageCompleted(indexed bytes32,uint256,uint256,string)
+          handler: handleStageCompleted
+        - event: WorkflowCompleted(indexed bytes32,uint256)
+          handler: handleWorkflowCompleted
+        - event: WorkflowFailed(indexed bytes32,uint256)
+          handler: handleWorkflowFailed
+      file: ./src/agent-coordinator.ts
