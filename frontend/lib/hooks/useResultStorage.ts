@@ -1,8 +1,7 @@
 import { useReadContract, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { CONTRACTS, RESULT_STORAGE_ABI } from "@/lib/contracts";
 
-// ── Reads ────────────────────────────────────────────────────
-
+// reads
 export function useStoredResult(taskId: `0x${string}` | undefined) {
   return useReadContract({
     address: CONTRACTS.ResultStorage,
@@ -37,8 +36,7 @@ export function useTotalAnchored() {
   return useReadContract({ address: CONTRACTS.ResultStorage, abi: RESULT_STORAGE_ABI, functionName: "totalAnchored" });
 }
 
-// ── Writes ───────────────────────────────────────────────────
-
+// writes
 export function useAnchorResult() {
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
