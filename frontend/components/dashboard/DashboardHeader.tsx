@@ -8,7 +8,6 @@ interface DashboardHeaderProps {
   agent: any;
 }
 
-const OWNER_ADDRESS = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
 
 export function DashboardHeader({ agent }: DashboardHeaderProps) {
   const [copied, setCopied] = useState<"wallet" | "owner" | null>(null);
@@ -26,6 +25,7 @@ export function DashboardHeader({ agent }: DashboardHeaderProps) {
   const status = agent?.status ?? "active";
   const capabilities = agent?.capabilities ?? agent?.skills ?? [];
   const description = agent?.description ?? agent?.bio ?? "";
+  const ownerAddr = agent?.owner ?? "0x0000000000000000000000000000000000000000";
 
   const repPct = (reputation / 10000) * 100;
   const color = repColor(reputation);
@@ -99,13 +99,13 @@ export function DashboardHeader({ agent }: DashboardHeaderProps) {
               </button>
 
               <button
-                onClick={() => copy(OWNER_ADDRESS, "owner")}
+                onClick={() => copy(ownerAddr, "owner")}
                 className="flex items-center gap-2 group"
                 title="Copy owner address"
               >
                 <span className="label">Owner</span>
                 <span className="address group-hover:text-[#F4EFE6] transition-colors">
-                  {shortAddress(OWNER_ADDRESS)}
+                  {shortAddress(ownerAddr)}
                 </span>
                 <span className="text-[#6B6355] group-hover:text-cyan transition-colors text-xs">
                   {copied === "owner" ? "✓" : "⎘"}
