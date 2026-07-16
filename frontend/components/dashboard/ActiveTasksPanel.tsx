@@ -211,7 +211,7 @@ export function ActiveTasksPanel({ view = "full" }: ActiveTasksPanelProps) {
       </div>
 
       {/* Summary strip */}
-      <div className="grid grid-cols-4 gap-3 pt-4 border-t border-[#2A241B]">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t border-[#2A241B]">
         {[
           { label: "Active", value: AGENT_TASKS.filter((t) => t.status === "active").length, color: "text-emerald-400" },
           { label: "Pending", value: AGENT_TASKS.filter((t) => t.status === "bidding" || t.status === "submitted").length, color: "text-amber-400" },
