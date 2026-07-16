@@ -1,33 +1,36 @@
+"use client";
+
 import Link from "next/link";
 import { Star, Clock, ArrowRight } from "lucide-react";
+import { useAccount } from "wagmi";
 import { type Task } from "@/lib/contracts";
-import { MOCK_AGENTS } from "@/lib/contracts";
+import { useAssignAgent } from "@/lib/hooks/useTaskMarketplace";
+import { useSgBids } from "@/lib/hooks/useSubgraph";
 import { shortAddress, repToPercent, repColor, repBarColor } from "@/lib/utils";
-
-// Mock bids for the task
-const MOCK_BIDS = [
-  { agentId: 1, proposalURI: "ipfs://QmProp1", estimatedDays: 2, submittedAt: Date.now() / 1000 - 1800,  isAccepted: false },
-  { agentId: 3, proposalURI: "ipfs://QmProp2", estimatedDays: 3, submittedAt: Date.now() / 1000 - 3600,  isAccepted: false },
-  { agentId: 5, proposalURI: "ipfs://QmProp3", estimatedDays: 5, submittedAt: Date.now() / 1000 - 7200,  isAccepted: false },
-];
 
 function timeAgo(ts: number) {
   const d = Date.now() / 1000 - ts;
-  if (d < 3600)  return `${Math.floor(d / 60)}m ago`;
+  if (d < 3600) return `${Math.floor(d / 60)}m ago`;
   if (d < 86400) return `${Math.floor(d / 3600)}h ago`;
   return `${Math.floor(d / 86400)}d ago`;
 }
 
 export function TaskBidList({ task }: { task: Task }) {
-  const bids = task.status === 0 ? MOCK_BIDS : [];
+  const { address } = useAccount();
+  const { data, isLoading } = useSgBids(task.taskId);
+  const { assignAgent, isPending, isConfirming } = useAssignAgent();
+
+  const bids = (data?.bids ?? []).filter(b => b.active);
+  const isClient = address && address.toLowerCase() === task.client.toLowerCase();
+  const canAssign = isClient && task.status === 0;
 
   return (
     <div className="card p-6">
       <div className="flex items-center justify-between mb-5">
         <div>
-          <h3 className="font-display font-semibold text-[#F4EFE6]">Agent Bids</h3>
-          <p className="text-xs text-[#A89F8D] mt-0.5">
-            {bids.length > 0 ? `${bids.length} proposals received` : "No bids yet"}
+          <h3 className="font-display font-semibold text-bone">Agent bids</h3>
+          <p className="text-xs text-text-secondary mt-0.5">
+            {isLoading ? "Loading bids…" : bids.length > 0 ? `${bids.length} proposals received` : "No bids yet"}
           </p>
         </div>
         {task.status === 0 && bids.length > 0 && (
@@ -35,10 +38,10 @@ export function TaskBidList({ task }: { task: Task }) {
         )}
       </div>
 
-      {bids.length === 0 ? (
-        <div className="text-center py-10 border border-dashed border-[#2A241B] rounded-lg">
-          <div className="font-mono text-sm text-[#6B6355] mb-2">No bids submitted yet</div>
-          <div className="font-mono text-xs text-[#3A3226]">
+      {bids.length === 0 && !isLoading ? (
+        <div className="text-center py-10 border border-dashed border-border rounded-xl">
+          <div className="font-mono text-sm text-text-muted mb-2">No bids submitted yet</div>
+          <div className="font-mono text-xs text-muted">
             {task.status === 0
               ? "Registered agents can submit proposals"
               : "Task is no longer accepting bids"}
@@ -46,58 +49,58 @@ export function TaskBidList({ task }: { task: Task }) {
         </div>
       ) : (
         <div className="space-y-3">
-          {bids.map((bid) => {
-            const agent = MOCK_AGENTS.find((a) => a.agentId === bid.agentId);
-            if (!agent) return null;
-            const repPct    = repToPercent(agent.reputationScore);
-            const scoreColor = repColor(agent.reputationScore);
-            const barColor  = repBarColor(agent.reputationScore);
-
+          {bids.map(bid => {
+            const agentId = Number(bid.agent.agentId);
+            const rep = Number(bid.agent.reputationScore);
+            const repPct = repToPercent(rep);
             return (
-              <div key={bid.agentId}
-                className="p-4 rounded-lg bg-[#0B0A08] border border-[#2A241B] hover:border-[#3A3226] transition-all">
+              <div key={bid.id} className="p-4 rounded-xl bg-void border border-border hover:border-muted transition-all">
                 <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1">
-                    {/* Agent name */}
-                    <Link href={`/agents/${agent.agentId}`}
-                      className="font-display font-semibold text-sm text-[#F4EFE6] hover:text-cyan transition-colors flex items-center gap-1.5">
-                      {agent.name}
+                  <div className="flex-1 min-w-0">
+                    <Link
+                      href={`/agents/${agentId}`}
+                      className="font-display font-semibold text-sm text-bone hover:text-gold transition-colors flex items-center gap-1.5"
+                    >
+                      Agent #{agentId}
                       <ArrowRight className="w-3 h-3" />
                     </Link>
-                    <div className="font-mono text-[10px] text-[#6B6355] mt-0.5">
-                      {shortAddress(agent.owner)} · submitted {timeAgo(bid.submittedAt)}
+                    <div className="font-mono text-[10px] text-text-muted mt-0.5">
+                      {shortAddress(bid.agent.owner)} · submitted {timeAgo(Number(bid.submittedAt))}
                     </div>
 
-                    {/* Mini rep bar */}
                     <div className="mt-2 flex items-center gap-2">
                       <div className="flex-1 rep-bar h-1">
-                        <div className={`h-full rounded-full ${barColor}`} style={{ width: `${repPct}%` }} />
+                        <div className={`h-full rounded-full ${repBarColor(rep)}`} style={{ width: `${repPct}%` }} />
                       </div>
-                      <span className={`font-mono text-xs font-semibold ${scoreColor}`}>{repPct}%</span>
+                      <span className={`font-mono text-xs font-semibold ${repColor(rep)}`}>{repPct}%</span>
                     </div>
                   </div>
 
                   <div className="text-right shrink-0">
-                    <div className="flex items-center gap-1 text-amber">
-                      <Clock className="w-3.5 h-3.5" />
-                      <span className="font-mono text-xs">{bid.estimatedDays}d est.</span>
-                    </div>
-                    <div className="flex items-center gap-1 text-[#A89F8D] mt-1">
+                    <div className="flex items-center gap-1 text-text-secondary">
                       <Star className="w-3.5 h-3.5" />
-                      <span className="font-mono text-xs">{agent.totalTasksCompleted} tasks</span>
+                      <span className="font-mono text-xs">{rep.toLocaleString()} rep</span>
                     </div>
+                    {bid.proposalURI && (
+                      <div className="flex items-center gap-1 text-text-muted mt-1 max-w-[140px]">
+                        <Clock className="w-3.5 h-3.5 shrink-0" />
+                        <span className="font-mono text-[10px] truncate">{bid.proposalURI}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
 
-                {/* Assign button (client only) */}
-                <div className="mt-3 pt-3 border-t border-[#2A241B] flex justify-between items-center">
-                  <span className="font-mono text-[10px] text-[#6B6355]">
-                    Price: {agent.pricePerTask} ETH
-                  </span>
-                  <button className="text-xs font-mono text-cyan hover:text-cyan/80 transition-colors">
-                    Assign this agent →
-                  </button>
-                </div>
+                {canAssign && (
+                  <div className="mt-3 pt-3 border-t border-border flex justify-end">
+                    <button
+                      onClick={() => assignAgent(task.taskId as `0x${string}`, agentId)}
+                      disabled={isPending || isConfirming}
+                      className="text-xs font-mono text-gold hover:text-gold-bright transition-colors disabled:opacity-50"
+                    >
+                      {isPending || isConfirming ? "Assigning…" : "Assign this agent →"}
+                    </button>
+                  </div>
+                )}
               </div>
             );
           })}
