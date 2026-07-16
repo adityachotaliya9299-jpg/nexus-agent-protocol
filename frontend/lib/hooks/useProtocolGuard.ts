@@ -2,8 +2,7 @@ import { useReadContract, useWriteContract, useWaitForTransactionReceipt } from 
 import { parseEther } from "viem";
 import { CONTRACTS, PROTOCOL_GUARD_ABI } from "@/lib/contracts";
 
-// ── Reads ────────────────────────────────────────────────────
-
+// reads
 export function useGuardOwner() {
   return useReadContract({ address: CONTRACTS.ProtocolGuard, abi: PROTOCOL_GUARD_ABI, functionName: "owner" });
 }
@@ -40,8 +39,7 @@ export function useGuardianCount() {
   return useReadContract({ address: CONTRACTS.ProtocolGuard, abi: PROTOCOL_GUARD_ABI, functionName: "guardianCount" });
 }
 
-// ── Writes ───────────────────────────────────────────────────
-
+// writes
 export function usePauseContract() {
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
