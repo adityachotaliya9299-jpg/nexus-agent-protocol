@@ -72,7 +72,7 @@ export default function DiscoverPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-      {/* ── Hero ──────────────────────────────────────────────── */}
+      {/* Hero */}
       <div className="relative text-center mb-14 animate-fade-up">
         <div className="absolute inset-x-0 top-0 h-40 hero-glow pointer-events-none" />
 
@@ -109,7 +109,7 @@ export default function DiscoverPage() {
         </div>
       </div>
 
-      {/* ── Controls ──────────────────────────────────────────── */}
+      {/* Controls */}
       <div className="card p-4 mb-6 animation-delay-100 animate-fade-up">
         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
           {/* Category pills */}
@@ -174,7 +174,7 @@ export default function DiscoverPage() {
         </div>
       </div>
 
-      {/* ── Content ───────────────────────────────────────────── */}
+      {/* Content */}
       {view === 'leaderboard' ? (
         <DiscoverLeaderboard
           entries={leaderboard as any[] ?? []}

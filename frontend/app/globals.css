@@ -4,10 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ════════════════════════════════════════════════════════════════
-   AGORA — "Obsidian & Solar" design system
-   Warm ink-black · bone type · molten gold + ember accents
-   ════════════════════════════════════════════════════════════════ */
+/* AGORA — "Obsidian & Solar" design system — Warm ink-black · bone type · molten gold + ember accents */
 
 :root {
   /* surfaces */
@@ -117,7 +114,7 @@ html, body {
 ::-webkit-scrollbar-thumb:hover { background: #4A4030; }
 ::selection { background: rgba(242,169,59,0.25); color: #FFC46B; }
 
-/* ── film-grain overlay (subtle, whole app) ─────────────────── */
+/* film-grain overlay (subtle, whole app) */
 .grain::before {
   content: "";
   position: fixed;
@@ -138,9 +135,7 @@ html, body {
   80% { transform: translate(4%,4%); }
 }
 
-/* ════════════════════════════════════════════════════════════
-   COMPONENT LAYER — legacy class names, restyled for AGORA
-   ════════════════════════════════════════════════════════════ */
+/* COMPONENT LAYER — legacy class names, restyled for AGORA */
 @layer components {
   .card { @apply bg-surface border border-border rounded-2xl; }
   .card-hover { @apply card transition-all duration-300 hover:border-gold/30 hover:bg-raised hover:-translate-y-0.5 hover:shadow-[0_12px_40px_-12px_rgba(242,169,59,0.15)]; }
@@ -170,11 +165,7 @@ html, body {
   .ag-divider { height: 1px; background: linear-gradient(90deg, transparent, var(--ag-border) 20%, var(--ag-border) 80%, transparent); }
 }
 
-/* ════════════════════════════════════════════════════════════
-   SCROLL-TRIGGERED REVEAL SYSTEM
-   Elements with .rv start hidden; .rv-in (added by <Reveal/> or
-   ScrollFX observer) animates them in. Variants + stagger.
-   ════════════════════════════════════════════════════════════ */
+/* SCROLL-TRIGGERED REVEAL SYSTEM — Elements with .rv start hidden; .rv-in (added by <Reveal/> or — ScrollFX observer) animates them in. Variants + stagger. */
 .rv {
   opacity: 0;
   transform: translateY(36px);
@@ -206,7 +197,7 @@ html, body {
 }
 .rv-in .word-reveal > span, .wr-in .word-reveal > span { transform: translateY(0); }
 
-/* ── scroll-driven animations (native, progressive enhancement) ── */
+/* scroll-driven animations (native, progressive enhancement) */
 @supports (animation-timeline: view()) {
   .sd-fade {
     animation: sd-fade-kf linear both;
@@ -255,7 +246,7 @@ html, body {
   }
 }
 
-/* ── marquee ────────────────────────────────────────────────── */
+/* marquee */
 @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 .ticker-track { display: flex; width: max-content; animation: ticker 42s linear infinite; }
 .ticker-track:hover { animation-play-state: paused; }
@@ -277,7 +268,7 @@ html, body {
 @keyframes pulse-dot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } }
 .pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
 
-/* ── hero atmosphere ────────────────────────────────────────── */
+/* hero atmosphere */
 .hero-glow { background: radial-gradient(ellipse 70% 55% at 50% -5%, rgba(242,169,59,0.14), transparent 70%); }
 
 .aurora {
@@ -313,7 +304,7 @@ html, body {
   100% { transform: translate(-4vw, -3vh) scale(0.95); }
 }
 
-/* ── orbital ring ornament ──────────────────────────────────── */
+/* orbital ring ornament */
 .orbit-ring {
   border: 1px solid rgba(242,169,59,0.14);
   border-radius: 50%;
@@ -321,7 +312,7 @@ html, body {
 }
 @keyframes orbit-spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
 
-/* ── shimmer on gold text ───────────────────────────────────── */
+/* shimmer on gold text */
 @keyframes shimmer {
   0% { background-position: -200% center; }
   100% { background-position: 200% center; }
@@ -335,7 +326,7 @@ html, body {
   animation: shimmer 5.5s linear infinite;
 }
 
-/* ── scroll progress bar (top of viewport) ──────────────────── */
+/* scroll progress bar (top of viewport) */
 .scroll-progress {
   position: fixed;
   top: 0; left: 0;
@@ -356,7 +347,7 @@ html, body {
   @keyframes sp-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 }
 
-/* ── timeline draw (how-it-works) ───────────────────────────── */
+/* timeline draw (how-it-works) */
 .timeline-line {
   background: linear-gradient(180deg, var(--ag-gold), var(--ag-ember));
   transform-origin: top;
@@ -364,7 +355,7 @@ html, body {
   transition: transform 0.25s linear;
 }
 
-/* ── ring / counter keyframes (legacy names kept) ───────────── */
+/* ring / counter keyframes (legacy names kept) */
 @keyframes nx-ring-draw { from { stroke-dashoffset: 226; } to { stroke-dashoffset: var(--ring-offset); } }
 @keyframes nx-ring-pulse {
   0%, 100% { filter: drop-shadow(0 0 4px var(--ring-color)); }
@@ -397,7 +388,7 @@ html, body {
 }
 .nx-mono { font-family: var(--ag-font-mono); }
 
-/* ── 3D tilt cards ──────────────────────────────────────────── */
+/* 3D tilt cards */
 .tilt-card {
   transform-style: preserve-3d;
   transition: transform 0.35s var(--ag-ease), box-shadow 0.35s var(--ag-ease);
@@ -413,10 +404,10 @@ html, body {
 }
 .tilt-card:hover .tilt-glare { opacity: 1; }
 
-/* ── number flicker (stat counters) ─────────────────────────── */
+/* number flicker (stat counters) */
 @keyframes stat-in { from { opacity: 0; transform: translateY(60%); } to { opacity: 1; transform: none; } }
 
-/* ── reduced motion ─────────────────────────────────────────── */
+/* reduced motion */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .ticker-track, .aurora::before, .aurora::after, .grain::before { animation: none !important; }
