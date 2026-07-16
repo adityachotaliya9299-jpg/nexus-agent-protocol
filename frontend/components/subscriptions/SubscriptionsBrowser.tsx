@@ -1,9 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { formatEther, parseEther } from "viem";
+import { useSgPlans } from "@/lib/hooks/useSubgraph";
+import { useSubscribe } from "@/lib/hooks/useSubscriptionManager";
 
 type PlanTier = "BASIC" | "STANDARD" | "PREMIUM" | "ENTERPRISE";
-type Category = "All" | "DeFi" | "Security" | "ZK" | "Oracle" | "Infrastructure" | "AI";
+type Category = "All" | "On-chain" | "DeFi" | "Security" | "ZK" | "Oracle" | "Infrastructure" | "AI";
 type SortBy = "popular" | "price_asc" | "price_desc" | "rep";
 
 const TIER_STYLES: Record<PlanTier, { color: string; border: string; bg: string }> = {
@@ -12,6 +15,27 @@ const TIER_STYLES: Record<PlanTier, { color: string; border: string; bg: string 
   PREMIUM:    { color: "#FF6B3D", border: "border-violet/20",      bg: "bg-violet/5" },
   ENTERPRISE: { color: "#F2A93B", border: "border-amber-500/20",   bg: "bg-amber-500/5" },
 };
+
+interface BrowserPlan {
+  id: string | number;
+  planId?: `0x${string}`;   // set only for real on-chain plans
+  agentName: string;
+  agentId: number;
+  agentRep: number;
+  tier: PlanTier;
+  name: string;
+  description: string;
+  price: string;
+  interval: number;
+  maxSubscribers: number;
+  currentSubscribers: number;
+  category: string;
+  features: string[];
+  active: boolean;
+  showcase?: boolean;
+}
+
+const TIER_BY_INDEX: PlanTier[] = ["BASIC", "STANDARD", "PREMIUM", "ENTERPRISE"];
 
 const MOCK_PLANS = [
   {
@@ -112,7 +136,7 @@ const MOCK_PLANS = [
   },
 ];
 
-const CATEGORIES: Category[] = ["All", "DeFi", "Security", "ZK", "Oracle", "Infrastructure", "AI"];
+const CATEGORIES: Category[] = ["All", "On-chain", "DeFi", "Security", "ZK", "Oracle", "Infrastructure", "AI"];
 
 function repColor(score: number): string {
   if (score >= 9000) return "#F2A93B";
@@ -131,13 +155,31 @@ function repLabel(score: number): string {
 }
 
 interface SubscribeModalProps {
-  plan: typeof MOCK_PLANS[0];
+  plan: BrowserPlan;
   onClose: () => void;
 }
 
 function SubscribeModal({ plan, onClose }: SubscribeModalProps) {
   const [confirming, setConfirming] = useState(false);
+  const { subscribe, isPending, isConfirming, isSuccess } = useSubscribe();
   const style = TIER_STYLES[plan.tier];
+  const busy = confirming || isPending || isConfirming;
+
+  const onConfirm = () => {
+    if (plan.planId) {
+      // real plan — pay the period price straight into the contract
+      subscribe(plan.planId, parseEther(plan.price));
+    } else {
+      setConfirming(true);
+      setTimeout(onClose, 1500);
+    }
+  };
+
+  useEffect(() => {
+    if (!isSuccess) return;
+    const t = setTimeout(onClose, 1200);
+    return () => clearTimeout(t);
+  }, [isSuccess, onClose]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -191,15 +233,17 @@ function SubscribeModal({ plan, onClose }: SubscribeModalProps) {
         <div className="flex gap-3 pt-1">
           <button onClick={onClose} className="btn-secondary flex-1">Cancel</button>
           <button
-            onClick={() => { setConfirming(true); setTimeout(onClose, 1500); }}
+            onClick={onConfirm}
             className="btn-primary flex-1"
-            disabled={confirming}
+            disabled={busy}
           >
-            {confirming ? "Subscribing..." : `Subscribe — ${plan.price} ETH`}
+            {isSuccess ? "Subscribed ✓" : busy ? "Subscribing..." : `Subscribe — ${plan.price} ETH`}
           </button>
         </div>
         <p className="text-[#6B6355] text-xs text-center">
-          Payments flow directly to the agent's ERC-4337 wallet. Cancel anytime.
+          {plan.planId
+            ? "Payments flow directly to the agent's wallet via SubscriptionManager on Sepolia."
+            : "Showcase plan — subscribing is simulated. Real plans settle on-chain."}
         </p>
       </div>
     </div>
@@ -211,9 +255,37 @@ export function SubscriptionsBrowser() {
   const [sortBy, setSortBy] = useState<SortBy>("popular");
   const [search, setSearch] = useState("");
   const [selectedTier, setSelectedTier] = useState<PlanTier | "All">("All");
-  const [subscribing, setSubscribing] = useState<typeof MOCK_PLANS[0] | null>(null);
+  const [subscribing, setSubscribing] = useState<BrowserPlan | null>(null);
 
-  const filtered = MOCK_PLANS
+  const { data: sgPlans } = useSgPlans(50);
+  const livePlans: BrowserPlan[] = (sgPlans?.subscriptionPlans ?? []).map(p => {
+    const agentId = Number(p.agent.agentId);
+    const tier = TIER_BY_INDEX[p.tier] ?? "BASIC";
+    return {
+      id: p.id,
+      planId: p.id as `0x${string}`,
+      agentName: `Agent #${agentId}`,
+      agentId,
+      agentRep: 0,
+      tier,
+      name: `${tier.charAt(0)}${tier.slice(1).toLowerCase()} plan — Agent #${agentId}`,
+      description: "On-chain subscription plan. Payment goes directly to the agent each period via the SubscriptionManager contract.",
+      price: formatEther(BigInt(p.pricePerPeriod)),
+      interval: Math.max(1, Math.round(Number(p.periodDuration) / 86400)),
+      maxSubscribers: Number(p.maxSubscribers),
+      currentSubscribers: Number(p.currentSubscribers),
+      category: "On-chain",
+      features: ["Live Sepolia plan", "Automatic renewal", "Cancel anytime", "Direct agent payout"],
+      active: p.isActive,
+    };
+  });
+
+  const allPlans: BrowserPlan[] = [
+    ...livePlans,
+    ...MOCK_PLANS.map(p => ({ ...p, showcase: true } as BrowserPlan)),
+  ];
+
+  const filtered = allPlans
     .filter((p) => category === "All" || p.category === category)
     .filter((p) => selectedTier === "All" || p.tier === selectedTier)
     .filter((p) =>
@@ -229,10 +301,9 @@ export function SubscriptionsBrowser() {
       return 0;
     });
 
-  // Stats
-  const totalPlans = MOCK_PLANS.length;
-  const totalSubs = MOCK_PLANS.reduce((s, p) => s + p.currentSubscribers, 0);
-  const avgPrice = (MOCK_PLANS.reduce((s, p) => s + parseFloat(p.price), 0) / MOCK_PLANS.length).toFixed(3);
+  const totalPlans = allPlans.length;
+  const totalSubs = allPlans.reduce((s, p) => s + p.currentSubscribers, 0);
+  const avgPrice = (allPlans.reduce((s, p) => s + parseFloat(p.price), 0) / Math.max(1, allPlans.length)).toFixed(3);
 
   return (
     <div className="space-y-8">
