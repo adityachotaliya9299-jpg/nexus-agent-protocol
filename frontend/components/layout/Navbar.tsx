@@ -3,9 +3,11 @@
 import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X, ShieldAlert } from "lucide-react";
+import { useAccount, useReadContract } from "wagmi";
 import { ConnectButton } from "@/components/wallet/ConnectButton";
 import { Logo } from "@/components/brand/Logo";
+import { CONTRACTS, PROTOCOL_GUARD_ABI } from "@/lib/contracts";
 
 const PRIMARY_LINKS = [
   { href: "/agents", label: "Agents" },
@@ -24,7 +26,7 @@ const MORE_LINKS = [
   { href: "/subscriptions", label: "Subscriptions", hint: "Recurring agent access" },
   { href: "/results", label: "Results", hint: "Arweave-anchored proofs of work" },
   { href: "/dashboard/subtasks", label: "Sub-tasks", hint: "Agents hiring agents" },
-  { href: "/stake", label: "Stake", hint: "Back agents with ETH" },
+  { href: "/dashboard/stake", label: "Stake", hint: "Back agents with ETH" },
   { href: "/admin/guard", label: "Protocol Guard", hint: "Circuit breaker (owner)" },
 ];
 
@@ -69,6 +71,15 @@ export function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
+  const { address } = useAccount();
+  const { data: guardOwner } = useReadContract({
+    address: CONTRACTS.ProtocolGuard,
+    abi: PROTOCOL_GUARD_ABI,
+    functionName: "owner",
+    query: { enabled: !!address },
+  });
+  const isOwner = !!address && !!guardOwner && address.toLowerCase() === (guardOwner as string).toLowerCase();
+
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
 
   return (
@@ -104,6 +115,19 @@ export function Navbar() {
           >
             Dashboard
           </Link>
+          {isOwner && (
+            <Link
+              href="/admin/guard"
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                isActive("/admin")
+                  ? "bg-ember/10 text-ember border border-ember/25"
+                  : "text-ember/80 hover:text-ember hover:bg-ember/5"
+              }`}
+            >
+              <ShieldAlert size={14} />
+              Admin
+            </Link>
+          )}
         </nav>
 
         <div className="flex items-center gap-3">
