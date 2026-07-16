@@ -4,8 +4,7 @@ import { CONTRACTS, AGENT_COMPOSABILITY_ABI } from "@/lib/contracts";
 
 export const SUBTASK_STATUS_LABELS = ["OPEN", "ASSIGNED", "SUBMITTED", "COMPLETED", "CANCELLED"] as const;
 
-// ── Reads ────────────────────────────────────────────────────
-
+// reads
 export function useSubTask(subTaskId: `0x${string}` | undefined) {
   return useReadContract({
     address: CONTRACTS.AgentComposability,
@@ -34,8 +33,7 @@ export function useTotalSubTasks() {
   });
 }
 
-// ── Writes ───────────────────────────────────────────────────
-
+// writes
 export function useCreateSubTask() {
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
