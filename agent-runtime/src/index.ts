@@ -23,6 +23,38 @@ import { TaskScanner }   from "./tasks/TaskScanner";
 import { BidStrategy }   from "./strategies/BidStrategy";
 import { ChainWatcher }  from "./watcher/ChainWatcher";
 
+// crash monitoring — sends a Telegram message before the process dies.
+// Configure TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID in .env to enable.
+async function notifyCrash(kind: string, err: unknown): Promise<void> {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID;
+  const detail = err instanceof Error ? `${err.message}\n${err.stack?.slice(0, 600)}` : String(err);
+  logger.error("Runtime", `${kind}: ${detail}`);
+  if (!token || !chatId) return;
+  try {
+    await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: `🚨 Agent runtime ${kind}\n\n${detail.slice(0, 3500)}`,
+      }),
+    });
+  } catch {
+    // notification is best-effort; nothing else to do here
+  }
+}
+
+process.on("uncaughtException", async (err) => {
+  await notifyCrash("crashed (uncaughtException)", err);
+  process.exit(1);
+});
+
+process.on("unhandledRejection", async (reason) => {
+  await notifyCrash("crashed (unhandledRejection)", reason);
+  process.exit(1);
+});
+
 async function main() {
   logger.info("Runtime", "═".repeat(50));
   logger.info("Runtime", " Nexus Agent Runtime v0.1.0");

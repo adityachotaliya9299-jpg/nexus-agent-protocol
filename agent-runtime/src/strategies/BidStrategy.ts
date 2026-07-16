@@ -60,27 +60,34 @@ Respond in this EXACT JSON format (no markdown, no explanation outside JSON):
   "proposal": "brief description of how you would complete this task"
 }`;
 
+    // hard eligibility gates apply whether or not the LLM answers
+    if (task.minReputation > agentState.reputationScore) {
+      return {
+        shouldBid:      false,
+        proposalURI:    "",
+        estimatedHours: 0,
+        reasoning:      `Reputation too low (${agentState.reputationScore} < ${task.minReputation})`,
+      };
+    }
+    if (hoursLeft < 2) {
+      return {
+        shouldBid:      false,
+        proposalURI:    "",
+        estimatedHours: 0,
+        reasoning:      `Only ${hoursLeft}h left before deadline`,
+      };
+    }
+
     try {
       const response = await this.llm.invoke(prompt);
       const text     = typeof response.content === "string"
         ? response.content
         : JSON.stringify(response.content);
 
-      // Extract JSON from response
       const jsonMatch = text.match(/\{[\s\S]*\}/);
       if (!jsonMatch) throw new Error("No JSON in response");
 
       const decision = JSON.parse(jsonMatch[0]);
-
-      // Safety check: never bid if reputation requirement not met
-      if (task.minReputation > agentState.reputationScore) {
-        return {
-          shouldBid:      false,
-          proposalURI:    "",
-          estimatedHours: 0,
-          reasoning:      `Reputation too low (${agentState.reputationScore} < ${task.minReputation})`,
-        };
-      }
 
       logger.debug("BidStrategy", `LLM decision for ${task.taskId.slice(0, 10)}...`, decision);
 
@@ -91,13 +98,17 @@ Respond in this EXACT JSON format (no markdown, no explanation outside JSON):
         reasoning:      String(decision.reasoning ?? ""),
       };
     } catch (err) {
-      logger.warn("BidStrategy", `LLM evaluation failed, defaulting to bid: ${(err as Error).message}`);
-      // Default: bid on everything we can
+      logger.warn("BidStrategy", `LLM evaluation failed: ${(err as Error).message}`);
+      // conservative fallback: only bid when the task is clearly within reach —
+      // decent runway and a reward worth the gas
+      const fallbackBid = hoursLeft >= 12 && rewardEth >= 0.005;
       return {
-        shouldBid:      true,
-        proposalURI:    "data:text/plain,Autonomous%20Nexus%20agent%20bid",
+        shouldBid:      fallbackBid,
+        proposalURI:    fallbackBid ? "data:text/plain,Autonomous%20agent%20bid" : "",
         estimatedHours: 24,
-        reasoning:      "LLM unavailable — default bid",
+        reasoning:      fallbackBid
+          ? "LLM unavailable — task meets fallback criteria (runway + reward)"
+          : "LLM unavailable — task outside fallback criteria, skipping",
       };
     }
   }
