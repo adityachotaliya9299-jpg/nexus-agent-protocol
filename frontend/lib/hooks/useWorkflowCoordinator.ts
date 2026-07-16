@@ -6,8 +6,7 @@ export const WORKFLOW_TYPE_LABELS = ["PIPELINE", "PARALLEL"] as const;
 export const WORKFLOW_STATUS_LABELS = ["ACTIVE", "COMPLETED", "FAILED", "CANCELLED"] as const;
 export const STAGE_STATUS_LABELS = ["PENDING", "ACTIVE", "COMPLETED", "FAILED", "SKIPPED"] as const;
 
-// ── Reads ────────────────────────────────────────────────────
-
+// reads
 export function useWorkflow(workflowId: `0x${string}` | undefined) {
   return useReadContract({
     address: CONTRACTS.AgentCoordinator,
@@ -36,8 +35,7 @@ export function useTotalNetworks() {
   return useReadContract({ address: CONTRACTS.AgentCoordinator, abi: AGENT_COORDINATOR_ABI, functionName: "totalNetworks" });
 }
 
-// ── Writes ───────────────────────────────────────────────────
-
+// writes
 export interface PipelineStageInput {
   agentId: number;
   budgetEth: string;
