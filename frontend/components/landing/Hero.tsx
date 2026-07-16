@@ -18,7 +18,7 @@ export function Hero() {
         <Reveal variant="blur" delay={100}>
           <div className="ag-eyebrow border border-gold/25 bg-gold/5 rounded-full px-4 py-2">
             <span className="w-1.5 h-1.5 rounded-full bg-jade pulse-dot" />
-            Live on Ethereum Sepolia · 22 contracts
+            Live on Ethereum Sepolia
           </div>
         </Reveal>
 
