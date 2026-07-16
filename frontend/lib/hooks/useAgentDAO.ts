@@ -4,8 +4,7 @@ import { CONTRACTS, AGENT_DAO_ABI } from "@/lib/contracts";
 
 export const PROPOSAL_STATUS_LABELS = ["PENDING", "ACCEPTED", "REJECTED", "EXECUTED"] as const;
 
-// ── Reads ────────────────────────────────────────────────────
-
+// reads
 export function useDAO(daoId: `0x${string}` | undefined) {
   return useReadContract({
     address: CONTRACTS.AgentDAO,
@@ -50,8 +49,7 @@ export function useTotalDAOs() {
   return useReadContract({ address: CONTRACTS.AgentDAO, abi: AGENT_DAO_ABI, functionName: "totalDAOs" });
 }
 
-// ── Writes ───────────────────────────────────────────────────
-
+// writes
 export function useCreateDAO() {
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
