@@ -10,7 +10,7 @@ export const CONTRACTS = {
   SubscriptionManager:  "0x60385A61e663B5a1ed616C3C090764faBaAcec13" as `0x${string}`,
   CrossChainBridge:     "0x7a3Cd54bB1039823B15Eff1df78D044C7D79628a" as `0x${string}`,
 
-  // ── New contracts (phases 9-29) ───────────────────────────────
+  // new contracts (phases 9-29)
   Groth16Verifier:      "0x68F76277A7a8991CE7ac7182AAA10a356dAaB48F" as `0x${string}`,
   NexusServiceManager:  "0x2E1eF805b574094AFDF84f86b4B9bf07697F3080" as `0x${string}`,
   AgentStaking:         "0x30852aE83c52a6140A64F63d62d5AeA284d3e723" as `0x${string}`,
@@ -24,7 +24,7 @@ export const CONTRACTS = {
   L2Bridge:             "0x9CB0593354408A7c4943e553dFCbb4670379b7A0" as `0x${string}`,
   AgentCoordinator:     "0xa14b2dd25279e5bCd8aF219e336b3A48b47124B1" as `0x${string}`,
 
-  // ── Governance / storage / security ───────────────────────────
+  // governance / storage / security
   ResultStorage:        "0xb38c9dE16a775303b784367cd75304E52351518b" as `0x${string}`,
   AgentDAO:             "0x02E52e89dD06A743044C9A4207b001C1c074D8EC" as `0x${string}`,
   CommunityGrants:      "0xD59eCf4296095fBC32576CF1e86e8b835aeac3a4" as `0x${string}`,
@@ -41,12 +41,10 @@ export function isDeployed(): boolean {
   return CONTRACTS.AgentRegistry !== "0x0000000000000000000000000000000000000000";
 }
 
-// ── Chain config ──────────────────────────────────────────────
-
+// chain config
 export const SEPOLIA_CHAIN_ID = 11155111;
 
-// ── Helper constants ──────────────────────────────────────────
-
+// helper constants
 export const CATEGORIES = ['GENERAL','CODE','RESEARCH','TRADING','CREATIVE','ORCHESTRATOR'] as const;
 export type Category = typeof CATEGORIES[number];
 
@@ -408,7 +406,7 @@ export interface SubscriptionPlan {
 
 export const MOCK_AGENTS: Agent[] = [
   {
-    agentId: 1, owner: "0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+    agentId: 101, owner: "0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
     agentWallet: "0x1234567890123456789012345678901234567890",
     metadataURI: "ipfs://QmCodeSentinelMeta", category: 1, status: 1,
     reputationScore: 9200, totalTasksCompleted: 147,
@@ -420,7 +418,7 @@ export const MOCK_AGENTS: Agent[] = [
     pricePerTask: "0.08",
   },
   {
-    agentId: 2, owner: "0x8ba1f109551bD432803012645Ac136ddd64DBA72",
+    agentId: 102, owner: "0x8ba1f109551bD432803012645Ac136ddd64DBA72",
     agentWallet: "0x2345678901234567890123456789012345678901",
     metadataURI: "ipfs://QmResearchOracleMeta", category: 2, status: 1,
     reputationScore: 8750, totalTasksCompleted: 203,
@@ -432,7 +430,7 @@ export const MOCK_AGENTS: Agent[] = [
     pricePerTask: "0.05",
   },
   {
-    agentId: 3, owner: "0x9D7f74d0C41E726EC95884E0e97Fa6129e3b5E99",
+    agentId: 103, owner: "0x9D7f74d0C41E726EC95884E0e97Fa6129e3b5E99",
     agentWallet: "0x3456789012345678901234567890123456789012",
     metadataURI: "ipfs://QmAlphaTradeMeta", category: 3, status: 1,
     reputationScore: 8100, totalTasksCompleted: 89,
@@ -444,7 +442,7 @@ export const MOCK_AGENTS: Agent[] = [
     pricePerTask: "0.12",
   },
   {
-    agentId: 4, owner: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+    agentId: 104, owner: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
     agentWallet: "0x4567890123456789012345678901234567890123",
     metadataURI: "ipfs://QmNexusOrchestratorMeta", category: 5, status: 1,
     reputationScore: 9500, totalTasksCompleted: 312,
@@ -456,7 +454,7 @@ export const MOCK_AGENTS: Agent[] = [
     pricePerTask: "0.20",
   },
   {
-    agentId: 5, owner: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+    agentId: 105, owner: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
     agentWallet: "0x5678901234567890123456789012345678901234",
     metadataURI: "ipfs://QmCreativeCoreMeta", category: 4, status: 1,
     reputationScore: 7800, totalTasksCompleted: 91,
@@ -468,7 +466,7 @@ export const MOCK_AGENTS: Agent[] = [
     pricePerTask: "0.04",
   },
   {
-    agentId: 6, owner: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+    agentId: 106, owner: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
     agentWallet: "0x6789012345678901234567890123456789012345",
     metadataURI: "ipfs://QmFrankMeta", category: 1, status: 2,
     reputationScore: 7100, totalTasksCompleted: 67,
@@ -504,7 +502,7 @@ export const MOCK_TASKS: Task[] = [
     taskId: "0xghi789", client: "0x9D7f74d0C41E726EC95884E0e97Fa6129e3b5E99",
     metadataURI: "ipfs://QmTask3", reward: BigInt("3500000000000000000"),
     deadline: Date.now() / 1000 + 14 * 24 * 3600, createdAt: Date.now() / 1000 - 10800,
-    status: 1, assignedAgentId: 1, minReputation: 8000,
+    status: 1, assignedAgentId: 101, minReputation: 8000,
     title: "Build ERC-4337 Paymaster Contract",
     description: "Design and implement a Paymaster contract that sponsors gas for new users during their first 5 transactions.",
     category: "Development",
@@ -521,9 +519,9 @@ export const MOCK_TASKS: Task[] = [
 ];
 
 export const MOCK_PLANS: SubscriptionPlan[] = [
-  { planId: "0xplan1", agentId: 1, tier: 0, pricePerPeriod: BigInt("50000000000000000"), periodDuration: 30 * 24 * 3600, maxSubscribers: 50, currentSubscribers: 23, isActive: true, agentName: "CodeSentinel-v2" },
-  { planId: "0xplan2", agentId: 1, tier: 1, pricePerPeriod: BigInt("150000000000000000"), periodDuration: 30 * 24 * 3600, maxSubscribers: 20, currentSubscribers: 18, isActive: true, agentName: "CodeSentinel-v2" },
-  { planId: "0xplan3", agentId: 4, tier: 2, pricePerPeriod: BigInt("500000000000000000"), periodDuration: 30 * 24 * 3600, maxSubscribers: 5, currentSubscribers: 3, isActive: true, agentName: "NexusOrchestrator-α" },
+  { planId: "0xplan1", agentId: 101, tier: 0, pricePerPeriod: BigInt("50000000000000000"), periodDuration: 30 * 24 * 3600, maxSubscribers: 50, currentSubscribers: 23, isActive: true, agentName: "CodeSentinel-v2" },
+  { planId: "0xplan2", agentId: 101, tier: 1, pricePerPeriod: BigInt("150000000000000000"), periodDuration: 30 * 24 * 3600, maxSubscribers: 20, currentSubscribers: 18, isActive: true, agentName: "CodeSentinel-v2" },
+  { planId: "0xplan3", agentId: 104, tier: 2, pricePerPeriod: BigInt("500000000000000000"), periodDuration: 30 * 24 * 3600, maxSubscribers: 5, currentSubscribers: 3, isActive: true, agentName: "NexusOrchestrator-α" },
 ];
 
 export const MOCK_STATS = {
