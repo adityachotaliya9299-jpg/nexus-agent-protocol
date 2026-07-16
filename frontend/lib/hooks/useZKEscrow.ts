@@ -5,8 +5,7 @@ import { CONTRACTS, ZK_ESCROW_ABI } from "@/lib/contracts";
 export type EscrowStatus = 0 | 1 | 2 | 3; // OPEN | RELEASED | REFUNDED | DISPUTED
 export const ESCROW_STATUS_LABELS = ["OPEN", "RELEASED", "REFUNDED", "DISPUTED"] as const;
 
-// ── Reads ────────────────────────────────────────────────────
-
+// reads
 export function useEscrow(escrowId: `0x${string}` | undefined) {
   return useReadContract({
     address: CONTRACTS.ZKEscrow,
@@ -35,8 +34,7 @@ export function useTotalReleased() {
   return useReadContract({ address: CONTRACTS.ZKEscrow, abi: ZK_ESCROW_ABI, functionName: "totalReleased" });
 }
 
-// ── Writes ───────────────────────────────────────────────────
-
+// writes
 export function useCreateEscrow() {
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
