@@ -144,11 +144,11 @@ dataSources:
         - name: AgentStaking
           file: ./abis/AgentStaking.json
       eventHandlers:
-        - event: Staked(indexed uint256,indexed address,uint256)
+        - event: Staked(indexed uint256,indexed address,uint256,bool)
           handler: handleStaked
-        - event: Slashed(indexed uint256,uint256,uint256)
+        - event: Slashed(indexed uint256,uint256,indexed address,string)
           handler: handleSlashed
-        - event: UnstakeRequested(indexed uint256,uint256)
+        - event: UnstakeRequested(indexed uint256,indexed address,uint256)
           handler: handleUnstakeRequested
       file: ./src/agent-staking.ts
 
