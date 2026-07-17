@@ -2,9 +2,11 @@
 // Only the original four contracts are indexed (registry, oracle,
 // marketplace, subscriptions) — newer contracts are read via RPC instead.
 
+// `version/latest` tracks whichever version is currently deployed in Studio,
+// so the frontend doesn't break every time the subgraph is redeployed.
 export const SUBGRAPH_URL =
   process.env.NEXT_PUBLIC_SUBGRAPH_URL ??
-  "https://api.studio.thegraph.com/query/1755484/nexus-agent-protocol/v0.5.0";
+  "https://api.studio.thegraph.com/query/1755484/nexus-agent-protocol/version/latest";
 
 async function gql<T>(query: string, variables?: Record<string, unknown>): Promise<T> {
   const res = await fetch(SUBGRAPH_URL, {
@@ -15,6 +17,7 @@ async function gql<T>(query: string, variables?: Record<string, unknown>): Promi
   if (!res.ok) throw new Error(`subgraph http ${res.status}`);
   const json = await res.json();
   if (json.errors?.length) throw new Error(json.errors[0].message);
+  if (json.data == null) throw new Error("subgraph returned no data");
   return json.data as T;
 }
 
