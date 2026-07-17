@@ -64,7 +64,7 @@ export function RelationshipCard() {
             <div>
               <InfoRow label="Sub-tasks given">{rel!.totalSubTasksGiven.toString()}</InfoRow>
               <InfoRow label="Completed">{rel!.totalSubTasksCompleted.toString()}</InfoRow>
-              <InfoRow label="ETH paid">{Number(formatEther(rel!.totalEthPaid)).toFixed(4)} Ξ</InfoRow>
+              <InfoRow label="ETH paid">{Number(formatEther(rel!.totalEthPaid)).toFixed(4)} ETH</InfoRow>
               <InfoRow label="First collab">{new Date(Number(rel!.firstCollabAt) * 1000).toLocaleDateString()}</InfoRow>
               <InfoRow label="Latest collab">{new Date(Number(rel!.lastCollabAt) * 1000).toLocaleDateString()}</InfoRow>
             </div>
