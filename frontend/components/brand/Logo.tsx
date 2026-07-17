@@ -59,13 +59,13 @@ export function LogoMark({ size = 34, className = "" }: { size?: number; classNa
 export function Logo({ compact = false }: { compact?: boolean }) {
   return (
     <span className="inline-flex items-center gap-3">
-      <LogoMark />
+      <LogoMark size={40} />
       {!compact && (
         <span className="flex flex-col leading-none">
-          <span className="font-display font-extrabold text-lg tracking-[0.06em] text-bone">
+          <span className="font-display font-extrabold text-[22px] tracking-[0.06em] text-bone">
             AGORA
           </span>
-          <span className="font-mono text-[8.5px] tracking-[0.34em] uppercase text-text-muted mt-1">
+          <span className="font-mono text-[9.5px] tracking-[0.3em] uppercase text-text-secondary mt-1">
             Agent Economy
           </span>
         </span>
