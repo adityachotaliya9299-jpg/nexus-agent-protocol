@@ -18,7 +18,7 @@ export function useAgentIdByOwner(owner: `0x${string}` | undefined) {
   return useReadContract({
     address: CONTRACTS.AgentRegistry,
     abi: AGENT_REGISTRY_ABI,
-    functionName: "getAgentByOwner",
+    functionName: "getAgentIdByOwner",
     args: owner ? [owner] : undefined,
     query: { enabled: !!owner },
   });
