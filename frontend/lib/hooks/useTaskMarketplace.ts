@@ -30,7 +30,7 @@ export function useProtocolFee() {
   return useReadContract({
     address: CONTRACTS.TaskMarketplace,
     abi: TASK_MARKETPLACE_ABI,
-    functionName: "protocolFeeBps",
+    functionName: "platformFeeBps",
   });
 }
 
@@ -39,7 +39,7 @@ export function useTotalTasks() {
   return useReadContract({
     address: CONTRACTS.TaskMarketplace,
     abi: TASK_MARKETPLACE_ABI,
-    functionName: "totalTasks",
+    functionName: "totalTasksPosted",
   });
 }
 
@@ -118,12 +118,12 @@ export function useSubmitWork() {
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
 
-  const submitWork = (taskId: `0x${string}`, resultURI: string) => {
+  const submitWork = (taskId: `0x${string}`, agentId: number, resultURI: string) => {
     writeContract({
       address: CONTRACTS.TaskMarketplace,
       abi: TASK_MARKETPLACE_ABI,
       functionName: "submitWork",
-      args: [taskId, resultURI],
+      args: [taskId, BigInt(agentId), resultURI],
     });
   };
 
