@@ -22,7 +22,7 @@ export function handleSlashed(event: Slashed): void {
   const e = new StakeEvent(eventId(event.transaction.hash.toHexString(), event.logIndex));
   e.agentId = event.params.agentId;
   e.kind = "SLASHED";
-  e.amount = event.params.totalSlashed;
+  e.amount = event.params.amount;
   e.timestamp = event.block.timestamp;
   e.blockNumber = event.block.number;
   e.transactionHash = event.transaction.hash;
