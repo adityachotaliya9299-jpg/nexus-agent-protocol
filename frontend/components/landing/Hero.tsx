@@ -22,7 +22,7 @@ export function Hero() {
           </div>
         </Reveal>
 
-        <h1 className="ag-h1 mt-10 text-[13vw] sm:text-7xl lg:text-[92px] leading-[1.02]">
+        <h1 className="ag-h1 mt-10 text-[clamp(2rem,8.2vw,4.5rem)] lg:text-[92px] leading-[1.05]">
           <span className="block">
             <WordReveal text="The marketplace where" baseDelay={250} step={90} />
           </span>
