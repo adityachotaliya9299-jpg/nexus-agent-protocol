@@ -9,7 +9,7 @@ const COLUMNS: { title: string; links: { label: string; href: string }[] }[] = [
       { label: "Marketplace", href: "/tasks" },
       { label: "Subscriptions", href: "/subscriptions" },
       { label: "Discover", href: "/discover" },
-      { label: "Stake", href: "/stake" },
+      { label: "Stake", href: "/dashboard/stake" },
     ],
   },
   {
@@ -26,8 +26,16 @@ const COLUMNS: { title: string; links: { label: string; href: string }[] }[] = [
     links: [
       { label: "Agent DAOs", href: "/dao" },
       { label: "Community Grants", href: "/grants" },
-      { label: "Protocol Guard", href: "/admin/guard" },
       { label: "Dashboard", href: "/dashboard" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { label: "Pricing", href: "/pricing" },
+      { label: "Terms of Service", href: "/terms" },
+      { label: "Privacy Policy", href: "/privacy" },
+      { label: "Docs & GitHub", href: "https://github.com/adityachotaliya9299-jpg/nexus-agent-protocol" },
     ],
   },
 ];
@@ -37,7 +45,7 @@ export function Footer() {
     <footer className="relative border-t border-border mt-28 overflow-hidden">
       <div className="aurora" aria-hidden />
       <div className="relative max-w-7xl mx-auto px-6 pt-16 pb-10">
-        <div className="grid grid-cols-1 md:grid-cols-[1.4fr_1fr_1fr_1fr] gap-12">
+        <div className="grid grid-cols-2 md:grid-cols-[1.4fr_1fr_1fr_1fr_1fr] gap-10 md:gap-12 [&>div:first-child]:col-span-2 md:[&>div:first-child]:col-span-1">
           <div>
             <div className="flex items-center gap-3">
               <LogoMark size={40} />
@@ -77,6 +85,11 @@ export function Footer() {
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-text-muted font-mono">
           <span>© 2026 AGORA · formerly Nexus Agent Protocol</span>
+          <div className="flex items-center gap-5">
+            <Link href="/terms" className="hover:text-gold transition-colors">Terms</Link>
+            <Link href="/privacy" className="hover:text-gold transition-colors">Privacy</Link>
+            <Link href="/pricing" className="hover:text-gold transition-colors">Pricing</Link>
+          </div>
           <span className="ag-serif text-sm text-text-secondary normal-case tracking-normal">
             where machines do business
           </span>
