@@ -27,7 +27,7 @@ const MORE_LINKS = [
   { href: "/results", label: "Results", hint: "Arweave-anchored proofs of work" },
   { href: "/dashboard/subtasks", label: "Sub-tasks", hint: "Agents hiring agents" },
   { href: "/dashboard/stake", label: "Stake", hint: "Back agents with ETH" },
-  { href: "/admin/guard", label: "Protocol Guard", hint: "Circuit breaker (owner)" },
+  { href: "/pricing", label: "Pricing", hint: "Protocol fees, in plain sight" },
 ];
 
 function Dropdown({
@@ -42,8 +42,8 @@ function Dropdown({
   return (
     <div className="relative group">
       <button
-        className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-          active ? "text-gold" : "text-text-secondary hover:text-bone"
+        className={`flex items-center gap-1 px-4 py-2.5 rounded-full text-[15px] font-semibold transition-all duration-200 ${
+          active ? "text-gold" : "text-[#C9BFAE] hover:text-bone"
         }`}
       >
         {label}
@@ -75,7 +75,7 @@ export function Navbar() {
   const { data: guardOwner } = useReadContract({
     address: CONTRACTS.ProtocolGuard,
     abi: PROTOCOL_GUARD_ABI,
-    functionName: "owner",
+    functionName: "protocolOwner",
     query: { enabled: !!address },
   });
   const isOwner = !!address && !!guardOwner && address.toLowerCase() === (guardOwner as string).toLowerCase();
@@ -84,7 +84,7 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/70 bg-void/85 backdrop-blur-xl">
-      <div className="max-w-7xl mx-auto px-6 h-[68px] flex items-center justify-between gap-6">
+      <div className="max-w-7xl mx-auto px-6 h-[76px] flex items-center justify-between gap-6">
         <Link href="/" className="flex-shrink-0" onClick={() => setOpen(false)}>
           <Logo />
         </Link>
@@ -94,10 +94,10 @@ export function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+              className={`px-4 py-2.5 rounded-full text-[15px] font-semibold transition-all duration-200 ${
                 isActive(link.href)
                   ? "bg-gold/10 text-gold border border-gold/20"
-                  : "text-text-secondary hover:text-bone hover:bg-raised"
+                  : "text-[#C9BFAE] hover:text-bone hover:bg-raised"
               }`}
             >
               {link.label}
@@ -107,10 +107,10 @@ export function Navbar() {
           <Dropdown label="More" links={MORE_LINKS} active={MORE_LINKS.some((l) => isActive(l.href))} />
           <Link
             href="/dashboard"
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+            className={`px-4 py-2.5 rounded-full text-[15px] font-semibold transition-all duration-200 ${
               isActive("/dashboard")
                 ? "bg-gold/10 text-gold border border-gold/20"
-                : "text-text-secondary hover:text-bone hover:bg-raised"
+                : "text-[#C9BFAE] hover:text-bone hover:bg-raised"
             }`}
           >
             Dashboard
@@ -118,7 +118,7 @@ export function Navbar() {
           {isOwner && (
             <Link
               href="/admin/guard"
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+              className={`flex items-center gap-1.5 px-4 py-2.5 rounded-full text-[15px] font-semibold transition-all duration-200 ${
                 isActive("/admin")
                   ? "bg-ember/10 text-ember border border-ember/25"
                   : "text-ember/80 hover:text-ember hover:bg-ember/5"
@@ -145,7 +145,13 @@ export function Navbar() {
       {/* mobile menu */}
       {open && (
         <div className="lg:hidden border-t border-border bg-void/95 backdrop-blur-xl px-6 py-4 space-y-1 max-h-[75vh] overflow-y-auto">
-          {[...PRIMARY_LINKS, ...GOVERN_LINKS, ...MORE_LINKS, { href: "/dashboard", label: "Dashboard" }].map(
+          {[
+            ...PRIMARY_LINKS,
+            ...GOVERN_LINKS,
+            ...MORE_LINKS,
+            { href: "/dashboard", label: "Dashboard" },
+            ...(isOwner ? [{ href: "/admin/guard", label: "Admin" }] : []),
+          ].map(
             (link) => (
               <Link
                 key={link.href}
