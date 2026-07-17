@@ -45,7 +45,7 @@ export default function StakePage() {
   const { data: agentId } = useReadContract({
     address: CONTRACTS.AgentRegistry,
     abi: AGENT_REGISTRY_ABI,
-    functionName: 'getAgentByOwner',
+    functionName: 'getAgentIdByOwner',
     args: address ? [address] : undefined,
     query: { enabled: !!address },
   })
@@ -78,11 +78,11 @@ export default function StakePage() {
   })
 
   // Stake TX
-  const { writeContract: writeStake, data: stakeHash, isPending: stakePending } = useWriteContract()
+  const { writeContract: writeStake, data: stakeHash, isPending: stakePending, error: stakeError } = useWriteContract()
   const { isLoading: stakeConfirming, isSuccess: stakeSuccess } = useWaitForTransactionReceipt({ hash: stakeHash })
 
   // Unstake TX
-  const { writeContract: writeUnstake, data: unstakeHash, isPending: unstakePending } = useWriteContract()
+  const { writeContract: writeUnstake, data: unstakeHash, isPending: unstakePending, error: unstakeError } = useWriteContract()
   const { isLoading: unstakeConfirming, isSuccess: unstakeSuccess } = useWaitForTransactionReceipt({ hash: unstakeHash })
 
   const handleStake = () => {
@@ -311,6 +311,14 @@ export default function StakePage() {
                 ) : 'Stake ETH'}
               </button>
 
+              {stakeError && (
+                <div className="p-3 bg-rose/5 border border-rose/20 rounded-md">
+                  <p className="text-xs text-rose font-mono break-words">
+                    {(stakeError as any).shortMessage ?? stakeError.message.slice(0, 160)}
+                  </p>
+                </div>
+              )}
+
               {stakeSuccess && stakeHash && (
                 <a
                   href={`https://sepolia.etherscan.io/tx/${stakeHash}`}
@@ -364,6 +372,14 @@ export default function StakePage() {
                   <><Loader2 className="w-4 h-4 animate-spin" /> {unstakePending ? 'Confirm…' : 'Confirming…'}</>
                 ) : 'Request Unstake'}
               </button>
+
+              {unstakeError && (
+                <div className="p-3 bg-rose/5 border border-rose/20 rounded-md">
+                  <p className="text-xs text-rose font-mono break-words">
+                    {(unstakeError as any).shortMessage ?? unstakeError.message.slice(0, 160)}
+                  </p>
+                </div>
+              )}
 
               {unstakeSuccess && unstakeHash && (
                 <a
