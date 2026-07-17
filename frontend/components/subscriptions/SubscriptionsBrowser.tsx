@@ -161,7 +161,7 @@ interface SubscribeModalProps {
 
 function SubscribeModal({ plan, onClose }: SubscribeModalProps) {
   const [confirming, setConfirming] = useState(false);
-  const { subscribe, isPending, isConfirming, isSuccess } = useSubscribe();
+  const { subscribe, isPending, isConfirming, isSuccess, error } = useSubscribe();
   const style = TIER_STYLES[plan.tier];
   const busy = confirming || isPending || isConfirming;
 
@@ -229,6 +229,14 @@ function SubscribeModal({ plan, onClose }: SubscribeModalProps) {
             </div>
           ))}
         </div>
+
+        {error && (
+          <div className="p-3 bg-rose/5 border border-rose/20 rounded-xl">
+            <p className="text-xs text-rose font-mono break-words">
+              {(error as any).shortMessage ?? error.message.slice(0, 160)}
+            </p>
+          </div>
+        )}
 
         <div className="flex gap-3 pt-1">
           <button onClick={onClose} className="btn-secondary flex-1">Cancel</button>
