@@ -2,51 +2,50 @@
 
 import { useState } from 'react'
 import { useReadContract } from 'wagmi'
-import { Search, Zap, Users, CheckCircle, LayoutGrid, List } from 'lucide-react'
+import { List, LayoutGrid } from 'lucide-react'
 import { DiscoverLeaderboard } from '@/components/discover/DiscoverLeaderboard'
 import { DiscoverGrid } from '@/components/discover/DiscoverGrid'
+import { Reveal } from '@/components/fx/Reveal'
 import {
   CONTRACTS,
   AGENT_DISCOVERY_ABI,
   AGENT_REGISTRY_ABI,
   TASK_MARKETPLACE_ABI,
+  CATEGORY_COLORS,
 } from '@/lib/contracts'
 
 const CATEGORIES = [
-  { label: 'All',          value: 255 },
-  { label: 'Code',         value: 1 },
-  { label: 'Research',     value: 2 },
-  { label: 'Trading',      value: 3 },
-  { label: 'Creative',     value: 4 },
-  { label: 'Orchestrator', value: 5 },
-  { label: 'General',      value: 0 },
+  { label: 'All', value: 255, color: '#F2A93B' },
+  { label: 'General', value: 0, color: CATEGORY_COLORS.GENERAL },
+  { label: 'Code', value: 1, color: CATEGORY_COLORS.CODE },
+  { label: 'Research', value: 2, color: CATEGORY_COLORS.RESEARCH },
+  { label: 'Trading', value: 3, color: CATEGORY_COLORS.TRADING },
+  { label: 'Creative', value: 4, color: CATEGORY_COLORS.CREATIVE },
+  { label: 'Orchestrator', value: 5, color: CATEGORY_COLORS.ORCHESTRATOR },
 ]
 
 export default function DiscoverPage() {
-  const [category, setCategory]     = useState(255)
-  const [minScore, setMinScore]     = useState(0)
+  const [category, setCategory] = useState(255)
+  const [minScore, setMinScore] = useState(0)
   const [activeOnly, setActiveOnly] = useState(false)
-  const [view, setView]             = useState<'leaderboard' | 'grid'>('leaderboard')
+  const [view, setView] = useState<'leaderboard' | 'grid'>('leaderboard')
 
-  // Live on-chain stats — using correct function names from your ABI
-  const { data: totalAgents }    = useReadContract({
+  const { data: totalAgents } = useReadContract({
     address: CONTRACTS.AgentRegistry,
     abi: AGENT_REGISTRY_ABI,
     functionName: 'totalAgents',
   })
-  const { data: totalIndexed }   = useReadContract({
+  const { data: totalIndexed } = useReadContract({
     address: CONTRACTS.AgentDiscovery,
     abi: AGENT_DISCOVERY_ABI,
     functionName: 'totalIndexed',
   })
-  // Your marketplace has 'totalTasks' not 'totalTasksPosted'
-  const { data: totalTasks }     = useReadContract({
+  const { data: totalTasks } = useReadContract({
     address: CONTRACTS.TaskMarketplace,
     abi: TASK_MARKETPLACE_ABI,
-    functionName: 'totalTasks',
+    functionName: 'totalTasksPosted',
   })
 
-  // Leaderboard
   const { data: leaderboard, isLoading: lbLoading } = useReadContract({
     address: CONTRACTS.AgentDiscovery,
     abi: AGENT_DISCOVERY_ABI,
@@ -54,7 +53,6 @@ export default function DiscoverPage() {
     args: [BigInt(category), 20n],
   })
 
-  // Grid search
   const { data: searchResults, isLoading: gridLoading } = useReadContract({
     address: CONTRACTS.AgentDiscovery,
     abi: AGENT_DISCOVERY_ABI,
@@ -70,133 +68,120 @@ export default function DiscoverPage() {
   })
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="relative">
+      <div className="aurora opacity-60" aria-hidden />
 
-      {/* Hero */}
-      <div className="relative text-center mb-14 animate-fade-up">
-        <div className="absolute inset-x-0 top-0 h-40 hero-glow pointer-events-none" />
-
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-cyan/20 bg-cyan/5 mb-6">
-          <span className="w-1.5 h-1.5 rounded-full bg-cyan pulse-dot" />
-          <span className="label text-cyan">Live on Ethereum Sepolia</span>
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
+        {/* header */}
+        <div className="mb-12">
+          <Reveal>
+            <div className="ag-eyebrow mb-5">Discovery</div>
+          </Reveal>
+          <Reveal delay={100}>
+            <h1 className="ag-h1 text-4xl sm:text-5xl lg:text-6xl leading-[1.05]">
+              Find your <span className="ag-serif gradient-text font-medium">specialist</span>
+            </h1>
+          </Reveal>
+          <Reveal delay={200}>
+            <p className="mt-5 text-text-secondary text-lg max-w-xl leading-relaxed">
+              Rank and search every indexed agent by category, reputation, stake,
+              and track record. Every number here is read from Sepolia.
+            </p>
+          </Reveal>
         </div>
 
-        <h1 className="font-display font-bold text-5xl sm:text-6xl text-[#F4EFE6] mb-4">
-          Discover{' '}
-          <span className="gradient-text">AI Agents</span>
-        </h1>
-        <p className="text-[#A89F8D] text-lg max-w-xl mx-auto mb-10">
-          Browse autonomous agents by specialization, reputation, and track record.
-          Every metric is on-chain and verifiable.
-        </p>
-
-        {/* Stats row */}
-        <div className="flex justify-center gap-10 flex-wrap">
-          {[
-            { icon: Users,       label: 'Agents',      value: totalAgents?.toString()  ?? '—' },
-            { icon: Zap,         label: 'Indexed',      value: totalIndexed?.toString() ?? '—' },
-            { icon: Search,      label: 'Tasks Posted', value: totalTasks?.toString()   ?? '—' },
-            { icon: CheckCircle, label: 'Network',      value: 'Sepolia' },
-          ].map(({ icon: Icon, label, value }) => (
-            <div key={label} className="text-center">
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <Icon className="w-4 h-4 text-cyan" />
-                <span className="font-display font-bold text-3xl text-[#F4EFE6]">{value}</span>
+        {/* stat band */}
+        <Reveal delay={250}>
+          <div className="grid grid-cols-3 gap-px bg-border rounded-3xl overflow-hidden border border-border mb-10 max-w-2xl">
+            {[
+              { label: 'Registered agents', value: totalAgents },
+              { label: 'Indexed for search', value: totalIndexed },
+              { label: 'Tasks posted', value: totalTasks },
+            ].map(s => (
+              <div key={s.label} className="bg-surface p-5 min-w-0">
+                <div className="font-display font-extrabold text-2xl sm:text-3xl gradient-text tabular-nums">
+                  {s.value !== undefined ? Number(s.value).toLocaleString() : '—'}
+                </div>
+                <div className="label mt-2">{s.label}</div>
               </div>
-              <div className="label">{label}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Controls */}
-      <div className="card p-4 mb-6 animation-delay-100 animate-fade-up">
-        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-          {/* Category pills */}
-          <div className="flex gap-2 flex-wrap flex-1">
-            {CATEGORIES.map(cat => (
-              <button
-                key={cat.value}
-                onClick={() => setCategory(cat.value)}
-                className={`px-3 py-1.5 rounded-md text-xs font-mono font-medium transition-all duration-200 ${
-                  category === cat.value
-                    ? 'bg-cyan/10 text-cyan border border-cyan/30'
-                    : 'text-[#A89F8D] border border-[#2A241B] hover:border-cyan/20 hover:text-[#F4EFE6]'
-                }`}
-              >
-                {cat.label}
-              </button>
             ))}
           </div>
+        </Reveal>
 
-          {/* View toggle */}
-          <div className="flex items-center gap-1 bg-[#0B0A08] border border-[#2A241B] rounded-md p-1">
-            <button
-              onClick={() => setView('leaderboard')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium transition-all ${
-                view === 'leaderboard' ? 'bg-cyan/10 text-cyan' : 'text-[#A89F8D] hover:text-[#F4EFE6]'
-              }`}
-            >
-              <List className="w-3.5 h-3.5" /> Rank
-            </button>
-            <button
-              onClick={() => setView('grid')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium transition-all ${
-                view === 'grid' ? 'bg-cyan/10 text-cyan' : 'text-[#A89F8D] hover:text-[#F4EFE6]'
-              }`}
-            >
-              <LayoutGrid className="w-3.5 h-3.5" /> Grid
-            </button>
-          </div>
-        </div>
+        {/* controls */}
+        <Reveal delay={300}>
+          <div className="ag-panel p-5 sm:p-6 mb-8">
+            <div className="flex flex-col lg:flex-row gap-5 lg:items-center">
+              <div className="flex gap-2 flex-wrap flex-1">
+                {CATEGORIES.map(cat => (
+                  <button
+                    key={cat.value}
+                    onClick={() => setCategory(cat.value)}
+                    className="px-4 py-2 rounded-full text-xs font-mono font-semibold tracking-wide border transition-all duration-200"
+                    style={
+                      category === cat.value
+                        ? { color: cat.color, borderColor: `${cat.color}55`, background: `${cat.color}14` }
+                        : { color: 'var(--ag-text-2)', borderColor: 'var(--ag-border)' }
+                    }
+                  >
+                    {cat.label}
+                  </button>
+                ))}
+              </div>
 
-        {/* Min score + active filter */}
-        <div className="flex items-center gap-6 mt-4 pt-4 border-t border-[#2A241B]">
-          <div className="flex items-center gap-3 flex-1">
-            <span className="label whitespace-nowrap">Min score</span>
-            <input
-              type="range" min={0} max={10000} step={500}
-              value={minScore}
-              onChange={e => setMinScore(Number(e.target.value))}
-              className="flex-1 max-w-48 accent-cyan"
-            />
-            <span className="font-mono text-xs text-cyan w-12">{minScore.toLocaleString()}</span>
+              <div className="flex items-center gap-1 bg-void border border-border rounded-full p-1 self-start">
+                {([
+                  { key: 'leaderboard', icon: List, label: 'Rank' },
+                  { key: 'grid', icon: LayoutGrid, label: 'Grid' },
+                ] as const).map(({ key, icon: Icon, label }) => (
+                  <button
+                    key={key}
+                    onClick={() => setView(key)}
+                    className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold transition-all ${
+                      view === key ? 'bg-gold text-void' : 'text-text-secondary hover:text-bone'
+                    }`}
+                  >
+                    <Icon className="w-3.5 h-3.5" /> {label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex items-center gap-6 mt-5 pt-5 border-t border-border flex-wrap">
+              <div className="flex items-center gap-3 flex-1 min-w-[220px]">
+                <span className="label whitespace-nowrap">Min score</span>
+                <input
+                  type="range" min={0} max={10000} step={500}
+                  value={minScore}
+                  onChange={e => setMinScore(Number(e.target.value))}
+                  className="flex-1 max-w-48 accent-[#F2A93B]"
+                />
+                <span className="font-mono text-xs text-gold w-14 tabular-nums">{minScore.toLocaleString()}</span>
+              </div>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={activeOnly}
+                  onChange={e => setActiveOnly(e.target.checked)}
+                  className="w-3.5 h-3.5 accent-[#F2A93B] rounded"
+                />
+                <span className="text-xs text-text-secondary">Active only</span>
+              </label>
+            </div>
           </div>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={activeOnly}
-              onChange={e => setActiveOnly(e.target.checked)}
-              className="w-3.5 h-3.5 accent-cyan rounded"
-            />
-            <span className="text-xs text-[#A89F8D]">Active only</span>
-          </label>
-        </div>
+        </Reveal>
+
+        {view === 'leaderboard' ? (
+          <DiscoverLeaderboard
+            entries={(leaderboard as any[]) ?? []}
+            isLoading={lbLoading}
+            category={category}
+            categories={CATEGORIES}
+          />
+        ) : (
+          <DiscoverGrid agents={(searchResults as any[]) ?? []} isLoading={gridLoading} />
+        )}
       </div>
-
-      {/* Content */}
-      {view === 'leaderboard' ? (
-        <DiscoverLeaderboard
-          entries={leaderboard as any[] ?? []}
-          isLoading={lbLoading}
-          category={category}
-          categories={CATEGORIES}
-        />
-      ) : (
-        <DiscoverGrid
-          agents={searchResults as any[] ?? []}
-          isLoading={gridLoading}
-        />
-      )}
-
-      <style jsx>{`
-        @keyframes fade-up {
-          from { opacity: 0; transform: translateY(20px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-up { animation: fade-up 0.5s cubic-bezier(0.16,1,0.3,1) both; }
-        .animation-delay-100 { animation-delay: 100ms; }
-      `}</style>
     </div>
   )
 }
