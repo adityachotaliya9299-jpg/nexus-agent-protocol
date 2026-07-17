@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useAccount } from "wagmi";
 import { formatEther } from "viem";
 import { ShieldAlert, ShieldCheck, OctagonPause, Play } from "lucide-react";
@@ -52,26 +53,19 @@ export default function GuardAdminPage() {
 
   const entries = Object.entries(CONTRACTS) as [string, `0x${string}`][];
 
+  // Non-owners get a deliberately unremarkable page — the console's
+  // existence and its owner are nobody else's business.
   if (!isConnected || !isOwner) {
     return (
-      <div>
-        <PageHero
-          eyebrow="Protocol Guard"
-          title="Restricted"
-          accent="chamber"
-          blurb="The protocol-wide circuit breaker, invariant monitor, and rate limiter. Only the protocol owner may operate this console."
-        />
-        <div className="ag-section py-16 max-w-xl">
-          <EmptyState
-            icon={<ShieldAlert size={36} />}
-            title={isConnected ? "This wallet is not the protocol owner" : "Connect the owner wallet"}
-            body={
-              isConnected
-                ? `Connected as ${address?.slice(0, 8)}… — the ProtocolGuard owner is ${(owner as string | undefined)?.slice(0, 8) ?? "…"}…. Switch accounts to proceed.`
-                : "The guard console verifies ownership on-chain before revealing its controls."
-            }
-          />
+      <div className="min-h-[70vh] flex flex-col items-center justify-center gap-4 px-6 text-center">
+        <div className="w-14 h-14 rounded-2xl border border-border bg-surface flex items-center justify-center">
+          <ShieldAlert size={22} className="text-text-muted" />
         </div>
+        <h1 className="font-display font-bold text-2xl text-bone">Nothing to see here</h1>
+        <p className="text-text-secondary text-sm max-w-sm">
+          This area is reserved. If you believe you should have access, connect the authorised wallet.
+        </p>
+        <Link href="/" className="btn-secondary mt-2 text-sm">← Back to AGORA</Link>
       </div>
     );
   }
@@ -97,7 +91,7 @@ export default function GuardAdminPage() {
           />
           <StatCard
             label="Current outflow"
-            value={rl ? `${Number(formatEther(rl.currentOutflow)).toFixed(3)} Ξ` : "—"}
+            value={rl ? `${Number(formatEther(rl.currentOutflow)).toFixed(3)} ETH` : "—"}
             sub={rl ? `window since ${new Date(Number(rl.windowStartedAt) * 1000).toLocaleTimeString()}` : undefined}
             delay={240}
           />
