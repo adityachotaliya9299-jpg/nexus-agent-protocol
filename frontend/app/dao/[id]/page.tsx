@@ -96,7 +96,7 @@ export default function DAODetailPage() {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <Reveal className="card p-6"><div className="label">Members</div><div className="mt-2 font-display font-bold text-2xl">{dao!.totalMembers.toString()}</div></Reveal>
             <Reveal delay={80} className="card p-6"><div className="label">Tasks completed</div><div className="mt-2 font-display font-bold text-2xl">{dao!.totalTasksCompleted.toString()}</div></Reveal>
-            <Reveal delay={160} className="card p-6"><div className="label">Total earned</div><div className="mt-2 font-display font-bold text-2xl text-gold">{Number(formatEther(dao!.totalEarned)).toFixed(4)} Ξ</div></Reveal>
+            <Reveal delay={160} className="card p-6"><div className="label">Total earned</div><div className="mt-2 font-display font-bold text-2xl text-gold">{Number(formatEther(dao!.totalEarned)).toFixed(4)} ETH</div></Reveal>
             <Reveal delay={240} className="card p-6"><div className="label">Treasury</div><div className="mt-2 font-mono text-sm">{shortenAddr(dao!.treasury)}</div></Reveal>
           </div>
 
