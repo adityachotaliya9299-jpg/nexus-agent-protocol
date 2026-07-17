@@ -15,7 +15,7 @@ import {
 } from "@/lib/hooks/useCommunityGrants";
 
 const fmt = (v: unknown) =>
-  v !== undefined ? `${Number(formatEther(v as bigint)).toFixed(4)} Ξ` : "—";
+  v !== undefined ? `${Number(formatEther(v as bigint)).toFixed(4)} ETH` : "—";
 
 export default function GrantsPage() {
   const { data: activeIds, isLoading } = useActiveGrants();
@@ -36,11 +36,20 @@ export default function GrantsPage() {
       />
 
       <div className="ag-section py-12 space-y-14">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <StatCard label="Treasury balance" value={fmt(balance)} />
-          <StatCard label="Total fees deposited" value={fmt(deposited)} delay={100} />
-          <StatCard label="Total granted" value={fmt(granted)} delay={200} />
-          <StatCard label="Grants proposed" value={totalGrants !== undefined ? String(totalGrants) : "—"} delay={300} />
+        <div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <StatCard label="Treasury balance" value={fmt(balance)} />
+            <StatCard label="Total fees deposited" value={fmt(deposited)} delay={100} />
+            <StatCard label="Total granted" value={fmt(granted)} delay={200} />
+            <StatCard label="Grants proposed" value={totalGrants !== undefined ? String(totalGrants) : "—"} delay={300} />
+          </div>
+          {balance !== undefined && (balance as bigint) === 0n && (
+            <p className="mt-4 font-mono text-xs text-text-muted leading-relaxed max-w-2xl">
+              The treasury starts empty by design — it fills from the 2.5% protocol fee as
+              tasks complete and subscriptions renew on Sepolia. Anyone can also seed it
+              directly via the contract&apos;s deposit() function.
+            </p>
+          )}
         </div>
 
         <div>
