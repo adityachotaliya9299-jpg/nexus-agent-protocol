@@ -28,7 +28,7 @@ export function useReputationHistory(agentId: number | undefined) {
   return useReadContract({
     address: CONTRACTS.ReputationOracle,
     abi: REPUTATION_ORACLE_ABI,
-    functionName: "getHistory",
+    functionName: "getEventHistory",
     args: agentId !== undefined ? [BigInt(agentId)] : undefined,
     query: { enabled: agentId !== undefined },
   });
