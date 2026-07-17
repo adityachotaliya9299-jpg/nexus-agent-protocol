@@ -4,7 +4,7 @@ import { CONTRACTS, PROTOCOL_GUARD_ABI } from "@/lib/contracts";
 
 // reads
 export function useGuardOwner() {
-  return useReadContract({ address: CONTRACTS.ProtocolGuard, abi: PROTOCOL_GUARD_ABI, functionName: "owner" });
+  return useReadContract({ address: CONTRACTS.ProtocolGuard, abi: PROTOCOL_GUARD_ABI, functionName: "protocolOwner" });
 }
 
 export function useIsPaused(target: `0x${string}` | undefined) {
