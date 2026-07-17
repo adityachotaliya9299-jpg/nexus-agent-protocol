@@ -34,6 +34,10 @@ export class Staked__Params {
   get amount(): BigInt {
     return this._event.parameters[2].value.toBigInt();
   }
+
+  get isDelegated(): boolean {
+    return this._event.parameters[3].value.toBoolean();
+  }
 }
 
 export class Slashed extends ethereum.Event {
@@ -53,12 +57,16 @@ export class Slashed__Params {
     return this._event.parameters[0].value.toBigInt();
   }
 
-  get slashBps(): BigInt {
+  get amount(): BigInt {
     return this._event.parameters[1].value.toBigInt();
   }
 
-  get totalSlashed(): BigInt {
-    return this._event.parameters[2].value.toBigInt();
+  get recipient(): Address {
+    return this._event.parameters[2].value.toAddress();
+  }
+
+  get reason(): string {
+    return this._event.parameters[3].value.toString();
   }
 }
 
@@ -79,8 +87,12 @@ export class UnstakeRequested__Params {
     return this._event.parameters[0].value.toBigInt();
   }
 
+  get requester(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
   get amount(): BigInt {
-    return this._event.parameters[1].value.toBigInt();
+    return this._event.parameters[2].value.toBigInt();
   }
 }
 
