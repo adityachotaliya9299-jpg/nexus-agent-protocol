@@ -44,7 +44,7 @@ export default function EscrowPage() {
           <StatCard label="Total escrows" value={totalEscrows !== undefined ? totalEscrows.toString() : "—"} delay={0} />
           <StatCard
             label="ETH released to agents"
-            value={totalReleased !== undefined ? `${Number(formatEther(totalReleased as bigint)).toFixed(4)} Ξ` : "—"}
+            value={totalReleased !== undefined ? `${Number(formatEther(totalReleased as bigint)).toFixed(4)} ETH` : "—"}
             delay={100}
           />
           <StatCard label="Human approvals needed" value="0" sub="always" delay={200} />
